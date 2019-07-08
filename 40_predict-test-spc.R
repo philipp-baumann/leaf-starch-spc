@@ -1,0 +1,118 @@
+################################################################################
+## Project:
+## Description:
+################################################################################
+
+## Predict starch for test set; use exisiting training model (`pls_starch`)
+## and new test data (preprocessed spectra in `spc_train`) =====================
+
+test_predobs <- predict_from_spc(
+    model_list = list("pls_starch" = pls_starch),
+    spc_tbl = spc_test_predict) %>%
+  select(sample_id, sample_rep, harvest_time, starch, pls_starch) %>%
+  mutate(eval_type = paste0("Test (n = ", nrow(.), ")"))
+
+test_eval <- evaluate_model(data = test_predobs, 
+  obs = starch, pred = pls_starch) %>% 
+  # Modify columns for plot annotation
+  mutate(
+    rmse = as.character(as.expression(paste0("RMSE == ", "~",
+      "'", sprintf("%.0f", rmse), "'"))),
+    r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
+      "'", sprintf("%.2f", r2), "'"))),
+    one_one = "1:1"
+)
+
+## Do a test set evaluation ====================================================
+
+# Get xy limits for plot
+xyrange_test <- xy_range(data = test_predobs, x = starch, y = pls_starch)
+
+test_eval_lm <- lm(pls_starch ~ starch, data = test_predobs)
+
+p_test_eval <- ggplot(data = test_predobs, aes(x = starch, y = pls_starch)) +
+  geom_point(alpha = 0.4) +
+  geom_abline(slope = 1) +
+  geom_abline(slope = test_eval_lm$coefficients[2],
+    intercept = test_eval_lm$coefficients[1], linetype = 2) +
+  coord_fixed(ratio = 1) +
+  facet_wrap(~ eval_type) +
+  geom_text(data = test_eval,
+    aes(x = Inf, y = -Inf, label = r2), size = 3,
+      hjust = 1.27, vjust = -3.5, parse = TRUE) +
+  geom_text(data = test_eval,
+    aes(x = Inf, y = -Inf, label = rmse), size = 3,
+      hjust = 1.08, vjust = -2.5, parse = TRUE) +
+  # xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
+  xlab("") +
+  ylab("") +
+  # ylab(expression(paste("Predicted starch [", mg~g^-1, " DM]"))) +
+  xlim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
+       xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
+  ylim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
+       xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
+  theme_bw() +
+  theme(
+    strip.background = element_rect(colour = "black", fill = NA),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+p_test_eval_pdf <- ggsave(filename = "test-eval.pdf", plot = p_test_eval,
+  path = here("out", "figs"), width = 3, height = 3)
+
+## Combine cross-validated training and test set evaluation ====================
+
+training_eval_lm <- lm(pred ~ obs, data = pls_starch$predobs)
+
+training_eval <- pls_starch$stats %>%
+  # Modify columns for plot annotation
+  mutate(
+    rmse = as.character(as.expression(paste0("RMSE == ", "~",
+      "'", sprintf("%.0f", rmse), "'"))),
+    r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
+      "'", sprintf("%.2f", r2), "'"))),
+    one_one = "1:1"
+)
+
+p_training_eval <- pls_starch$predobs %>%
+  mutate(eval_type = paste0("Training cross-validated (n = ", nrow(.), ")")
+  ) %>%
+  ggplot(data = , aes(x = obs, y = pred)) +
+    geom_point(alpha = 0.4) +
+    geom_abline(slope = 1) +
+    geom_abline(slope = training_eval_lm$coefficients[2],
+      intercept = training_eval_lm$coefficients[1], linetype = 2) +
+    coord_fixed(ratio = 1) +
+    facet_wrap(~ eval_type) +
+    geom_text(data = training_eval,
+    aes(x = Inf, y = -Inf, label = r2), size = 3,
+      hjust = 1.27, vjust = -3.5, parse = TRUE) +
+    geom_text(data = training_eval,
+      aes(x = Inf, y = -Inf, label = rmse), size = 3,
+      hjust = 1.08, vjust = -2.5, parse = TRUE) +
+    # xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
+    xlab("") +
+    # ylab(expression(paste("Predicted starch [", mg~g^-1, " DM]"))) +
+    ylab("") +
+    xlim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
+         xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
+    ylim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
+         xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
+    theme_bw() +
+    theme(
+      strip.background = element_rect(colour = "black", fill = NA),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+
+p_eval_training_test <- cowplot::plot_grid(p_training_eval, p_test_eval,
+  ncol = 2) +
+  draw_label(expression(paste("Measured starch [", mg~g^-1, " DM]")), 
+    x = 0.55, y = 0, vjust = -0.3, angle = 0, size = 10) +
+  draw_label(expression(paste("Predicted starch [", mg~g^-1, " DM]")), 
+    x = 0, y = 0.5, vjust = 1.5, angle = 90, size = 10)
+
+p_eval_pdf <- ggsave(filename = "eval.pdf", plot = p_eval_training_test,
+  path = here("out", "figs"), width = 6, height = 3)
+
