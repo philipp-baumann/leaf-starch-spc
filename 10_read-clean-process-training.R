@@ -124,3 +124,51 @@ abs_900nm <- foreach::foreach(i = seq_along(spc_train_groupids$spc),
 remove_idx <- abs_900nm$abs_bigger_0.1 %>% which()
 
 spc_train_model <- spc_train_groupids[- remove_idx, ]
+
+
+## Plot spectra ================================================================
+
+spc_train_model_plot <- spc_train_model %>%
+  mutate(
+    harvest_time = replace(harvest_time, harvest_time == "ED", "End of day"),
+    harvest_time = replace(harvest_time, harvest_time == "EN", "End of night")
+  )
+
+p_spc_train_model_raw <- 
+  spc_train_model_plot %>%
+  plot_spc_ext(spc_tbl = ., lcols_spc = c("spc"),
+    group_id = "harvest_time", ylab = "Absorbance") +
+    scale_x_continuous() +
+    scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
+    xlab("") +
+    theme_bw() +
+    theme(
+      strip.background = element_rect(colour = "black", fill = NA),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+  
+p_spc_train_model_pre <- 
+  spc_train_model_plot %>%
+  plot_spc_ext(spc_tbl = ., lcols_spc = c("spc_pre"),
+    group_id = "harvest_time",ylab = "Pre-processed Abs.") +
+    scale_x_continuous() +
+    scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
+    xlab("Wavelength [nm]") +
+    theme_bw() +
+    theme(
+      strip.background = element_blank(),
+      strip.text.x = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+
+p_spc_train_model <- ggarrange(p_spc_train_model_raw, p_spc_train_model_pre,
+  heights = c(1, 1), ncol = 1, nrow = 2, align = "v")
+
+p_spc_train_model_pdf <- ggsave(filename = "spc-train.pdf",
+  plot = p_spc_train_model, path = here("out", "figs"),
+  width = 7, height = 4)
+
+
+
