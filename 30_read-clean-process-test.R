@@ -79,4 +79,4 @@ abs_900nm_test <- foreach::foreach(i = seq_along(spc_test_proc$spc),
 
 remove_idx_test <- abs_900nm_test$abs_bigger_0.8 %>% which()
 
-spc_test_model <- spc_test_proc[- remove_idx, ]
+spc_test_predict <- spc_test_proc[- remove_idx, ]
