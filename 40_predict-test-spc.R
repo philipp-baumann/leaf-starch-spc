@@ -116,3 +116,39 @@ p_eval_training_test <- cowplot::plot_grid(p_training_eval, p_test_eval,
 p_eval_pdf <- ggsave(filename = "eval.pdf", plot = p_eval_training_test,
   path = here("out", "figs"), width = 6, height = 3)
 
+
+## Test evaluation depicted by genotype ========================================
+
+
+# Quick plot predicted vs. observed starch
+p_test_predobs_genotype <- 
+  test_predobs %>%
+  mutate(sample = map_chr(sample_rep,
+    ~ stringr::str_replace(.x, pattern = "_[[:digit:]]+", replacement = ""))
+  ) %>%
+  ggplot(aes(x = starch, y = pls_starch),
+    data = .) +
+  geom_abline(slope = 1, colour = "black") +
+  geom_point(aes(colour = harvest_time)) +
+  scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
+  facet_wrap(~ sample) +
+  coord_fixed(ratio = 1) +
+  xlim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
+         xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
+    ylim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
+         xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
+  xlab(expression(paste("Measured starch [mg ", g^{-1}, " DW]"))) +
+  ylab(expression(paste("Predicted starch [mg ", g^{-1}, " DW]"))) +
+  labs(colour = "Harvest time") +
+  theme_bw() +
+  theme(
+    strip.background = element_rect(colour = "black", fill = NA),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+p_test_predobs_genotype_pdf <- ggsave(
+  filename = "predobs-test-genotype.pdf",
+  plot = p_test_predobs_genotype, path = here("out", "figs"),
+  width = 7, height = 2.5)
+
