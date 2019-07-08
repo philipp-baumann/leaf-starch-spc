@@ -4,7 +4,7 @@
 ################################################################################
 
 pkgs <- c("here", "drake", "tidyverse", "simplerspec", "data.table", "future",
-  "doFuture")
+  "doFuture", "ggpubr")
 purrr::walk(pkgs, library, character.only = TRUE)
 
 funs <- list(
@@ -16,10 +16,12 @@ walk(funs, source)
 ## Scripts to run
 scripts <- c(
   "10_read-clean-process-training.R",
-  "20_build-spc-model-training.R"
+  "20_build-spc-model-training.R",
+  "30_read-clean-process-test.R",
+  "40_predict-test-spc.R"
 )
 
-plans <- map(set_names(scripts), code_to_plan)
+plans <- map(rlang::set_names(scripts), code_to_plan)
 
 ## Define and make the plan ====================================================
 
