@@ -16,7 +16,7 @@ pls_starch <- fit_pls(
 pls_starch_rds <- readr::write_rds(x = pls_starch,
   path = here("models", "pls_starch.Rds"))
 
-# Colour model cross-validation based model evaluation by leaf age -------------
+# Colour model cross-validation plot by genotype -------------------------------
 
 train_predobs <- pls_starch$predobs %>%
   filter(dataType == "Cross-validation") %>%
@@ -31,3 +31,8 @@ train_predobs <- pls_starch$predobs %>%
   mutate(
     genotype_nodot = unlist(purrr::map(genotype_nodot, 1))
   )
+
+
+## Plot model evaluation =======================================================
+
+# p_modeleval_starch <- ggplot(train_predobs, aes(x = obs, y = pred))
