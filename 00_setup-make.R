@@ -15,7 +15,8 @@ walk(funs, source)
 
 ## Scripts to run
 scripts <- c(
-  "10_read-clean-process-training.R"
+  "10_read-clean-process-training.R",
+  "20_build-spc-model-training.R"
 )
 
 plans <- map(set_names(scripts), code_to_plan)
@@ -68,5 +69,5 @@ plan <- bind_rows(
 )
 
 
-make(plan, parallelism = "future", lazy_load = TRUE, keep_going = TRUE,
-  lock_envir = FALSE, memory_strategy = "speed")
+make(plan, parallelism = "future", jobs = 48, lazy_load = TRUE,
+  keep_going = TRUE, lock_envir = FALSE, memory_strategy = "speed")
