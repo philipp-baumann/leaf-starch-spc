@@ -31,8 +31,3 @@ train_predobs <- pls_starch$predobs %>%
   mutate(
     genotype_nodot = unlist(purrr::map(genotype_nodot, 1))
   )
-
-
-## Plot model evaluation =======================================================
-
-# p_modeleval_starch <- ggplot(train_predobs, aes(x = obs, y = pred))
