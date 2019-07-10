@@ -9,7 +9,8 @@ purrr::walk(pkgs, library, character.only = TRUE)
 
 funs <- list(
    here("R", "helpers.R"),
-   here("R", "vip-wrappers.R")
+   here("R", "vip-wrappers.R"),
+   here("R", "select-spc-xvalues.R")
 )
 
 walk(funs, source)
