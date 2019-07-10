@@ -63,7 +63,7 @@ constituents <- rep("", length(wl_peaks))
 annotation_const <- paste0(round(wl_peaks, 0), constituents, sep = "")
 
 df_peak <- tibble(
-  wavenumber = wn_peaks,
+  wavenumber = wl_peaks,
   annotation = annotation_const,
   y_peaks = spc_max_peaks
 )
