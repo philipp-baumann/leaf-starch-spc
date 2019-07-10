@@ -2,6 +2,8 @@ A non-destructive method to quantify starch content in red clover
 ================
 Lea Frey, Philipp Baumann, Helge Aasen, Bruno Studer, Roland Kölliker
 
+# Project description
+
 # File overview
 
 The files in this project are organized as follows (only 2 folder levels
