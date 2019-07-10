@@ -8,3 +8,11 @@ output: rmarkdown::github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# File overview
+
+The files in this project are organized as follows (only 2 folder levels are shown):
+
+```{r, echo=FALSE}
+fs::dir_tree(recurse = 2)
+```
+
