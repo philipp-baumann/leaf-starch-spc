@@ -21,7 +21,7 @@ test_eval <- evaluate_model(data = test_predobs,
     r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
       "'", sprintf("%.2f", r2), "'"))),
     one_one = "1:1"
-)
+  )
 
 ## Do a test set evaluation ====================================================
 
@@ -73,7 +73,7 @@ training_eval <- pls_starch$stats %>%
     r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
       "'", sprintf("%.2f", r2), "'"))),
     one_one = "1:1"
-)
+  )
 
 p_training_eval <- pls_starch$predobs %>%
   mutate(eval_type = paste0("Training cross-validated (n = ", nrow(.), ")")
@@ -86,7 +86,7 @@ p_training_eval <- pls_starch$predobs %>%
     coord_fixed(ratio = 1) +
     facet_wrap(~ eval_type) +
     geom_text(data = training_eval,
-    aes(x = Inf, y = -Inf, label = r2), size = 3,
+      aes(x = Inf, y = -Inf, label = r2), size = 3,
       hjust = 1.27, vjust = -3.5, parse = TRUE) +
     geom_text(data = training_eval,
       aes(x = Inf, y = -Inf, label = rmse), size = 3,
@@ -119,24 +119,47 @@ p_eval_pdf <- ggsave(filename = "eval.pdf", plot = p_eval_training_test,
 
 ## Test evaluation depicted by genotype ========================================
 
+# New genotype column
+test_predobs_genotype <- test_predobs %>%
+  mutate(genotype = map_chr(sample_rep,
+    ~ stringr::str_replace(.x, pattern = "_[[:digit:]]+", replacement = ""))
+  )
+
+# Model evaluation by genotype
+test_eval_genotype <- test_predobs_genotype %>%
+  split(.$genotype) %>%
+  map(~ evaluate_model(data = ., obs = starch, pred = pls_starch)) %>%
+  imap(~ tibble::add_column(.x, genotype = .y, .before = 1)) %>%
+  bind_rows() %>%
+  # Modify columns for plot annotation
+  mutate(
+    rmse = as.character(as.expression(paste0("RMSE == ", "~",
+      "'", sprintf("%.0f", rmse), "'"))),
+    r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
+      "'", sprintf("%.2f", r2), "'"))),
+    one_one = "1:1"
+  )
 
 # Quick plot predicted vs. observed starch
 p_test_predobs_genotype <- 
-  test_predobs %>%
-  mutate(sample = map_chr(sample_rep,
-    ~ stringr::str_replace(.x, pattern = "_[[:digit:]]+", replacement = ""))
-  ) %>%
+  test_predobs_genotype %>%
   ggplot(aes(x = starch, y = pls_starch),
     data = .) +
   geom_abline(slope = 1, colour = "black") +
   geom_point(aes(colour = harvest_time)) +
   scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
-  facet_wrap(~ sample) +
+  facet_wrap(~ genotype) +
+  geom_text(data = test_eval_genotype,
+      aes(x = Inf, y = -Inf, label = r2), size = 3,
+      hjust = 1.27, vjust = -2.75, parse = TRUE) +
+  geom_text(data = test_eval_genotype,
+      aes(x = Inf, y = -Inf, label = rmse), size = 3,
+      hjust = 1.08, vjust = -1.75, parse = TRUE) +
   coord_fixed(ratio = 1) +
   xlim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
-         xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
-    ylim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
-         xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
+       xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
+  ylim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
+       xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
   xlab(expression(paste("Measured starch [mg ", g^{-1}, " DW]"))) +
   ylab(expression(paste("Predicted starch [mg ", g^{-1}, " DW]"))) +
   labs(colour = "Harvest time") +
