@@ -34,6 +34,9 @@ pls_starch_vip_bigger1 <- fit_pls(
   resampling_method = "rep_kfold_cv",  pls_ncomp_max = 10
 )
 
+pls_starch_vip_bigger1_pdf <- ggsave(filename = "eval-vip-bigger1.pdf",
+  plot = pls_starch_vip_bigger1$p_model, path = here("out", "figs"))
+
 pls_starch_vip_top50 <- fit_pls(
   spec_chem = spc_train_model_vip_top50,
   response = starch,
@@ -41,3 +44,6 @@ pls_starch_vip_top50 <- fit_pls(
   tuning_method = "resampling",
   resampling_method = "rep_kfold_cv",  pls_ncomp_max = 10
 )
+
+pls_starch_vip_top50_pdf <- ggsave(filename = "eval-vip-top50.pdf",
+  plot = pls_starch_vip_top50$p_model, path = here("out", "figs"))
