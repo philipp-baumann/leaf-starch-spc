@@ -1,0 +1,10 @@
+---
+title: "Starch spectroscopy on clover (T. pratense) fresh leaves"
+author: Lea Frey, Philipp Baumann, Helge Aasen, Bruno Studer, Roland Kölliker
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
