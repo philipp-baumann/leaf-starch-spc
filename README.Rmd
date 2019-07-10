@@ -1,5 +1,5 @@
 ---
-title: "Starch spectroscopy on clover (T. pratense) fresh leaves"
+title: "A non-destructive method to quantify starch content in red clover"
 author: Lea Frey, Philipp Baumann, Helge Aasen, Bruno Studer, Roland Kölliker
 output: rmarkdown::github_document
 ---
