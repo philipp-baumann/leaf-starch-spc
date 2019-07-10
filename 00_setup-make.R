@@ -4,11 +4,12 @@
 ################################################################################
 
 pkgs <- c("here", "drake", "tidyverse", "simplerspec", "data.table", "future",
-  "doFuture", "ggpubr")
+  "doFuture", "ggpubr", "ChemometricsWithR")
 purrr::walk(pkgs, library, character.only = TRUE)
 
 funs <- list(
-   here("R", "helpers.R")
+   here("R", "helpers.R"),
+   here("R", "vip-wrappers.R")
 )
 
 walk(funs, source)
