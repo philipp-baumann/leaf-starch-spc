@@ -59,7 +59,8 @@ spc_test_proc <- spc_metadata_test %>%
       resample_spc(x_unit = "wavelength",
         wl_lower = 350, wl_upper = 2500, wl_interval = 1) %>%
       average_spc() %>%
-      preprocess_spc(select = "sg_1_w21")
+      preprocess_spc(select = "sg_1_w21") %>%
+      select_spc_vars(every = 4)
   ) %>%
   dplyr::bind_rows()
 
@@ -75,8 +76,11 @@ abs_900nm_test <- foreach::foreach(i = seq_along(spc_test_proc$spc),
       abs_bigger_0.8 = abs_900nm > 0.8)
   }
 
-# Filter which row has absorbance < 0.4 at 3500 cm^-1===========================
+## Filter observations and filter variables based on training VIP > 1 ==========
 
+# Filter which row has absorbance < 0.4 at 3500 cm^-1
 remove_idx_test <- abs_900nm_test$abs_bigger_0.8 %>% which()
 
-spc_test_predict <- spc_test_proc[- remove_idx, ]
+spc_test_predict <- spc_test_proc[- remove_idx, ] %>%
+  select_spc_xvalues(spc_tbl = ., xvalues = wavelengths_vip_bigger1)
+  
