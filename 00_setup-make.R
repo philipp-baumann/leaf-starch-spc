@@ -4,7 +4,7 @@
 ################################################################################
 
 pkgs <- c("here", "drake", "tidyverse", "simplerspec", "data.table", "future",
-  "doFuture", "ggpubr", "ChemometricsWithR")
+  "doFuture", "ggpubr", "cowplot", "ChemometricsWithR")
 purrr::walk(pkgs, library, character.only = TRUE)
 
 funs <- list(
@@ -19,8 +19,10 @@ walk(funs, source)
 scripts <- c(
   "10_read-clean-process-training.R",
   "20_build-spc-model-training.R",
+  "21_interpret-model-vip.R",
+  "22_remodel-vip-filtering.R",
   "30_read-clean-process-test.R",
-  "40_predict-test-spc.R"
+  "40_predict-evaluate-train-test.R"
 )
 
 plans <- map(rlang::set_names(scripts), code_to_plan)
