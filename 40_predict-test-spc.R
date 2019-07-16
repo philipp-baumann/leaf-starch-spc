@@ -14,7 +14,7 @@ test_predobs <- predict_from_spc(
 
 test_predobs_vip_bigger1 <- predict_from_spc(
     model_list = list("pls_starch" = pls_starch_vip_bigger1),
-    spc_tbl = spc_test_predict) %>%
+    spc_tbl = spc_test_predict_vip_bigger1) %>%
   select(sample_id, sample_rep, harvest_time, starch, pls_starch) %>%
   mutate(eval_type = paste0("Test (n = ", nrow(.), ")"))
 
