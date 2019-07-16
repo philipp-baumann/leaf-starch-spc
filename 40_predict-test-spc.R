@@ -7,7 +7,7 @@
 ## and new test data (preprocessed spectra in `spc_train`) =====================
 
 test_predobs <- predict_from_spc(
-    model_list = list("pls_starch" = pls_starch_vip_bigger1),
+    model_list = list("pls_starch" = pls_starch),
     spc_tbl = spc_test_predict) %>%
   select(sample_id, sample_rep, harvest_time, starch, pls_starch) %>%
   mutate(eval_type = paste0("Test (n = ", nrow(.), ")"))
@@ -63,9 +63,9 @@ p_test_eval_pdf <- ggsave(filename = "test-eval.pdf", plot = p_test_eval,
 
 ## Combine cross-validated training and test set evaluation ====================
 
-training_eval_lm <- lm(pred ~ obs, data = pls_starch_vip_bigger1$predobs)
+training_eval_lm <- lm(pred ~ obs, data = pls_starch$predobs)
 
-training_eval <- pls_starch_vip_bigger1$stats %>%
+training_eval <- pls_starch$stats %>%
   # Modify columns for plot annotation
   mutate(
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
@@ -75,7 +75,7 @@ training_eval <- pls_starch_vip_bigger1$stats %>%
     one_one = "1:1"
   )
 
-p_training_eval <- pls_starch_vip_bigger1$predobs %>%
+p_training_eval <- pls_starch$predobs %>%
   mutate(eval_type = paste0("Training cross-validated (n = ", nrow(.), ")")
   ) %>%
   ggplot(data = , aes(x = obs, y = pred)) +

@@ -81,6 +81,8 @@ abs_900nm_test <- foreach::foreach(i = seq_along(spc_test_proc$spc),
 # Filter which row has absorbance < 0.4 at 3500 cm^-1
 remove_idx_test <- abs_900nm_test$abs_bigger_0.8 %>% which()
 
-spc_test_predict <- spc_test_proc[- remove_idx, ] %>%
+spc_test_predict <- spc_test_proc[- remove_idx, ]
+
+spc_test_predict_vip_bigger1 <- spc_test_proc[- remove_idx, ] %>%
   select_spc_xvalues(spc_tbl = ., xvalues = wavelengths_vip_bigger1)
   
