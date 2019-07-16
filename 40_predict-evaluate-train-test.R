@@ -225,6 +225,61 @@ p_eval_vip_bigger1_pdf <- ggsave(filename = "eval-vip-bigger1.pdf",
   plot = p_eval_training_test_vip_bigger1, path = here("out", "figs"),
   width = 6, height = 3)
 
+
+## Extract training auto-prediction and evaluate training ======================
+
+training_self_predobs <- predict_from_spc(
+    model_list = list("pls_starch" = pls_starch),
+    spc_tbl = spc_train_model) %>%
+  select(sample_id, harvest_time, starch, pls_starch) %>%
+  mutate(eval_type = paste0("Training (n = ", nrow(.), ")"))
+
+training_self_eval <- evaluate_model(data = training_self_predobs, 
+  obs = starch, pred = pls_starch) %>% 
+  # Modify columns for plot annotation
+  mutate(
+    rmse = as.character(as.expression(paste0("RMSE == ", "~",
+      "'", sprintf("%.0f", rmse), "'"))),
+    r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
+      "'", sprintf("%.2f", r2), "'"))),
+    one_one = "1:1"
+  )
+
+training_self_eval_lm <- lm(pls_starch ~ starch, data = training_self_predobs)
+
+# Get xy limits for plot
+xyrange_training_self <- xy_range(data = training_self_predobs,
+  x = starch, y = pls_starch)
+
+p_training_self_eval <- ggplot(data = training_self_predobs,
+    aes(x = starch, y = pls_starch)) +
+  geom_point(alpha = 0.4) +
+  geom_abline(slope = 1) +
+  geom_abline(slope = training_self_eval_lm$coefficients[2],
+    intercept = training_self_eval_lm$coefficients[1], linetype = 2) +
+  coord_fixed(ratio = 1) +
+  facet_wrap(~ eval_type) +
+  geom_text(data = training_self_eval,
+    aes(x = Inf, y = -Inf, label = r2), size = 3,
+      hjust = 1.27, vjust = -3.5, parse = TRUE) +
+  geom_text(data = training_self_eval,
+    aes(x = Inf, y = -Inf, label = rmse), size = 3,
+      hjust = 1.08, vjust = -2.5, parse = TRUE) +
+  # xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
+  xlab("") +
+  ylab("") +
+  # ylab(expression(paste("Predicted starch [", mg~g^-1, " DM]"))) +
+  xlim(xyrange_training_self[1] - 0.02 * diff(range(xyrange_training_self)),
+       xyrange_training_self[2] + 0.02 * diff(range(xyrange_training_self))) +
+  ylim(xyrange_training_self[1] - 0.02 * diff(range(xyrange_training_self)),
+       xyrange_training_self[2] + 0.02 * diff(range(xyrange_training_self))) +
+  theme_bw() +
+  theme(
+    strip.background = element_rect(colour = "black", fill = NA),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
 ## Test evaluation depicted by genotype ========================================
 
 # New genotype column
