@@ -12,7 +12,7 @@ mout_list <- list(
 
 # Extract raw spectra (list-column <spc>) and preprocessessed spectra 
 # (list-column <spc_pre>) from starch training model into a list containing
-# two data.tables as separate elements ----
+# two data.tables as separate elements -----------------------------------------
 
 dts <- bind_lcols_dts(spc_tbl = pls_starch$data$calibration, 
   lcols = c("spc", "spc_pre"))
@@ -81,7 +81,7 @@ group_id <- "sample_id"
 # Pretty Axis breaks
 brk <- pretty(as.numeric(names(dts[["spc"]])[!names(dts[["spc"]]) %in% 
   c("spc_id", "lcol_type", "group_id")]))
-minmax <- function(x) {c(min(x), max(x))}
+# minmax <- function(x) {c(min(x), max(x))} # see helpers.R
 x_lim <- minmax(as.numeric(names(dts[["spc"]])[!names(dts[["spc"]]) %in%
   c("spc_id", "lcol_type", "group_id")]))
 
@@ -172,5 +172,5 @@ p_vip_comb <- cowplot::plot_grid(
   p_spc, p_spc_pre, p_vip, rel_heights = c(0.35, 0.3, 0.6),
   ncol = 1, align = "v")
 
-ggsave(filename = "spc-starch-pls-vip.pdf", plot = p_vip_comb, 
-  path = "out/figs", width = 6.5, height = 5)
+p_vip_comb_pdf <- ggsave(filename = "spc-starch-pls-vip.pdf", plot = p_vip_comb, 
+  path = here("out", "figs"), width = 6.5, height = 5)
