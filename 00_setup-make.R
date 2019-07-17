@@ -19,7 +19,7 @@ walk(funs, source)
 scripts <- c(
   "10_read-clean-process-training.R",
   "20_build-spc-model-training.R",
-  "21_interpret-model-vip.R",
+  "21_interpret-training-vip.R",
   "22_remodel-vip-filtering.R",
   "30_read-clean-process-test.R",
   "40_predict-evaluate-train-test.R"
