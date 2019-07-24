@@ -18,6 +18,18 @@ pls_starch <- fit_pls(
 pls_starch_rds <- readr::write_rds(x = pls_starch,
   path = here("models", "pls_starch.Rds"))
 
+# Fit model on raw spectral data
+pls_starch_raw <- spc_train_model %>%
+  mutate(spc_pre = spc_rs) %>%
+  fit_pls(
+    spec_chem = .,
+    response = starch,
+    evaluation_method = "resampling",
+    tuning_method = "resampling",
+    resampling_method = "rep_kfold_cv",  pls_ncomp_max = 10
+  )
+  
+
 # Colour model cross-validation plot by genotype -------------------------------
 
 train_predobs <- pls_starch$predobs %>%
