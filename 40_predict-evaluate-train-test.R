@@ -28,9 +28,11 @@ training_self_eval_lm <- lm(pls_starch ~ starch, data = training_self_predobs)
 xyrange_training_self <- xy_range(data = training_self_predobs,
   x = starch, y = pls_starch)
 
-p_training_self_eval <- ggplot(data = training_self_predobs,
+p_training_self_eval <- training_self_predobs %>%
+  inner_join(x = ., y = spc_train_model %>% select(sample_id, leaf_age)) %>%
+  ggplot(data = .,
     aes(x = starch, y = pls_starch)) +
-  geom_point(alpha = 0.4) +
+  geom_point(aes(colour = leaf_age, shape = leaf_age), alpha = 0.4) +
   geom_abline(slope = 1) +
   geom_abline(slope = training_self_eval_lm$coefficients[2],
     intercept = training_self_eval_lm$coefficients[1], linetype = 2) +
@@ -50,6 +52,7 @@ p_training_self_eval <- ggplot(data = training_self_predobs,
        xyrange_training_self[2] + 0.02 * diff(range(xyrange_training_self))) +
   ylim(xyrange_training_self[1] - 0.02 * diff(range(xyrange_training_self)),
        xyrange_training_self[2] + 0.02 * diff(range(xyrange_training_self))) +
+  labs(colour = "Leaf age", shape = "Leaf age") +
   theme_bw() +
   theme(
     strip.background = element_rect(colour = "black", fill = NA),
@@ -77,10 +80,11 @@ xyrange_training <- xy_range(data = pls_starch$predobs,
   x = obs, y = pred)
 
 p_training_eval <- pls_starch$predobs %>%
+  inner_join(x = ., y = spc_train_model %>% select(sample_id, leaf_age)) %>%
   mutate(eval_type = paste0("Training cross-validated (n = ", nrow(.), ")")
   ) %>%
-  ggplot(data = , aes(x = obs, y = pred)) +
-    geom_point(alpha = 0.4) +
+  ggplot(data = ., aes(x = obs, y = pred)) +
+    geom_point(aes(colour = leaf_age, shape = leaf_age), alpha = 0.4) +
     geom_abline(slope = 1) +
     geom_abline(slope = training_eval_lm$coefficients[2],
       intercept = training_eval_lm$coefficients[1], linetype = 2) +
@@ -100,6 +104,7 @@ p_training_eval <- pls_starch$predobs %>%
          xyrange_training[2] + 0.02 * diff(range(xyrange_training))) +
     ylim(xyrange_training[1] - 0.02 * diff(range(xyrange_training)),
          xyrange_training[2] + 0.02 * diff(range(xyrange_training))) +
+    labs(colour = "Leaf age", shape = "Leaf age") +
     theme_bw() +
     theme(
       strip.background = element_rect(colour = "black", fill = NA),
@@ -111,16 +116,19 @@ p_training_eval <- pls_starch$predobs %>%
 ## Combine training self-prediction and cross-validated training evaluation ====
 
 p_eval_training_self_cv <- cowplot::plot_grid(
-  p_training_self_eval, p_training_eval,
-  ncol = 2) +
+  p_training_self_eval + theme(legend.position = "none"),
+  p_training_eval + theme(legend.position = "none"),
+  p_training_self_eval %>% get_legend(),
+  nrow = 1,
+  rel_widths = c(1, 1, 0.2)) +
   draw_label(expression(paste("Measured starch [", mg~g^-1, " DM]")), 
-    x = 0.55, y = 0, vjust = -0.3, angle = 0, size = 10) +
+    x = 0.5, y = 0, vjust = -0.3, angle = 0, size = 10) +
   draw_label(expression(paste("Predicted starch [", mg~g^-1, " DM]")), 
     x = 0, y = 0.5, vjust = 1.5, angle = 90, size = 10)
 
 p_eval_train_self_cv_pdf <- ggsave(filename = "eval-training-self-cv.pdf",
   plot = p_eval_training_self_cv,
-  path = here("out", "figs"), width = 6, height = 3)
+  path = here("out", "figs"), width = 6.5, height = 3)
 
 
 ## Predict starch for test set; use exisiting training model (`pls_starch`)
