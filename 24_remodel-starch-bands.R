@@ -39,15 +39,15 @@ idx_mlr_starch <- caret::createMultiFolds(y = starch_norm_train,
 ctrl_mlr_starch <- caret::trainControl(method = "repeatedcv",
   index = idx_mlr_starch, savePredictions = TRUE, selectionFunction = "oneSE")
 
-
-## Extract predictions and recalculate metrics =================================
-
 mlr_starch_norm <- caret::train(
   x = spc_rs_starch_sdsel,
   y = starch_norm_train,
   method = "lm",
   trControl = ctrl_mlr_starch,
   preProcess = c("center", "scale"))
+
+
+## Extract predictions and recalculate metrics =================================
 
 eval_mlr_starch <- mlr_starch_norm$pred %>%
   add_cv_repeat(repeat_fold_col = Resample, repeat_col = Repeat) %>%
