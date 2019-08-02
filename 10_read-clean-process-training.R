@@ -82,16 +82,25 @@ spc_train_proc <- spc_train_narm %>%
 
 spc_train_groupids <- spc_train_proc %>%
   mutate(
-    genotype = stringr::str_split(string = sample_age_rep,
-      pattern = "_")[[1]][1]
-  ) %>%
-   mutate(
-    leaf_age = stringr::str_split(string = sample_age_rep,
-      pattern = "_")[[1]][2]
+    genotype = map(sample_age_rep, ~ stringr::str_split(string = .x,
+      pattern = "_")[[1]])
   ) %>%
   mutate(
-    rep = stringr::str_split(string = sample_age_rep,
-      pattern = "_")[[1]][3]
+    genotype = map_chr(genotype, ~ .x[1])
+  ) %>%
+  mutate(
+    leaf_age = map(sample_age_rep, ~ stringr::str_split(string = .x,
+      pattern = "_")[[1]])
+  ) %>%
+  mutate(
+    leaf_age = map_chr(leaf_age, ~ .x[2])
+  ) %>%
+  mutate(
+    rep = map(sample_age_rep, ~ stringr::str_split(string = .x,
+      pattern = "_")[[1]])
+  ) %>%
+  mutate(
+    rep = map_chr(rep, ~ .x[3])
   )
 
 p_spc_train_check <- plot_spc_ext(
