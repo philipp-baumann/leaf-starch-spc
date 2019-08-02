@@ -75,7 +75,7 @@ df_peak <- tibble(
 # General graph settings
 alpha <- 0.15
 xlab <- expression(paste("Wavelength [nm]"))
-ylab1 <-  "Absorbance (Abs.)"; ylab2 <- "Preproc. Abs."
+ylab1 <-  "Reflectance (Refl.)"; ylab2 <- "Preproc. Refl."
 group_id <- "sample_id"
 
 # Pretty Axis breaks
@@ -127,7 +127,7 @@ p_spc <- ggplot(dts_long[["spc"]],
   labs(x = xlab, y = ylab1) +
   theme_bw() +
   theme(
-    plot.margin = unit(c(1, 5, -30, 6),
+    plot.margin = unit(c(1, 5, -20, 6),
     units = "points"), axis.text.x = element_blank())
 
 p_spc_pre <- ggplot(dts_long[["spc_pre"]],
@@ -147,7 +147,7 @@ p_spc_pre <- ggplot(dts_long[["spc_pre"]],
     units = "points")) +
   scale_x_continuous(limits = x_lim, breaks = brk) +
   theme(
-    plot.margin = unit(c(1, 5, -30, 6),
+    plot.margin = unit(c(1, 5, -25, 6),
     units = "points"),
     axis.title.y = element_text(vjust = 0.25),
     axis.text.x = element_blank())

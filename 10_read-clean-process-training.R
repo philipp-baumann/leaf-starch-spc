@@ -147,7 +147,7 @@ spc_train_model_plot <- spc_train_model %>%
 p_spc_train_model_raw <- 
   spc_train_model_plot %>%
   plot_spc_ext(spc_tbl = ., lcols_spc = c("spc"),
-    group_id = "harvest_time", ylab = "Absorbance") +
+    group_id = "harvest_time", ylab = "Reflecance") +
     scale_x_continuous() +
     scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
     xlab("") +
@@ -161,7 +161,7 @@ p_spc_train_model_raw <-
 p_spc_train_model_pre <- 
   spc_train_model_plot %>%
   plot_spc_ext(spc_tbl = ., lcols_spc = c("spc_pre"),
-    group_id = "harvest_time",ylab = "Pre-processed Abs.") +
+    group_id = "harvest_time",ylab = "Pre-processed Refl.") +
     scale_x_continuous() +
     scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
     xlab("Wavelength [nm]") +

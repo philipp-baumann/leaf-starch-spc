@@ -69,7 +69,7 @@ annotation_const_test <- paste0(
 # General graph settings
 alpha_vip_test <- 0.15
 xlab_vip_test <- expression(paste("Wavelength [nm]"))
-ylab1_vip_test <-  "Absorbance (Abs.)"; ylab2_test <- "Preproc. Abs."
+ylab1_vip_test <-  "Reflectance (Refl.)"; ylab2_test <- "Preproc. Refl."
 group_id_vip_test <- "sample_id"
 
 # Pretty Axis breaks
@@ -115,7 +115,7 @@ p_spc_test <- ggplot(dts_test_long[["spc"]],
   #   fontface = "bold", arrow = arrow(length = unit(0.02, "npc")),
   #   direction = "both", fill = "white", nudge_y = 0.45) +
   scale_x_continuous(limits = x_lim_test, breaks = brk_vip_test) +
-  # ylim(c(0, 0.6)) +
+  ylim(c(-0.05, 0.6)) +
   labs(x = xlab_vip_test, y = ylab1_vip_test) +
   theme_bw() +
   theme(
@@ -124,7 +124,7 @@ p_spc_test <- ggplot(dts_test_long[["spc"]],
 
 p_spc_pre_test <- ggplot(dts_test_long[["spc_pre"]],
     aes(wavelength, value)) +
-  geom_rect(data = rects, inherit.aes = FALSE,
+  geom_rect(data = rects_test, inherit.aes = FALSE,
     aes(xmin = start,
       xmax = end, ymin = min(dts_test_long[["spc_pre"]]$value),
       ymax = max(dts_test_long[["spc_pre"]]$value), group = group),
@@ -138,8 +138,9 @@ p_spc_pre_test <- ggplot(dts_test_long[["spc_pre"]],
     plot.margin = unit(c(0, 5, 1, 1),
     units = "points")) +
   scale_x_continuous(limits = x_lim, breaks = brk_vip_test) +
+  # ylim(c(-0.009, 0.011)) +
   theme(
-    plot.margin = unit(c(1, 5, -30, 6),
+    plot.margin = unit(c(1, 5, -25, 6),
     units = "points"),
     axis.title.y = element_text(vjust = 0.25),
     axis.text.x = element_blank())
