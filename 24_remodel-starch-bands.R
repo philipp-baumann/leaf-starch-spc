@@ -43,6 +43,7 @@ mlr_starch_norm <- caret::train(
   x = spc_rs_starch_sdsel,
   y = starch_norm_train,
   method = "lm",
+  tuneLength = 2,
   trControl = ctrl_mlr_starch,
   preProcess = c("center", "scale"))
 
@@ -131,8 +132,3 @@ p_eval_training_mlr <- predobs_mlr_starch %>%
 p_eval_training_mlr_pdf <- ggsave(filename = "eval-training-mlr-cv.pdf",
   plot = p_eval_training_mlr,
   path = here("out", "figs"), width = 3, height = 3.5)
-
-
-
-  
-
