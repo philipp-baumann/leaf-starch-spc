@@ -40,3 +40,5 @@ xy_range <- function(data, x, y, range_scalar = 0.01) {
     "max_xy" = max_xy
   )
 }
+
+minmax <- function(x) {c(min(x), max(x))}
