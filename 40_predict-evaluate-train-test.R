@@ -131,6 +131,61 @@ p_eval_train_self_cv_pdf <- ggsave(filename = "eval-training-self-cv.pdf",
   path = here("out", "figs"), width = 6.5, height = 3)
 
 
+## Model evaluation for PLSR training with raw spectral data ===================
+
+training_raw_eval_lm <- lm(pred ~ obs, data = pls_starch_raw$predobs)
+
+training_raw_eval <- pls_starch_raw$stats %>%
+  # Modify columns for plot annotation
+  mutate(
+    rmse = as.character(as.expression(paste0("RMSE == ", "~",
+      "'", sprintf("%.0f", rmse), "'"))),
+    r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
+      "'", sprintf("%.2f", r2), "'"))),
+    one_one = "1:1"
+  )
+
+# Get xy limits for plot
+xyrange_training_raw <- xy_range(data = pls_starch_raw$predobs,
+  x = obs, y = pred)
+
+p_training_raw_eval <- pls_starch_raw$predobs %>%
+  inner_join(x = ., y = spc_train_model %>% select(sample_id, leaf_age)) %>%
+  mutate(eval_type = paste0("Training cross-validated (n = ", nrow(.), ")")
+  ) %>%
+  ggplot(data = ., aes(x = obs, y = pred)) +
+    geom_point(aes(colour = leaf_age, shape = leaf_age), alpha = 0.4) +
+    geom_abline(slope = 1) +
+    geom_abline(slope = training_raw_eval_lm$coefficients[2],
+      intercept = training_raw_eval_lm$coefficients[1], linetype = 2) +
+    coord_fixed(ratio = 1) +
+    facet_wrap(~ eval_type) +
+    geom_text(data = training_raw_eval,
+      aes(x = Inf, y = -Inf, label = r2), size = 3,
+      hjust = 1.27, vjust = -3.5, parse = TRUE) +
+    geom_text(data = training_raw_eval,
+      aes(x = Inf, y = -Inf, label = rmse), size = 3,
+      hjust = 1.08, vjust = -2.5, parse = TRUE) +
+    xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
+    ylab(expression(paste("Predicted starch [", mg~g^-1, " DM]"))) +
+    xlim(xyrange_training_raw[1] - 0.02 * diff(range(xyrange_training_raw)),
+         xyrange_training_raw[2] + 0.02 * diff(range(xyrange_training_raw))) +
+    ylim(xyrange_training_raw[1] - 0.02 * diff(range(xyrange_training_raw)),
+         xyrange_training_raw[2] + 0.02 * diff(range(xyrange_training_raw))) +
+    labs(colour = "Leaf age", shape = "Leaf age") +
+    theme_bw() +
+    theme(
+      strip.background = element_rect(colour = "black", fill = NA),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      legend.position = "bottom"
+    )
+
+p_eval_train_raw_pdf <- ggsave(filename = "eval-training-raw-cv.pdf",
+  plot = p_training_raw_eval,
+  path = here("out", "figs"), width = 3.5, height = 3.5)
+
+
 ## Predict starch for test set; use exisiting training model (`pls_starch`)
 ## and new test data (preprocessed spectra in `spc_train`) =====================
 
@@ -150,6 +205,18 @@ test_eval <- evaluate_model(data = test_predobs,
       "'", sprintf("%.2f", r2), "'"))),
     one_one = "1:1"
   )
+
+test_vip_bigger1_eval <- evaluate_model(data = test_predobs_vip_bigger1, 
+  obs = starch, pred = pls_starch) %>% 
+  # Modify columns for plot annotation
+  mutate(
+    rmse = as.character(as.expression(paste0("RMSE == ", "~",
+      "'", sprintf("%.0f", rmse), "'"))),
+    r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
+      "'", sprintf("%.2f", r2), "'"))),
+    one_one = "1:1"
+  )
+
 
 ## Do a test set evaluation ====================================================
 
@@ -411,4 +478,56 @@ p_training_predobs_harvest_time_pdf <- ggsave(
   filename = "predobs-training-harvest-time.pdf",
   plot = p_training_predobs_harvest_time, path = here("out", "figs"),
   width = 7, height = 2.5)
+
+
+## Test predictions using correlation filtered training model ==================
+
+spc_test_predict_corfilt <- select_spc_xvalues(
+  spc_tbl = spc_test_predict, xvalues = wl_cor_top50, column_in = "spc_pre",
+  xvalues_in = "xvalues_pre")
+
+test_corfilt_predobs <- predict_from_spc(
+  model_list = list("pls_starch_corfilt" = pls_starch_corfilt),
+  spc_tbl = spc_test_predict_corfilt)
+
+test_corfilt_eval <- evaluate_model(data = test_corfilt_predobs, 
+  obs = starch, pred = pls_starch_corfilt) %>% 
+  # Modify columns for plot annotation
+  mutate(
+    rmse = as.character(as.expression(paste0("RMSE == ", "~",
+      "'", sprintf("%.0f", rmse), "'"))),
+    r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
+      "'", sprintf("%.2f", r2), "'"))),
+    one_one = "1:1"
+  )
+
+
+## Test predictions using selected normalized starch bands =====================
+
+spc_rs_test_predict <- rbindlist(spc_test_predict$spc_rs)
+
+spc_rs_test_starch_sdsel <- spc_rs_test_predict[, ..wl_starch_sd_min]
+
+spc_rs_test_starch_sdsel[, c(wl_starch) := lapply(.SD,
+  function(x) x / `670`), .SDcols = wl_starch]
+
+spc_rs_test_starch_sdsel[, c(wl_sd_min) := NULL]
+
+spc_test_predict_starchfilt_vec <- predict.lm(
+  object = mlr_starch_norm$finalModel, newdata = spc_rs_test_starch_sdsel)
+
+spc_test_predict_starchfilt <- spc_test_predict %>%
+  mutate(mlr_starchfilt = spc_test_predict_starchfilt_vec)
+
+test_starchfilt_eval <-  evaluate_model(data = spc_test_predict_starchfilt, 
+  obs = starch, pred = mlr_starchfilt) %>% 
+  # Modify columns for plot annotation
+  mutate(
+    rmse = as.character(as.expression(paste0("RMSE == ", "~",
+      "'", sprintf("%.0f", rmse), "'"))),
+    r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
+      "'", sprintf("%.2f", r2), "'"))),
+    one_one = "1:1"
+  )
+
 
