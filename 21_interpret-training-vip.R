@@ -93,6 +93,14 @@ df_vip_pls <- extract_multi_pls_vip_coef(mout_list = mout_list) %>%
   mutate(coef_bigger0 = coef_bigger0 / 10) %>% 
   mutate(coef_bigger0 = coef_bigger0 - 0.05)
 
+# Sorted version for text
+df_vip_pls_sorted <- extract_multi_pls_vip_coef(mout_list = mout_list) %>%
+  rename(wavelength = wavenumber) %>%
+  arrange(desc(vip)) 
+
+df_vip_pls_sorted_csv <- write_csv(x = df_vip_pls_sorted,
+  path = here("out", "data", "wavelength-vip-training.csv"))
+
 # Determine highlighted regions above VIP = 1
 rects <- create_vip_rects(df_vip_pls[df_vip_pls$model == "PLSR starch", ])
 
