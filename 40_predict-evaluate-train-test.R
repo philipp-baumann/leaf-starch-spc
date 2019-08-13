@@ -484,7 +484,8 @@ p_training_predobs_harvest_time_pdf <- ggsave(
 
 spc_test_predict_corfilt <- select_spc_xvalues(
   spc_tbl = spc_test_predict, xvalues = wl_cor_top50, column_in = "spc_pre",
-  xvalues_in = "xvalues_pre")
+  xvalues_in = "xvalues_pre") %>%
+  mutate(eval_type = paste0("Test correlation filtering (n = ", nrow(.), ")"))
 
 test_corfilt_predobs <- predict_from_spc(
   model_list = list("pls_starch_corfilt" = pls_starch_corfilt),
@@ -500,6 +501,46 @@ test_corfilt_eval <- evaluate_model(data = test_corfilt_predobs,
       "'", sprintf("%.2f", r2), "'"))),
     one_one = "1:1"
   )
+
+xyrange_test_corfilt <- xy_range(data = test_corfilt_predobs,
+  x = starch, y = pls_starch_corfilt)
+
+test_eval_lm <- lm(pls_starch_corfilt ~ starch, data = test_corfilt_predobs)
+
+p_test_corfilt_predobs <- test_corfilt_predobs %>%
+  ggplot(aes(x = starch, y = pls_starch_corfilt)) +
+  geom_point() + # alpha = 0.4
+  geom_abline(slope = 1) +
+  geom_abline(slope = test_eval_lm$coefficients[2],
+    intercept = test_eval_lm$coefficients[1], linetype = 2) +
+  coord_fixed(ratio = 1) +
+  facet_wrap(~ eval_type) +
+  geom_text(data = test_corfilt_eval,
+    aes(x = Inf, y = -Inf, label = r2), size = 3,
+      hjust = 1.27, vjust = -3.5, parse = TRUE) +
+  geom_text(data = test_corfilt_eval,
+    aes(x = Inf, y = -Inf, label = rmse), size = 3,
+      hjust = 1.08, vjust = -2.5, parse = TRUE) +
+  # xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
+  xlab("") +
+  ylab("") +
+  # ylab(expression(paste("Predicted starch [", mg~g^-1, " DM]"))) +
+  xlim(xyrange_test_corfilt[1] - 0.02 * diff(range(xyrange_test_corfilt)),
+       xyrange_test_corfilt[2] + 0.02 * diff(range(xyrange_test_corfilt))) +
+  ylim(xyrange_test_corfilt[1] - 0.02 * diff(range(xyrange_test_corfilt)),
+       xyrange_test_corfilt[2] + 0.02 * diff(range(xyrange_test_corfilt))) +
+  theme_bw() +
+  theme(
+    strip.background = element_rect(colour = "black", fill = NA),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+p_test_corfilt_predobs_pdf <- ggsave(
+  filename = "predobs-test-corfilt.pdf",
+  plot = p_test_corfilt_predobs, path = here("out", "figs"),
+  width = 3.5, height = 3.5)
+
 
 
 ## Test predictions using selected normalized starch bands =====================
