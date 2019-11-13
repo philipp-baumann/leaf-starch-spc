@@ -4,7 +4,7 @@
 ################################################################################
 
 pkgs <- c("here", "drake", "tidyverse", "simplerspec", "data.table", "future",
-  "doFuture", "ggpubr", "cowplot", "ChemometricsWithR", "lineup")
+  "doFuture", "ggpubr", "cowplot", "ChemometricsWithR", "lineup", "varrank")
 purrr::walk(pkgs, library, character.only = TRUE)
 
 funs <- list(
