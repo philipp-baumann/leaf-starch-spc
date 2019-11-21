@@ -77,6 +77,7 @@ spc_train_proc <- spc_train_narm %>%
       group_by(sample_age_rep) %>%
       # Keep only one row per `sample_age_pos` group after averaging
       slice(1L) %>%
+      ungroup() %>%
       preprocess_spc(select = "sg_1_w21") %>%
       select_spc_vars(every = 4)
   ) %>%
