@@ -12,6 +12,7 @@ partition_spc <- function(spc_tbl,
   part_id <- sample(floor(m * (seq_len(n) - 1L) / n + 1L))
 
   spc_tbl_nested %>%
+    dplyr::ungroup() %>%
     tibble::add_column(part_id = as.integer(part_id)) %>%
     tidyr::unnest(c(data))
 }

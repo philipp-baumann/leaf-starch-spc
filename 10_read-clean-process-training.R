@@ -67,7 +67,7 @@ spc_train_narm <- na.omit(spc_train_cleaned)
 ## Process data ================================================================
 
 spc_train_proc <- spc_train_narm %>%
-  partition_spc() %>%
+  partition_spc(id_nopart = sample_id) %>%
   split(f = .$part_id) %>%
   furrr::future_map(
     ~ .x %>%
