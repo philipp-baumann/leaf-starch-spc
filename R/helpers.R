@@ -1,19 +1,28 @@
 # Inspired from multidplyr::partition();
 # see https://github.com/hadley/multidplyr/blob/master/R/shard.R
-partition_spc <- function(spc_tbl, 
+partition_spc <- function(spc_tbl,
                           groups = future::availableCores(),
                           id_nopart = sample_id) {
-  id_nopart <- enquo(id_nopart)
+  id_nopart <- rlang::enquo(id_nopart)
   spc_tbl_nested <- spc_tbl %>%
     dplyr::group_by(!!id_nopart) %>%
     tidyr::nest()
   n <- nrow(spc_tbl_nested)
   m <- groups
   part_id <- sample(floor(m * (seq_len(n) - 1L) / n + 1L))
-  
+
   spc_tbl_nested %>%
-    dplyr::mutate(part_id = as.integer(part_id)) %>%
-    tidyr::unnest()
+    tibble::add_column(part_id = as.integer(part_id)) %>%
+    tidyr::unnest(c(data))
+}
+
+# Split vector into n chunks; for efficient parallelism when reading
+# spectrometer files
+vec_split_ceiling <- function(x, n_splits) {
+  split(
+    x, 
+    ceiling(seq_along(x) / n_splits)
+  )
 }
 
 # ggplot plotting helper; Returns min and max values for the x and y axis limits

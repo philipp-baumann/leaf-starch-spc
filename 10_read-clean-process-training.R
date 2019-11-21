@@ -7,12 +7,16 @@
 
 files_train <- dir("data/training/spectra", full.names = TRUE)
 
-# spc_train <- furrr::future_map(.x = files_train,
-#     ~ read_asd_bin(fnames = .x)) %>%
-#   unlist() %>%
-#   bind_rows()
+# Go full blown and spawn reading across all cores
+spc_train_raw <- 
+  future_map_dfr(
+    .x = vec_split_ceiling(
+      x = files_train,
+      n_splits = future::availableCores()
+    ),
+    ~ read_asd_bin(fnames = .x)
+  )
 
-spc_train_raw <- read_asd_bin(fnames = files_train)
 
 ## Select only relevant spectral columns =======================================
 
