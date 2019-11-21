@@ -19,12 +19,12 @@ v_sd_min <- unlist(spc_rs_train[, ..wl_sd_min])
   
 wl_starch_sd_min <- c(wl_starch, wl_sd_min)
 
-spc_rs_starch_sdsel <- spc_rs_train[, ..wl_starch_sd_min]
-
-spc_rs_starch_sdsel[, c(wl_starch) := lapply(.SD,
-  function(x) x / `670`), .SDcols = wl_starch]
-
-spc_rs_starch_sdsel[, c(wl_sd_min) := NULL]
+spc_rs_starch_sdsel <- 
+  spc_rs_train %>%
+  .[, ..wl_starch_sd_min] %>%
+  .[, c(wl_starch) := lapply(.SD, function(x) x / `670`),
+    .SDcols = wl_starch] %>%
+  .[, c(wl_sd_min) := NULL]
 
 
 ## Train a multiple linear model with selected normalized starch bands =========
