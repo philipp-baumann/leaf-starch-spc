@@ -505,14 +505,16 @@ test_corfilt_eval <- evaluate_model(data = test_corfilt_predobs,
 xyrange_test_corfilt <- xy_range(data = test_corfilt_predobs,
   x = starch, y = pls_starch_corfilt)
 
-test_eval_lm <- lm(pls_starch_corfilt ~ starch, data = test_corfilt_predobs)
+test_eval_lm_corfilt <- lm(
+  pls_starch_corfilt ~ starch, 
+  data = test_corfilt_predobs)
 
 p_test_corfilt_predobs <- test_corfilt_predobs %>%
   ggplot(aes(x = starch, y = pls_starch_corfilt)) +
   geom_point() + # alpha = 0.4
   geom_abline(slope = 1) +
-  geom_abline(slope = test_eval_lm$coefficients[2],
-    intercept = test_eval_lm$coefficients[1], linetype = 2) +
+  geom_abline(slope = test_eval_lm_corfilt$coefficients[2],
+    intercept = test_eval_lm_corfilt$coefficients[1], linetype = 2) +
   coord_fixed(ratio = 1) +
   facet_wrap(~ eval_type) +
   geom_text(data = test_corfilt_eval,
@@ -547,12 +549,25 @@ p_test_corfilt_predobs_pdf <- ggsave(
 
 spc_rs_test_predict <- rbindlist(spc_test_predict$spc_rs)
 
-spc_rs_test_starch_sdsel <- spc_rs_test_predict[, ..wl_starch_sd_min]
+# spc_rs_test_starch_sdsel <- spc_rs_test_predict[, ..wl_starch_sd_min]
+# 
+# spc_rs_test_starch_sdsel[, c(wl_starch) := lapply(.SD,
+#   function(x) x / `670`), .SDcols = wl_starch]
+# 
+# spc_rs_test_starch_sdsel[, c(wl_sd_min) := NULL]
 
-spc_rs_test_starch_sdsel[, c(wl_starch) := lapply(.SD,
-  function(x) x / `670`), .SDcols = wl_starch]
-
-spc_rs_test_starch_sdsel[, c(wl_sd_min) := NULL]
+## Avoid duplicated target in drake; do piping
+spc_rs_test_starch_sdsel <- 
+  spc_rs_test_predict[, ..wl_starch_sd_min] %>%
+  .[, c(wl_starch) := lapply(.SD,
+    function(x) x / `670`), 
+    .SDcols = wl_starch
+  ] %>%
+  .[, c(wl_starch) := lapply(.SD,
+    function(x) x / `670`),
+    .SDcols = wl_starch
+  ] %>%
+  .[, c(wl_sd_min) := NULL]
 
 spc_test_predict_starchfilt_vec <- predict.lm(
   object = mlr_starch_norm$finalModel, newdata = spc_rs_test_starch_sdsel)
