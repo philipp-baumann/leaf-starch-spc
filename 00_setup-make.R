@@ -4,6 +4,7 @@
 ################################################################################
 
 pkgs <- c("here", "drake", "tidyverse", "simplerspec", "data.table", "future",
+  "furrr",
   "doFuture", "ggpubr", "cowplot", "ChemometricsWithR", "lineup", "varrank")
 purrr::walk(pkgs, library, character.only = TRUE)
 
@@ -21,6 +22,8 @@ scripts <- c(
   "20_build-spc-model-training.R",
   "21_interpret-training-vip.R",
   "22_remodel-vip-filtering.R",
+  "23_remodel-cor-filtering.R",
+  "24_remodel-starch-bands.R",
   "30_read-clean-process-test.R",
   "40_predict-evaluate-train-test.R"
 )
