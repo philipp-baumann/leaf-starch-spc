@@ -14,8 +14,8 @@ spc_rs_train_sd_min <- spc_rs_train[, lapply(.SD, sd)] %>%
   .[, idx := apply(.SD, 1, which.min)] %>%
   pull(idx)
 
-wl_sd_min <- colnames(spc_rs_train[, ..spc_rs_train_sd_min])
-v_sd_min <- unlist(spc_rs_train[, ..wl_sd_min])
+wl_sd_min <- colnames(spc_rs_train[, spc_rs_train_sd_min, with = FALSE])
+v_sd_min <- unlist(spc_rs_train[, wl_sd_min, with = FALSE])
   
 wl_starch_sd_min <- c(wl_starch, wl_sd_min)
 
