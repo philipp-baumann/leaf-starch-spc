@@ -33,7 +33,8 @@ pls_starch_vip_bigger1 <- fit_pls(
   response = starch,
   evaluation_method = "resampling",
   tuning_method = "resampling",
-  resampling_method = "rep_kfold_cv",  pls_ncomp_max = 10
+  resampling_method = "rep_kfold_cv",  pls_ncomp_max = 10,
+  print = FALSE
 )
 
 pls_starch_vip_bigger1_pdf <- ggsave(filename = "eval-vip-bigger1.pdf",
