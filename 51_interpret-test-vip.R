@@ -115,7 +115,7 @@ p_spc_test <- ggplot(dts_test_long[["spc"]],
   #   fontface = "bold", arrow = arrow(length = unit(0.02, "npc")),
   #   direction = "both", fill = "white", nudge_y = 0.45) +
   scale_x_continuous(limits = x_lim_test, breaks = brk_vip_test) +
-  ylim(c(-0.05, 0.6)) +
+  ylim(c(-0.1, 0.6)) +
   labs(x = xlab_vip_test, y = ylab1_vip_test) +
   theme_bw() +
   theme(
@@ -135,10 +135,10 @@ p_spc_pre_test <- ggplot(dts_test_long[["spc_pre"]],
   labs(x = xlab_vip_test, y = ylab2_test) +
   theme_bw() +
   theme(
-    plot.margin = unit(c(0, 5, 1, 1),
+    plot.margin = unit(c(0, 5, 4, 1),
     units = "points")) +
   scale_x_continuous(limits = x_lim, breaks = brk_vip_test) +
-  # ylim(c(-0.009, 0.011)) +
+  ylim(c(-0.009, 0.013)) +
   theme(
     plot.margin = unit(c(1, 5, -25, 6),
     units = "points"),
