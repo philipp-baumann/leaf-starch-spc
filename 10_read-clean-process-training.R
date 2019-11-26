@@ -152,7 +152,7 @@ spc_train_model_plot <- spc_train_model %>%
 p_spc_train_model_raw <- 
   spc_train_model_plot %>%
   plot_spc_ext(spc_tbl = ., lcols_spc = c("spc"),
-    group_id = "harvest_time", ylab = "Reflecance") +
+    group_id = "harvest_time", ylab = "Reflectance") +
     scale_x_continuous() +
     scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
     xlab("") +
@@ -160,13 +160,14 @@ p_spc_train_model_raw <-
     theme(
       strip.background = element_rect(colour = "black", fill = NA),
       panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank()
+      panel.grid.minor = element_blank() #,
+      # plot.margin = unit(c(3, 1, 1, 3),"cm")
     )
   
 p_spc_train_model_pre <- 
   spc_train_model_plot %>%
   plot_spc_ext(spc_tbl = ., lcols_spc = c("spc_pre"),
-    group_id = "harvest_time",ylab = "Pre-processed Refl.") +
+    group_id = "harvest_time", ylab = "Pre-processed Refl.") +
     scale_x_continuous() +
     scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
     xlab("Wavelength [nm]") +
@@ -175,15 +176,16 @@ p_spc_train_model_pre <-
       strip.background = element_blank(),
       strip.text.x = element_blank(),
       panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank()
+      panel.grid.minor = element_blank() #,
+      # plot.margin = unit(c(3, 1, 1, 3),"cm")
     )
 
-p_spc_train_model <- ggarrange(p_spc_train_model_raw, p_spc_train_model_pre,
-  heights = c(1, 1), ncol = 1, nrow = 2, align = "v")
+p_spc_train_model <- cowplot::plot_grid(
+  NULL, p_spc_train_model_raw, NULL, p_spc_train_model_pre,
+  align = "v", ncol = 2, nrow = 2,
+  rel_heights = c(1, 1), rel_widths = c(0.05, 1),
+  labels = c("A", "", "B", ""))
 
 p_spc_train_model_pdf <- ggsave(filename = "spc-train.pdf",
   plot = p_spc_train_model, path = here("out", "figs"),
   width = 7, height = 4)
-
-
-
