@@ -3,9 +3,13 @@
 ## Description:
 ################################################################################
 
-pkgs <- c("here", "drake", "tidyverse", "simplerspec", "data.table", "future",
-  "furrr",
-  "doFuture", "ggpubr", "cowplot", "ChemometricsWithR", "lineup", "varrank")
+pkgs <- c(
+  # reproducibility and data wrangling
+  "here", "drake", "tidyverse", "data.table",
+  "simplerspec", "ChemometricsWithR", # spectroscopy
+  "future", "furrr", "doFuture", # parallel comoputation
+  "ggpubr", "cowplot", # graphics
+  "lineup", "varrank") # correlation and information theory metrics
 purrr::walk(pkgs, library, character.only = TRUE)
 
 funs <- list(
@@ -47,7 +51,7 @@ plan <- bind_rows(
 
 # Record start time
 start_time <- Sys.time()
-make(plan, lock_envir = FALSE)
+make(plan, lock_envir = FALSE, cache_log_file = TRUE)
 end_time <- Sys.time()
 
 exec_time <- end_time - start_time
