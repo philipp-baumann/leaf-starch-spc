@@ -62,11 +62,11 @@ constituents <- rep("", length(wl_peaks))
 
 annotation_const <- paste0(round(wl_peaks, 0), constituents, sep = "")
 
-df_peak <- tibble(
-  wavenumber = wl_peaks,
-  annotation = annotation_const,
-  y_peaks = spc_max_peaks
-)
+# df_peak <- tibble(
+#   wavenumber = wl_peaks,
+#   annotation = annotation_const,
+#   y_peaks = spc_max_peaks
+# )
 
 ## Plot spectra and VIP scores =================================================
 
@@ -123,7 +123,7 @@ p_spc <- ggplot(dts_long[["spc"]],
   #   fontface = "bold", arrow = arrow(length = unit(0.02, "npc")),
   #   direction = "both", fill = "white", nudge_y = 0.45) +
   scale_x_continuous(limits = x_lim, breaks = brk) +
-  ylim(c(0, 0.55)) +
+  ylim(c(-0.1, 0.6)) +
   labs(x = xlab, y = ylab1) +
   theme_bw() +
   theme(
@@ -146,6 +146,7 @@ p_spc_pre <- ggplot(dts_long[["spc_pre"]],
     plot.margin = unit(c(0, 5, 1, 1),
     units = "points")) +
   scale_x_continuous(limits = x_lim, breaks = brk) +
+  ylim(c(-0.009, 0.013)) +
   theme(
     plot.margin = unit(c(1, 5, -25, 6),
     units = "points"),
