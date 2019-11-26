@@ -7,7 +7,7 @@ pkgs <- c(
   # reproducibility and data wrangling
   "here", "drake", "tidyverse", "data.table",
   "simplerspec", "ChemometricsWithR", # spectroscopy
-  "future", "furrr", "doFuture", # parallel comoputation
+  "future", "furrr", "doFuture", # parallel computation
   "ggpubr", "cowplot", # graphics
   "lineup", "varrank") # correlation and information theory metrics
 purrr::walk(pkgs, library, character.only = TRUE)
