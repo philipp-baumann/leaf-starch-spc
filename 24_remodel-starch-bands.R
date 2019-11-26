@@ -21,7 +21,7 @@ wl_starch_sd_min <- c(wl_starch, wl_sd_min)
 
 spc_rs_starch_sdsel <- 
   spc_rs_train %>%
-  .[, ..wl_starch_sd_min] %>%
+  .[, wl_starch_sd_min, with = FALSE] %>%
   .[, c(wl_starch) := lapply(.SD, function(x) x / `670`),
     .SDcols = wl_starch] %>%
   .[, c(wl_sd_min) := NULL]
