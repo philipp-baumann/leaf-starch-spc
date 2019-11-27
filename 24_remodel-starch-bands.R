@@ -18,12 +18,6 @@ wl_sd_min <- colnames(spc_rs_train[, spc_rs_train_sd_min, with = FALSE])
 v_sd_min <- unlist(spc_rs_train[, wl_sd_min, with = FALSE])
   
 wl_starch_sd_min <- c(wl_starch, wl_sd_min)
-wl_starch_sd_min_ <- c(wl_starch, wl_sd_min)
-
-spc[, c(swir2_cols) := lapply(.SD,
-    function(x) x - swir1_offset - swir2_offset), .SDcols = swir2_cols]
-
-wl670 <- "`670`"
 
 spc_rs_starch_sdsel <- 
   spc_rs_train %>%
