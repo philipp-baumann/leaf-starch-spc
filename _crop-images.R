@@ -20,23 +20,38 @@ path_to_crop <- here::here("pub", "figs", "figs-original")
 imgs_cropped <-
   files_to_crop %>%
   map(~ image_read_pdf(.x)) %>%
-  map(~ image_scale(.x, geometry = "500"))
+  map(~ image_scale(.x, geometry = "1000"))
 
 # Create new file names
 names_new <- tools::file_path_sans_ext(files_to_crop)
 
 dir_out <- here::here("pub", "figs", "figs-cropped")
-files_out <- paste0(
+
+files_out_png <- paste0(
+  dir_out,
+  "/",
+  paste0(
+    tools::file_path_sans_ext(list.files(path = path_to_crop)),
+    ".png"
+  )
+)
+files_out_pdf <- paste0(
   dir_out,
   "/",
   list.files(path = path_to_crop)
 )
 
-# Write out
+## Write out
+# raster: .png
 walk2(
   .x = imgs_cropped,
-  .y = files_out,
+  .y = files_out_png,
   .f = ~ image_write(image = .x, path = .y)
 )
-  
+# vector: .pdf
+walk2(
+  .x = imgs_cropped,
+  .y = files_out_pdf,
+  .f = ~ image_write(image = .x, path = .y)
+)
 
