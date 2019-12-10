@@ -82,6 +82,12 @@ spc_train_proc <- spc_train_narm %>%
       select_spc_vars(every = 4)
   ) %>%
   dplyr::bind_rows()
+
+# spc_train_narm %>%
+#   partition_spc(id_nopart = sample_id) %>%
+#   split(f = .$part_id) %>%
+#   .[[1]] %>%
+#   group_by(sample_age_rep)
   
 ## String manipulation to create `genotype`, `leaf_age` and `rep` columns ======
 
@@ -138,7 +144,10 @@ abs_900nm <- foreach::foreach(i = seq_along(spc_train_groupids$spc),
 
 remove_idx <- abs_900nm$abs_bigger_0.1 %>% which()
 
-spc_train_model <- spc_train_groupids[- remove_idx, ]
+spc_train_model <- 
+  spc_train_groupids[- remove_idx, ] %>%
+  group_by(sample_age_rep) %>%
+  slice(1L)
 
 
 ## Plot spectra ================================================================
@@ -160,8 +169,7 @@ p_spc_train_model_raw <-
     theme(
       strip.background = element_rect(colour = "black", fill = NA),
       panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank() #,
-      # plot.margin = unit(c(3, 1, 1, 3),"cm")
+      panel.grid.minor = element_blank()
     )
   
 p_spc_train_model_pre <- 
@@ -176,8 +184,7 @@ p_spc_train_model_pre <-
       strip.background = element_blank(),
       strip.text.x = element_blank(),
       panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank() #,
-      # plot.margin = unit(c(3, 1, 1, 3),"cm")
+      panel.grid.minor = element_blank()
     )
 
 p_spc_train_model <- cowplot::plot_grid(
@@ -189,3 +196,7 @@ p_spc_train_model <- cowplot::plot_grid(
 p_spc_train_model_pdf <- ggsave(filename = "spc-train.pdf",
   plot = p_spc_train_model, path = here("out", "figs"),
   width = 7, height = 4)
+
+p_spc_train_model_pdf_pub <- ggsave(filename = "Fig5.pdf",
+  plot = p_spc_train_model, path = here("pub", "figs"),
+  width = 6.69, height = 4)
