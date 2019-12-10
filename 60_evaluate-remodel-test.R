@@ -6,7 +6,8 @@
 ## Extract cross-validated predictions for VIP filtered test re-prediction
 ## and do model evaluation =====================================================
 
-test_vip_bigger1_eval <- pls_starch_test_vip_bigger1$stats %>%
+test_vip_bigger1_eval_sspec <-
+  pls_starch_test_vip_bigger1$stats %>%
   # Modify columns for plot annotation
   mutate(
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
@@ -16,12 +17,13 @@ test_vip_bigger1_eval <- pls_starch_test_vip_bigger1$stats %>%
     one_one = "1:1"
   )
 
-test_eval_lm_vip_bigger1 <- lm(pred ~ obs,
+test_eval_lm_vip_bigger1_sspec <- lm(pred ~ obs,
   data = pls_starch_test_vip_bigger1$predobs)
 
 # Get xy limits for plot
-xyrange_test_vip_bigger1 <- xy_range(data = pls_starch_test_vip_bigger1$predobs,
-  x = obs, y = pred)
+xyrange_test_vip_bigger1_sspec <-
+  xy_range(data = pls_starch_test_vip_bigger1$predobs,
+    x = obs, y = pred)
 
 p_test_vip_bigger1_eval <- pls_starch_test_vip_bigger1$predobs %>%
   mutate(
@@ -31,24 +33,25 @@ p_test_vip_bigger1_eval <- pls_starch_test_vip_bigger1$predobs %>%
     aes(x = obs, y = pred)) +
   geom_point(alpha = 0.4) +
   geom_abline(slope = 1) +
-  geom_abline(slope = test_eval_lm_vip_bigger1$coefficients[2],
-    intercept = test_eval_lm_vip_bigger1$coefficients[1], linetype = 2) +
+  geom_abline(slope = test_eval_lm_vip_bigger1_sspec$coefficients[2],
+    intercept = test_eval_lm_vip_bigger1_sspec$coefficients[1],
+    linetype = 2) +
   coord_fixed(ratio = 1) +
   facet_wrap(~ eval_type) +
-  geom_text(data = test_vip_bigger1_eval,
+  geom_text(data = test_vip_bigger1_eval_sspec,
     aes(x = Inf, y = -Inf, label = r2), size = 3,
       hjust = 1.27, vjust = -3.5, parse = TRUE) +
-  geom_text(data = test_vip_bigger1_eval,
+  geom_text(data = test_vip_bigger1_eval_sspec,
     aes(x = Inf, y = -Inf, label = rmse), size = 3,
       hjust = 1.08, vjust = -2.5, parse = TRUE) +
   # xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
   xlab("") +
   ylab("") +
   # ylab(expression(paste("Predicted starch [", mg~g^-1, " DM]"))) +
-  xlim(xyrange_test_vip_bigger1[1] - 0.02 * diff(range(xyrange_test_vip_bigger1)),
-       xyrange_test_vip_bigger1[2] + 0.02 * diff(range(xyrange_test_vip_bigger1))) +
-  ylim(xyrange_test_vip_bigger1[1] - 0.02 * diff(range(xyrange_test_vip_bigger1)),
-       xyrange_test_vip_bigger1[2] + 0.02 * diff(range(xyrange_test_vip_bigger1))) +
+  xlim(xyrange_test_vip_bigger1_sspec[1] - 0.02 * diff(range(xyrange_test_vip_bigger1_sspec)),
+       xyrange_test_vip_bigger1_sspec[2] + 0.02 * diff(range(xyrange_test_vip_bigger1_sspec))) +
+  ylim(xyrange_test_vip_bigger1_sspec[1] - 0.02 * diff(range(xyrange_test_vip_bigger1_sspec)),
+       xyrange_test_vip_bigger1_sspec[2] + 0.02 * diff(range(xyrange_test_vip_bigger1_sspec))) +
   theme_bw() +
   theme(
     strip.background = element_rect(colour = "black", fill = NA),
