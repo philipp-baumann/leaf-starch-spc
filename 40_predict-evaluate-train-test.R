@@ -130,6 +130,10 @@ p_eval_train_self_cv_pdf <- ggsave(filename = "eval-training-self-cv.pdf",
   plot = p_eval_training_self_cv,
   path = here("out", "figs"), width = 6.5, height = 3)
 
+p_eval_train_self_cv_pdf_pub <- ggsave(
+  filename = "Fig6.pdf",
+  plot = p_eval_training_self_cv,
+  path = here("pub", "figs"), width = 6.69, height = 3)
 
 ## Model evaluation for PLSR training with raw spectral data ===================
 
@@ -185,6 +189,10 @@ p_eval_train_raw_pdf <- ggsave(filename = "eval-training-raw-cv.pdf",
   plot = p_training_raw_eval,
   path = here("out", "figs"), width = 3.5, height = 3.5)
 
+p_eval_train_raw_pdf_pub <- ggsave(filename = "S2.pdf",
+  plot = p_training_raw_eval,
+  path = here("pub", "figs"), width = 3.34, height = 3.34)
+
 
 ## Predict starch for test set; use exisiting training model (`pls_starch`)
 ## and new test data (preprocessed spectra in `spc_train`) =====================
@@ -205,6 +213,12 @@ test_eval <- evaluate_model(data = test_predobs,
       "'", sprintf("%.2f", r2), "'"))),
     one_one = "1:1"
   )
+
+test_predobs_vip_bigger1 <- predict_from_spc(
+    model_list = list("pls_starch" = pls_starch_vip_bigger1),
+    spc_tbl = spc_test_predict_vip_bigger1) %>%
+  select(sample_id, sample_rep, harvest_time, starch, pls_starch) %>%
+  mutate(eval_type = paste0("Test using VIP training (n = ", nrow(.), ")"))
 
 test_vip_bigger1_eval <- evaluate_model(data = test_predobs_vip_bigger1, 
   obs = starch, pred = pls_starch) %>% 
@@ -229,8 +243,14 @@ test_eval_lm <- lm(pls_starch ~ starch, data = test_predobs)
 test_eval_lm_vip_bigger1 <- lm(pls_starch ~ starch,
   data = test_predobs_vip_bigger1)
 
-p_test_eval <- ggplot(data = test_predobs, aes(x = starch, y = pls_starch)) +
-  geom_point(alpha = 0.4) +
+p_test_eval <- 
+  test_predobs %>%
+  mutate(
+    leaf_age = "m"
+  ) %>%
+  ggplot(data = ., aes(x = starch, y = pls_starch)) +
+  geom_point(aes(colour = leaf_age, shape = leaf_age),
+    colour = "#F8766D", alpha = 0.4) +
   geom_abline(slope = 1) +
   geom_abline(slope = test_eval_lm$coefficients[2],
     intercept = test_eval_lm$coefficients[1], linetype = 2) +
@@ -242,14 +262,13 @@ p_test_eval <- ggplot(data = test_predobs, aes(x = starch, y = pls_starch)) +
   geom_text(data = test_eval,
     aes(x = Inf, y = -Inf, label = rmse), size = 3,
       hjust = 1.08, vjust = -2.5, parse = TRUE) +
-  # xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
-  xlab("") +
-  ylab("") +
-  # ylab(expression(paste("Predicted starch [", mg~g^-1, " DM]"))) +
+  xlab(expression(paste("Measured starch [mg ", g^{-1}, " DW]"))) +
+  ylab(expression(paste("Predicted starch [mg ", g^{-1}, " DW]"))) +
   xlim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
        xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
   ylim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
        xyrange_test[2] + 0.02 * diff(range(xyrange_test))) +
+  labs(colour = "Leaf age", shape = "Leaf age") +
   theme_bw() +
   theme(
     strip.background = element_rect(colour = "black", fill = NA),
@@ -260,10 +279,46 @@ p_test_eval <- ggplot(data = test_predobs, aes(x = starch, y = pls_starch)) +
 p_test_eval_pdf <- ggsave(filename = "test-eval.pdf", plot = p_test_eval,
   path = here("out", "figs"), width = 3, height = 3)
 
+p_test_eval_pdf_pub <- ggsave(
+  filename = "Fig7.pdf", plot = p_test_eval,
+  path = here("pub", "figs"), width = 3.34, height = 3.34)
+
 
 ## Combine cross-validated training and test set evaluation ====================
 
-p_eval_training_test <- cowplot::plot_grid(p_training_eval, p_test_eval,
+p_training_eval_nolabs <- 
+  p_training_eval +
+  theme(legend.position = "none")
+
+p_test_eval_nolabs <- 
+  p_test_eval + 
+  xlab("") +
+  ylab("") +
+  theme(legend.position = "none")
+
+p_training_eval_legend <- get_legend(
+  p_training_eval +
+    theme(
+      legend.box.margin = margin(0, 0, 0, 12),
+      legend.justification = "center"
+    )
+)
+
+# arrange the three plots in a single row
+p_eval_prow <- plot_grid(
+  p_training_eval_nolabs,
+  p_test_eval_nolabs,
+  align = 'vh',
+  labels = c("A", "B"),
+  hjust = -1,
+  nrow = 1
+)
+
+p_eval_training_test <- cowplot::plot_grid(
+  p_eval_prow,
+  p_training_eval_legend,
+  align = "vh", axis = "m",
+  rel_widths = c(3, .4),
   ncol = 2) +
   draw_label(expression(paste("Measured starch [", mg~g^-1, " DM]")), 
     x = 0.55, y = 0, vjust = -0.3, angle = 0, size = 10) +
@@ -272,6 +327,9 @@ p_eval_training_test <- cowplot::plot_grid(p_training_eval, p_test_eval,
 
 p_eval_pdf <- ggsave(filename = "eval.pdf", plot = p_eval_training_test,
   path = here("out", "figs"), width = 6, height = 3)
+
+p_eval_pdf_pub <- ggsave(filename = "eval.pdf", plot = p_eval_training_test,
+  path = here("pub", "figs"), width = 6.69, height = 3)
 
 
 ## Test evaluation grouped by genotype =========================================
@@ -478,6 +536,11 @@ p_training_predobs_harvest_time_pdf <- ggsave(
   filename = "predobs-training-harvest-time.pdf",
   plot = p_training_predobs_harvest_time, path = here("out", "figs"),
   width = 7, height = 2.5)
+
+p_training_predobs_harvest_time_pdf_pub <- ggsave(
+  filename = "S3.pdf",
+  plot = p_training_predobs_harvest_time, path = here("pub", "figs"),
+  width = 6.69, height = 2.6)
 
 
 ## Test predictions using correlation filtered training model ==================
