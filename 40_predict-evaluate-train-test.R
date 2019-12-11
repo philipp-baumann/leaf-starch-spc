@@ -621,15 +621,10 @@ spc_rs_test_predict <- rbindlist(spc_test_predict$spc_rs)
 
 ## Avoid duplicated target in drake; do piping
 spc_rs_test_starch_sdsel <- 
-  spc_rs_test_predict[, wl_starch_sd_min, with = FALSE] %>%
+  spc_rs_test_predict %>%
+  .[, c(wl_starch_sd_min), with = FALSE] %>%
   .[, c(wl_starch) := lapply(.SD,
-    function(x) x / `670`), 
-    .SDcols = wl_starch
-  ] %>%
-  .[, c(wl_starch) := lapply(.SD,
-    function(x) x / `670`),
-    .SDcols = wl_starch
-  ] %>%
+    function(x) x / eval(parse(text = wl_sd_min))), .SDcols = c(wl_starch)] %>%
   .[, c(wl_sd_min) := NULL]
 
 spc_test_predict_starchfilt_vec <- predict.lm(
