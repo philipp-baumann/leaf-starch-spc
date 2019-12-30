@@ -2,7 +2,16 @@ A non-destructive method to quantify starch content in red clover
 ================
 Lea Frey, Philipp Baumann, Helge Aasen, Bruno Studer, Roland Kölliker
 
-# Project description
+# Description
+
+This is the code repository for the manuscript for the manuscript with
+the above title.
+
+The directory is self-contained and is designed to run reproducibly in a
+docker container. Description about how deploy Docker containers can be
+found below.
+
+# Comments on reproduciblity
 
 # File overview
 
@@ -25,7 +34,6 @@ are shown):
     ## ├── 52_remodel-test-vip-training.R
     ## ├── 60_evaluate-remodel-test.R
     ## ├── R
-    ## │   ├── gt_functions.svg
     ## │   ├── helpers.R
     ## │   ├── modeling.R
     ## │   ├── select-spc-xvalues.R
@@ -72,4 +80,18 @@ are shown):
     ## │       ├── test-eval-vip-bigger1.pdf
     ## │       └── test-eval.pdf
     ## ├── pub
-    ## └── transfer-vm.sh
+    ## │   └── writing
+    ## │       ├── PSC_symposium_2019_lea-comm-pb.docx
+    ## │       ├── PSC_symposium_2019_lea.docx
+    ## │       ├── Supplement3.docx
+    ## │       ├── Supplement3_PB.docx
+    ## │       ├── paper-plant-methods-clover-starch-spc.pdf
+    ## │       ├── paper_plant_methods_FieldSpec4_LeaFreyKoro3.docx
+    ## │       ├── paper_plant_methods_FieldSpec4_LeaFreyKoro3Baumann.docx
+    ## │       ├── paper_plant_methods_LeaR.docx
+    ## │       ├── paper_plant_methods_LeaR_pb.docx
+    ## │       ├── paper_plant_methods_LeaR_pb.pdf
+    ## │       ├── paper_plant_methods_Lea_Roli2.docx
+    ## │       ├── paper_plant_methods_Lea_Roli2_PB.docx
+    ## │       └── paper_plant_methods_Lea_Roli2_PB_tab-filt.docx
+    ## └── ssd-to-vm.sh
