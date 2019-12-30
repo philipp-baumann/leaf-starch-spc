@@ -10,9 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Description
 
-This is the code repository for the manuscript for the manuscript with the above title.
+This is the code repository that produces the outputs of the manuscript with the above title.
 
-The directory is self-contained and is designed to run reproducibly in a docker container. Description about how deploy Docker containers can be found below. 
+The directory is self-contained and is designed to run reproducibly, either on your local operating system or a docker container. The description about how deploy this Docker image and run all analyses within this project can be found below.
 
 # Comments on reproduciblity
 

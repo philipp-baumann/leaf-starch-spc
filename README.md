@@ -4,12 +4,13 @@ Lea Frey, Philipp Baumann, Helge Aasen, Bruno Studer, Roland Kölliker
 
 # Description
 
-This is the code repository for the manuscript for the manuscript with
-the above title.
+This is the code repository that produces the outputs of the manuscript
+with the above title.
 
-The directory is self-contained and is designed to run reproducibly in a
-docker container. Description about how deploy Docker containers can be
-found below.
+The directory is self-contained and is designed to run reproducibly,
+either on your local operating system or a docker container. The
+description about how deploy this Docker image and run all analyses
+within this project can be found below.
 
 # Comments on reproduciblity
 
@@ -40,6 +41,7 @@ are shown):
     ## │   └── vip-wrappers.R
     ## ├── README.Rmd
     ## ├── README.md
+    ## ├── _crop-images.R
     ## ├── data
     ## │   ├── test
     ## │   │   ├── metadata
@@ -80,6 +82,10 @@ are shown):
     ## │       ├── test-eval-vip-bigger1.pdf
     ## │       └── test-eval.pdf
     ## ├── pub
+    ## │   ├── figs
+    ## │   │   ├── Fig4.pdf
+    ## │   │   ├── figs-cropped
+    ## │   │   └── figs-original
     ## │   └── writing
     ## │       ├── PSC_symposium_2019_lea-comm-pb.docx
     ## │       ├── PSC_symposium_2019_lea.docx
