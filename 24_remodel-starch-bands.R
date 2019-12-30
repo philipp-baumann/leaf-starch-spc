@@ -29,10 +29,9 @@ spc_rs_starch_sdsel <-
 
 ## Train a multiple linear model with selected normalized starch bands =========
 
-seed_mlr_starch_norm <- set.seed(123L)
-
 starch_norm_train <- spc_train_model$starch
 
+seed_mlr_starch_norm <- set.seed(123L)
 idx_mlr_starch <- caret::createMultiFolds(y = starch_norm_train,
   k = 10, times = 5)
 

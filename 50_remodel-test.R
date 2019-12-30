@@ -5,8 +5,6 @@
 
 ## Train a PLS regression model on the test set ================================
 
-seed_pls_starch_test <- set.seed(131L)
-
 pls_starch_test <- fit_pls(
   spec_chem = spc_test_predict,
   response = starch,
