@@ -43,7 +43,7 @@ len <- length(peaks)
 
 # Check visually
 plt_spc <- plot(spc_1, type = "l")
-plt_peaks <- abline(v = peaks, col = "blue")
+# plt_peaks <- abline(v = peaks, col = "blue")
 
 # Return wavenumbers of peaks
 wl <- spc_train_model$wavelengths[[1]]

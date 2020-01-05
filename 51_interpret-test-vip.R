@@ -38,7 +38,7 @@ len_test <- length(peaks_test)
 
 # Check visually
 plt_spc_test <- plot(spc_test_1, type = "l")
-plt_peaks_test <- abline(v = peaks_test, col = "blue")
+# plt_peaks_test <- abline(v = peaks_test, col = "blue")
 
 # Return wavenumbers of peaks
 wl_test <- spc_test_predict$wavelengths[[1]]
