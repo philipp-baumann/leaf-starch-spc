@@ -5,14 +5,14 @@
 
 ## Train a PLS regression model ================================================
 
-seed_pls_starch <- set.seed(131L)
-
 pls_starch <- fit_pls(
   spec_chem = spc_train_model,
   response = starch,
   evaluation_method = "resampling",
   tuning_method = "resampling",
-  resampling_method = "rep_kfold_cv",  pls_ncomp_max = 10
+  resampling_method = "rep_kfold_cv",
+  resampling_seed = 142L,
+  pls_ncomp_max = 10
 )
 
 pls_starch_rds <- readr::write_rds(x = pls_starch,
@@ -26,7 +26,9 @@ pls_starch_raw <- spc_train_model %>%
     response = starch,
     evaluation_method = "resampling",
     tuning_method = "resampling",
-    resampling_method = "rep_kfold_cv",  pls_ncomp_max = 10
+    resampling_method = "rep_kfold_cv", 
+    resampling_seed = 142L,
+    pls_ncomp_max = 10
   )
   
 

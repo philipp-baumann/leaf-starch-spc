@@ -10,7 +10,9 @@ pls_starch_test <- fit_pls(
   response = starch,
   evaluation_method = "resampling",
   tuning_method = "resampling",
-  resampling_method = "rep_kfold_cv", pls_ncomp_max = 10
+  resampling_method = "rep_kfold_cv",
+  resampling_seed = 142L,
+  pls_ncomp_max = 10
 )
 
 pls_starch_test_rds <- readr::write_rds(x = pls_starch_test,

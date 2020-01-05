@@ -9,7 +9,7 @@ files_train <- dir("data/training/spectra", full.names = TRUE)
 
 # Go full blown and spawn reading across all cores
 spc_train_raw <- 
-  future_map_dfr(
+  furrr::future_map_dfr(
     .x = vec_split_ceiling(
       x = files_train,
       n_splits = future::availableCores()

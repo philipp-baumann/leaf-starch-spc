@@ -31,7 +31,7 @@ spc_rs_starch_sdsel <-
 
 starch_norm_train <- spc_train_model$starch
 
-seed_mlr_starch_norm <- set.seed(123L)
+seed_mlr_starch_norm <- set.seed(142L)
 idx_mlr_starch <- caret::createMultiFolds(y = starch_norm_train,
   k = 10, times = 5)
 
