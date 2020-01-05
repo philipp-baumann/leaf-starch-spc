@@ -14,6 +14,7 @@ purrr::walk(pkgs, library, character.only = TRUE)
 
 funs <- list(
    here("R", "helpers.R"),
+   here("R", "modeling.R"),
    here("R", "vip-wrappers.R"),
    here("R", "select-spc-xvalues.R")
 )
@@ -28,12 +29,12 @@ scripts <- c(
   "22_remodel-vip-filtering.R",
   "23_remodel-cor-filtering.R",
   "24_remodel-starch-bands.R",
-  "30_read-clean-process-test.R",
-  "40_predict-evaluate-train-test.R",
-  "50_remodel-test.R",
-  "51_interpret-test-vip.R",
-  "52_remodel-test-vip-training.R",
-  "60_evaluate-remodel-test.R"
+  "30_read-clean-process-test.R" # ,
+  # "40_predict-evaluate-train-test.R",
+  # "50_remodel-test.R",
+  # "51_interpret-test-vip.R",
+  # "52_remodel-test-vip-training.R",
+  # "60_evaluate-remodel-test.R"
 )
 
 plans <- map(rlang::set_names(scripts), code_to_plan)
@@ -55,7 +56,7 @@ plan <- bind_rows(
 
 # Record start time
 start_time <- Sys.time()
-make(plan, lock_envir = FALSE, cache_log_file = TRUE)
+make(plan, cache_log_file = TRUE, lock_envir = FALSE)
 end_time <- Sys.time()
 
 exec_time <- end_time - start_time
