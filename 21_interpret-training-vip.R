@@ -1,6 +1,8 @@
 ################################################################################
-## Project:
-## Description:
+## Project:     A non-destructive method to quantify starch content
+##              in red clover (T. pratense)
+## Description: Extract and plot Varible Importance in the Projection (VIP)
+##              for the PLSR model of the training set
 ################################################################################
 
 # Create a list of models

@@ -1,6 +1,8 @@
 ################################################################################
-## Project:
-## Description:
+## Project:     A non-destructive method to quantify starch content
+##              in red clover (T. pratense)
+## Description: Remodel the training set by filtering 50 predictors with 
+##              highest pearson correlation to starch
 ################################################################################
 
 ## Remodel with spectral variables filtered using correlation ==================

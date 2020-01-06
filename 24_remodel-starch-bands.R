@@ -1,6 +1,9 @@
 ################################################################################
-## Project:
-## Description:
+## Project:     A non-destructive method to quantify starch content
+##              in red clover (T. pratense)
+## Description: Model the training set using 4 normalized spectral variables
+##              with assignments to starch as reported in the literature.
+##              Simple multiple linear regression.
 ################################################################################
 
 ## Normalize starch bands known from literature to the spectral band with 

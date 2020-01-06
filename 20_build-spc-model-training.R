@@ -1,6 +1,8 @@
 ################################################################################
-## Project:
-## Description:
+## Project:     A non-destructive method to quantify starch content
+##              in red clover (T. pratense)
+## Description: Train PLS regression models for starch based on Savitzky-Golay
+##              pre-processed spectra and raw spectra
 ################################################################################
 
 ## Train a PLS regression model ================================================

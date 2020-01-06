@@ -1,6 +1,8 @@
 ################################################################################
-## Project:
-## Description:
+## Project:     A non-destructive method to quantify starch content
+##              in red clover (T. pratense)
+## Description: Interpret the PLS regression of the test set with a
+##              plot showing Variable Importance in the Projection (VIP)
 ################################################################################
 
 ## Transform data for plotting =================================================
