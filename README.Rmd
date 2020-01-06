@@ -14,11 +14,11 @@ This is the code repository that produces the outputs of the manuscript with the
 
 The directory is self-contained and is designed to run reproducibly, either on your local operating system or in a Docker container. The description about how deploy this Docker image and run all analyses within this project can be found below.
 
-# Reproduce the analysis
+# Reproduce the analysis locally
 
 ## Restore packages
 
-To restore all required packages at versions defined in the file `renv.lock`, execute the following in the project directory:
+To restore all required packages at versions defined in the file [`renv.lock`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/renv.lock) based on the  [renv](https://github.com/rstudio/renv) R package, execute the following in the project directory:
 
 ```{r, eval=FALSE}
 install.packages("remotes")
@@ -30,12 +30,17 @@ renv::restore()
 
 ## Rerun all analyses
 
-You can either manually run the scripts in sequential order, or deploy the entire workflow reproducibly and automated using the drake R package:
+You can either manually run the scripts in sequential order, or deploy the entire workflow reproducibly and automatedly using the [drake](https://books.ropensci.org/drake/) R package:
 
 ```{r, eval=FALSE}
 source("00_setup-make.R")
 ```
 
+## Reproduce the analysis in Docker container
+
+A Docker image can be built as described in the file [`Dockerfile`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/Dockerfile). It bases upon the [`rocker/rstudio:3.6.1`](https://hub.docker.com/r/rocker/rstudio) image (R 3.6.1 plus RStudio), on top of which it installs system libraries for the [tidyverse](https://www.tidyverse.org/) and the [renv](https://github.com/rstudio/renv) package. Further, it automatically restores all deployed package versions, and then runs the drake plan specified in [`00_setup-make.R`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/00_setup-make.R). Henceforth, the entire analysis is reproduced in a running instance of the image (also called container).
+
+Kindly not that the Dockerfile is not yet complete upon manuscript submission. Further instructions how to build the image, run a container instance, and retrieve the results will follow soon.
 
 # File overview
 
