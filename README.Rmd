@@ -40,7 +40,7 @@ source("00_setup-make.R")
 
 A Docker image can be built as described in the file [`Dockerfile`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/Dockerfile). It bases upon the [`rocker/rstudio:3.6.1`](https://hub.docker.com/r/rocker/rstudio) image (R 3.6.1 plus RStudio), on top of which it installs system libraries for the [tidyverse](https://www.tidyverse.org/) and the [renv](https://github.com/rstudio/renv) package. Further, it automatically restores all deployed package versions, and then runs the drake plan specified in [`00_setup-make.R`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/00_setup-make.R). Henceforth, the entire analysis is reproduced in a running instance of the image (also called container).
 
-Kindly not that the Dockerfile is not yet complete upon manuscript submission. Further instructions how to build the image, run a container instance, and retrieve the results will follow soon.
+Kindly note that the Dockerfile is not yet complete upon manuscript submission. Further instructions how to build the image, run a container instance, and retrieve the results will follow soon.
 
 # File overview
 

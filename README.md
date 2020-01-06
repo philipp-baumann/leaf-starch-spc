@@ -54,7 +54,7 @@ drake plan specified in
 Henceforth, the entire analysis is reproduced in a running instance of
 the image (also called container).
 
-Kindly not that the Dockerfile is not yet complete upon manuscript
+Kindly note that the Dockerfile is not yet complete upon manuscript
 submission. Further instructions how to build the image, run a container
 instance, and retrieve the results will follow soon.
 
