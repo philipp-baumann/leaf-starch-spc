@@ -157,7 +157,7 @@ xyrange_training_raw <- xy_range(data = pls_starch_raw$predobs,
 
 p_training_raw_eval <- pls_starch_raw$predobs %>%
   inner_join(x = ., y = spc_train_model %>% select(sample_id, leaf_age)) %>%
-  mutate(eval_type = paste0("Training cross-validated (n = ", nrow(.), ")")
+  mutate(eval_type = paste0("Training CV (n = ", nrow(.), ")")
   ) %>%
   ggplot(data = ., aes(x = obs, y = pred)) +
     geom_point(aes(colour = leaf_age, shape = leaf_age), alpha = 0.4) +
@@ -181,19 +181,23 @@ p_training_raw_eval <- pls_starch_raw$predobs %>%
     labs(colour = "Leaf age", shape = "Leaf age") +
     theme_bw() +
     theme(
+      axis.title = element_text(size = 10),
+      axis.text = element_text(size = 10),
+      strip.text = element_text(size = 9),
+      legend.title = element_text(size = 10),
       strip.background = element_rect(colour = "black", fill = NA),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
-      legend.position = "bottom"
+      legend.position = "right"
     )
 
 p_eval_train_raw_pdf <- ggsave(filename = "eval-training-raw-cv.pdf",
   plot = p_training_raw_eval,
-  path = here("out", "figs"), width = 3.5, height = 3.5)
+  path = here("out", "figs"), width = 3.34, height = 2.5)
 
 p_eval_train_raw_pdf_pub <- ggsave(filename = "S2.pdf",
   plot = p_training_raw_eval,
-  path = here("pub", "figs"), width = 3.34, height = 3.34)
+  path = here("pub", "figs"), width = 3.34, height = 2.5)
 
 
 ## Predict starch for test set; use exisiting training model (`pls_starch`)
@@ -507,8 +511,8 @@ p_training_predobs_harvest_time <-
   train_predobs_meta %>%
   ggplot(aes(x = obs, y = pred), data = .) +
   geom_abline(slope = 1, colour = "black") +
-  geom_abline(data = regline_train_harvest, aes(intercept = int, slope = slope),
-    colour = "black") +
+  # geom_abline(data = regline_train_harvest, aes(intercept = int, slope = slope),
+  #   colour = "black") +
   geom_point(aes(colour = leaf_age, shape = leaf_age), alpha = 0.5) +
   # scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
   facet_wrap(~ harvest_time) +
@@ -537,7 +541,7 @@ p_training_predobs_harvest_time <-
 p_training_predobs_harvest_time_pdf <- ggsave(
   filename = "predobs-training-harvest-time.pdf",
   plot = p_training_predobs_harvest_time, path = here("out", "figs"),
-  width = 7, height = 2.5)
+  width = 6.69, height = 2.6)
 
 p_training_predobs_harvest_time_pdf_pub <- ggsave(
   filename = "S3.pdf",
