@@ -182,7 +182,7 @@ p_vip_comb <- cowplot::plot_grid(
   ncol = 1, align = "v")
 
 p_vip_comb_pdf <- ggsave(filename = "spc-starch-pls-vip.pdf", plot = p_vip_comb, 
-  path = here("out", "figs"), width = 6.5, height = 5)
+  path = here("out", "figs"), width = 6.69, height = 5)
 
 p_vip_comb_pdf_pub <- ggsave(filename = "S4.pdf",
   plot = p_vip_comb, 
