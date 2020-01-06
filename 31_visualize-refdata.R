@@ -81,6 +81,16 @@ p_bp_starch <-
     strip.background =element_rect(colour="black", fill = NA)
   )
 
+p_bp_starch_pdf <- ggsave(
+  filename = "boxplot-starch-sets.pdf",
+  plot = p_bp_starch, path = here("out", "figs"),
+  width = 3.34, height = 2.8)
+
+p_bp_starch_pub <- ggsave(
+  filename = "Fig2.pdf",
+  plot = p_bp_starch, path = here("pub", "figs"),
+  width = 3.34, height = 2.8)
+
 ## Boxplot leaf age ============================================================
 
 # Read entire reference starch data set including whole plants -----------------
@@ -123,8 +133,37 @@ p_bp_starch_leafage_ed <-
   annotate("text", x = 3, y = 102, label = "b", size = 4) +
   annotate("text", x = 4, y = 75, label = "b", size = 4)
 
+p_bp_starch_leafage_ed_pdf <- ggsave(
+  filename = "boxplot-starch-leaf-age.pdf",
+  plot = p_bp_starch_leafage_ed, path = here("out", "figs"),
+  width = 3.34, height = 2.8)
+
+p_bp_starch_leafage_ed_pub_pdf <- ggsave(
+  filename = "Fig4.pdf",
+  plot = p_bp_starch_leafage_ed, path = here("pub", "figs"),
+  width = 3.34, height = 2.8)
+
 
 ## Boxplot genotypes ===========================================================
+
+genotype_label <- tribble(
+  ~genotype, ~y_offset, ~text,
+  "GH129",   84,        "a",
+  "LE1408",  67,        "ab",
+  "LE1421",  67,        "ab",
+  "LE1436",  75,        "ab",
+  "LE1619",  120,       "ab",
+  "LE2622",  87,        "a",
+  "LE2692",  73,        "ab",
+  "LE2768",  77,        "a",
+  "MR20",    100,       "ab",
+  "MR28",    62,        "b",
+  "MR3",     90,        "ab",
+  "TP0345",  98,        "a"
+  ) %>%
+  mutate(
+    genotype = as.factor(genotype)
+  )
 
 p_bp_ed_genotype <-
   starch_train_whole %>%
@@ -136,7 +175,7 @@ p_bp_ed_genotype <-
     genotype = fct_recode(genotype, MR20 = "MR20_3", MR3 = "MR3_3")
   ) %>%
   ggplot(data = ., aes(x = genotype, y = starch)) + 
-  geom_boxplot(fill = "#d7191c", colour ="black")+
+  geom_boxplot(fill = "#d7191c", colour = "black") +
   xlab("Genotype")+
   ylab(expression(plain(Starch) ~~ group("[", mg ~~ g^{-1} ~ DW, "]")))+
   theme_bw(base_size = 10, base_rect_size = 1)+
@@ -145,17 +184,18 @@ p_bp_ed_genotype <-
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     legend.position = "none",
-    strip.background = element_rect(colour="black", fill = NA)
+    strip.background = element_rect(colour = "black", fill = NA)
   ) +
-  geom_text(y = 84, x = 1, label = "a") +
-  geom_text(y = 67, x = 2, label = "ab") +
-  geom_text(y = 67, x = 3, label = "ab") +
-  geom_text(y = 75, x = 4, label = "ab") +
-  geom_text(y = 120, x = 5, label = "ab") +
-  geom_text(y = 87, x = 6, label = "a") +
-  geom_text(y = 73, x = 7, label = "ab") +
-  geom_text(y = 77, x = 8, label = "a") +
-  geom_text(y = 100, x = 9, label = "ab") +
-  geom_text(y = 62, x = 10, label = "b") +
-  geom_text(y = 90, x = 11, label = "ab") +
-  geom_text(y = 98, x = 12, label = "a")
+  geom_text(data = genotype_label, 
+    aes(x = genotype, y = y_offset, label = text), inherit.aes = FALSE)
+  
+
+p_bp_starch_leafage_ed_pdf <- ggsave(
+  filename = "boxplot-starch-genotype-ed.pdf",
+  plot = p_bp_ed_genotype, path = here("out", "figs"),
+  width = 6.69, height = 3.5)
+
+p_bp_starch_leafage_ed_pub_pdf <- ggsave(
+  filename = "Fig5.pdf",
+  plot = p_bp_ed_genotype, path = here("pub", "figs"),
+  width = 6.69, height = 3.5)
