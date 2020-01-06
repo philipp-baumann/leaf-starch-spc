@@ -14,7 +14,7 @@ within this project can be found below.
 
 # Reproduce the analysis
 
-## Restore package
+## Restore packages
 
 To restore all required packages at versions defined in the file
 `renv.lock`, execute the following in the project directory:
@@ -66,7 +66,6 @@ are shown):
     ## │   ├── select-spc-xvalues.R
     ## │   └── vip-wrappers.R
     ## ├── README.Rmd
-    ## ├── README.html
     ## ├── README.md
     ## ├── _crop-images.R
     ## ├── data

@@ -16,7 +16,7 @@ The directory is self-contained and is designed to run reproducibly, either on y
 
 # Reproduce the analysis
 
-## Restore package
+## Restore packages
 
 To restore all required packages at versions defined in the file `renv.lock`, execute the following in the project directory:
 
