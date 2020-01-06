@@ -66,6 +66,7 @@ are shown):
     ## │   ├── select-spc-xvalues.R
     ## │   └── vip-wrappers.R
     ## ├── README.Rmd
+    ## ├── README.html
     ## ├── README.md
     ## ├── _crop-images.R
     ## ├── data
