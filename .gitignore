@@ -2,5 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-pub
+pub/writing
 packrat/lib*/
