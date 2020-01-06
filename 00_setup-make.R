@@ -30,6 +30,7 @@ scripts <- c(
   "23_remodel-cor-filtering.R",
   "24_remodel-starch-bands.R",
   "30_read-clean-process-test.R", # rest takes longer; graphs
+  "31_visualize-refdata.R",
   "40_predict-evaluate-train-test.R",
   "50_remodel-test.R",
   "51_interpret-test-vip.R",
