@@ -35,7 +35,7 @@ scripts <- c(
   "50_remodel-test.R",
   "51_interpret-test-vip.R",
   "52_remodel-test-vip-training.R",
-  "60_evaluate-remodel-test.R"
+  "60_evaluate-test.R"
 )
 
 plans <- map(rlang::set_names(scripts), code_to_plan)
