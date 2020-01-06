@@ -120,7 +120,9 @@ p_eval_training_self_cv <- cowplot::plot_grid(
   p_training_eval + theme(legend.position = "none"),
   p_training_self_eval %>% get_legend(),
   nrow = 1,
-  rel_widths = c(1, 1, 0.2)) +
+  rel_widths = c(1, 1, 0.2),
+  labels = c("A", "B")
+  ) +
   draw_label(expression(paste("Measured starch [", mg~g^-1, " DM]")), 
     x = 0.5, y = 0, vjust = -0.3, angle = 0, size = 10) +
   draw_label(expression(paste("Predicted starch [", mg~g^-1, " DM]")), 
@@ -131,7 +133,7 @@ p_eval_train_self_cv_pdf <- ggsave(filename = "eval-training-self-cv.pdf",
   path = here("out", "figs"), width = 6.5, height = 3)
 
 p_eval_train_self_cv_pdf_pub <- ggsave(
-  filename = "Fig6.pdf",
+  filename = "Fig7.pdf",
   plot = p_eval_training_self_cv,
   path = here("pub", "figs"), width = 6.69, height = 3)
 
@@ -280,7 +282,7 @@ p_test_eval_pdf <- ggsave(filename = "test-eval.pdf", plot = p_test_eval,
   path = here("out", "figs"), width = 3, height = 3)
 
 p_test_eval_pdf_pub <- ggsave(
-  filename = "Fig7.pdf", plot = p_test_eval,
+  filename = "Fig8.pdf", plot = p_test_eval,
   path = here("pub", "figs"), width = 3.34, height = 3.34)
 
 
