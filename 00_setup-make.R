@@ -3,14 +3,26 @@
 ## Description:
 ################################################################################
 
-pkgs <- c(
-  # reproducibility and data wrangling
-  "here", "drake", "tidyverse", "data.table",
-  "simplerspec", "ChemometricsWithR", # spectroscopy
-  "future", "furrr", "doFuture", # parallel computation
-  "ggpubr", "cowplot", # graphics
-  "lineup", "varrank") # correlation and information theory metrics
-purrr::walk(pkgs, library, character.only = TRUE)
+## not yet supported in renv package detection machinery
+# pkgs <- c(
+#   # reproducibility and data wrangling
+#   "here", "drake", "tidyverse", "data.table",
+#   "simplerspec", "ChemometricsWithR", # spectroscopy
+#   "future", "furrr", "doFuture", # parallel computation
+#   "ggpubr", "cowplot", # graphics
+#   "lineup", "varrank") # correlation metrics
+# purrr::walk(pkgs, library, character.only = TRUE)
+
+xfun::pkg_attach(
+  c(
+    # reproducibility and data wrangling
+    "here", "drake", "tidyverse", "data.table",  
+    "simplerspec", "ChemometricsWithR", # spectroscopy
+    "future", "furrr", "doFuture", # parallel computation
+    "ggpubr", "cowplot", # graphics
+    "lineup" # correlation metrics
+  )
+)
 
 funs <- list(
    here("R", "helpers.R"),
