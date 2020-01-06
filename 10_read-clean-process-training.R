@@ -195,8 +195,12 @@ p_spc_train_model <- cowplot::plot_grid(
 
 p_spc_train_model_pdf <- ggsave(filename = "spc-train.pdf",
   plot = p_spc_train_model, path = here("out", "figs"),
-  width = 7, height = 4)
+  width = 6.69, height = 4)
 
-p_spc_train_model_pdf_pub <- ggsave(filename = "Fig5.pdf",
+p_spc_train_model_pdf_pub <- ggsave(filename = "Fig6.pdf",
   plot = p_spc_train_model, path = here("pub", "figs"),
   width = 6.69, height = 4)
+
+p_spc_train_model_png_pub <- ggsave(filename = "Fig6.png",
+  plot = p_spc_train_model, path = here("pub", "figs"),
+  width = 6.69, height = 4, dpi = 600)
