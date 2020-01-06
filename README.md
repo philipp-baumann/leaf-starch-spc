@@ -8,11 +8,34 @@ This is the code repository that produces the outputs of the manuscript
 with the above title.
 
 The directory is self-contained and is designed to run reproducibly,
-either on your local operating system or a docker container. The
+either on your local operating system or a Docker container. The
 description about how deploy this Docker image and run all analyses
 within this project can be found below.
 
-# Comments on reproduciblity
+# Reproduce the analysis
+
+## Restore package
+
+To restore all required packages at versions defined in the file
+`renv.lock`, execute the following in the project directory:
+
+``` r
+install.packages("remotes")
+remotes::install_github("rstudio/renv@0.7.0-111")
+# Automatically installs packages from CRAN and github 
+# as specified in `renv.lock`
+renv::restore()
+```
+
+## Rerun all analyses
+
+You can either manually run the scripts in sequential order, or deploy
+the entire workflow reproducibly and automated using the drake R
+package:
+
+``` r
+source("00_setup-make.R")
+```
 
 # File overview
 
@@ -29,11 +52,14 @@ are shown):
     ## ├── 24_remodel-starch-bands.R
     ## ├── 25_remodel-mutual-information.R
     ## ├── 30_read-clean-process-test.R
+    ## ├── 31_visualize-refdata.R
     ## ├── 40_predict-evaluate-train-test.R
     ## ├── 50_remodel-test.R
     ## ├── 51_interpret-test-vip.R
     ## ├── 52_remodel-test-vip-training.R
     ## ├── 60_evaluate-remodel-test.R
+    ## ├── 60_evaluate-test.R
+    ## ├── Dockerfile
     ## ├── R
     ## │   ├── helpers.R
     ## │   ├── modeling.R
@@ -61,6 +87,9 @@ are shown):
     ## │   │   ├── wavelength-vip-training-highlight.xlsx
     ## │   │   └── wavelength-vip-training.csv
     ## │   └── figs
+    ## │       ├── boxplot-starch-genotype-ed.pdf
+    ## │       ├── boxplot-starch-leaf-age.pdf
+    ## │       ├── boxplot-starch-sets.pdf
     ## │       ├── eval-training-mlr-cv.pdf
     ## │       ├── eval-training-raw-cv.pdf
     ## │       ├── eval-training-self-cv.pdf
@@ -83,21 +112,30 @@ are shown):
     ## │       └── test-eval.pdf
     ## ├── pub
     ## │   ├── figs
+    ## │   │   ├── Fig2.pdf
     ## │   │   ├── Fig4.pdf
+    ## │   │   ├── Fig5.pdf
+    ## │   │   ├── Fig6.pdf
+    ## │   │   ├── Fig6.png
+    ## │   │   ├── Fig7.pdf
+    ## │   │   ├── Fig8.pdf
+    ## │   │   ├── S2.pdf
+    ## │   │   ├── S3.pdf
+    ## │   │   ├── S4.pdf
+    ## │   │   ├── S5.pdf
+    ## │   │   ├── eval.pdf
     ## │   │   ├── figs-cropped
     ## │   │   └── figs-original
+    ## │   ├── figs.zip
+    ## │   ├── submission-01
+    ## │   │   ├── figs-pub-numbered.zip
+    ## │   │   └── figs.zip
     ## │   └── writing
-    ## │       ├── PSC_symposium_2019_lea-comm-pb.docx
-    ## │       ├── PSC_symposium_2019_lea.docx
-    ## │       ├── Supplement3.docx
-    ## │       ├── Supplement3_PB.docx
-    ## │       ├── paper-plant-methods-clover-starch-spc.pdf
-    ## │       ├── paper_plant_methods_FieldSpec4_LeaFreyKoro3.docx
-    ## │       ├── paper_plant_methods_FieldSpec4_LeaFreyKoro3Baumann.docx
-    ## │       ├── paper_plant_methods_LeaR.docx
-    ## │       ├── paper_plant_methods_LeaR_pb.docx
-    ## │       ├── paper_plant_methods_LeaR_pb.pdf
-    ## │       ├── paper_plant_methods_Lea_Roli2.docx
-    ## │       ├── paper_plant_methods_Lea_Roli2_PB.docx
-    ## │       └── paper_plant_methods_Lea_Roli2_PB_tab-filt.docx
-    ## └── ssd-to-vm.sh
+    ## ├── renv
+    ## │   ├── activate.R
+    ## │   ├── library
+    ## │   │   └── R-3.6
+    ## │   └── settings.dcf
+    ## ├── renv.lock
+    ## ├── ssd-to-vm.sh
+    ## └── vm-to-ssd.sh
