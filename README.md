@@ -8,7 +8,7 @@ This is the code repository that produces the outputs of the manuscript
 with the above title.
 
 The directory is self-contained and is designed to run reproducibly,
-either on your local operating system or a Docker container. The
+either on your local operating system or in a Docker container. The
 description about how deploy this Docker image and run all analyses
 within this project can be found below.
 
