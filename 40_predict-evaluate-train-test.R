@@ -241,14 +241,18 @@ test_predobs <- predict_from_spc(
   select(sample_id, sample_rep, harvest_time, starch, pls_starch) %>%
   mutate(eval_type = paste0("Test using full training (n = ", nrow(.), ")"))
 
-test_eval <- evaluate_model(data = test_predobs, 
-  obs = starch, pred = pls_starch) %>% 
+test_eval <- evaluate_model(data = test_predobs,
+  obs = starch, pred = pls_starch) %>%
   # Modify columns for plot annotation
   mutate(
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
-      "'", sprintf("%.0f", rmse), "'"))),
+      "'", sprintf("%.1f", rmse), "'"))),
+    bias = as.character(as.expression(paste0("bias == ", "~",
+      "'", sprintf("%.1f", bias), "'"))),
     r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
       "'", sprintf("%.2f", r2), "'"))),
+    rpd = as.character(as.expression(paste0("RPD == ", "~",
+      "'", sprintf("%.1f", rpd), "'"))),
     one_one = "1:1"
   )
 
@@ -258,14 +262,18 @@ test_predobs_vip_bigger1 <- predict_from_spc(
   select(sample_id, sample_rep, harvest_time, starch, pls_starch) %>%
   mutate(eval_type = paste0("Test using VIP training (n = ", nrow(.), ")"))
 
-test_vip_bigger1_eval <- evaluate_model(data = test_predobs_vip_bigger1, 
+test_vip_bigger1_eval <- evaluate_model(data = test_predobs_vip_bigger1,
   obs = starch, pred = pls_starch) %>% 
   # Modify columns for plot annotation
   mutate(
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
-      "'", sprintf("%.0f", rmse), "'"))),
+      "'", sprintf("%.1f", rmse), "'"))),
+    bias = as.character(as.expression(paste0("bias == ", "~",
+      "'", sprintf("%.1f", bias), "'"))),
     r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
       "'", sprintf("%.2f", r2), "'"))),
+    rpd = as.character(as.expression(paste0("RPD == ", "~",
+      "'", sprintf("%.1f", rpd), "'"))),
     one_one = "1:1"
   )
 
@@ -281,6 +289,9 @@ test_eval_lm <- lm(pls_starch ~ starch, data = test_predobs)
 test_eval_lm_vip_bigger1 <- lm(pls_starch ~ starch,
   data = test_predobs_vip_bigger1)
 
+# Expression for regression equation
+test_eval_lm_eqn <- lm_eqn(lm_object = test_eval_lm)
+
 p_test_eval <- 
   test_predobs %>%
   mutate(
@@ -295,11 +306,19 @@ p_test_eval <-
   coord_fixed(ratio = 1) +
   facet_wrap(~ eval_type) +
   geom_text(data = test_eval,
-    aes(x = Inf, y = -Inf, label = r2), size = 3,
-      hjust = 1.27, vjust = -3.5, parse = TRUE) +
+    aes(x = Inf, y = -Inf, label = r2), size = 2.75,
+      hjust = 1.1, vjust = -5.5, parse = TRUE) +
   geom_text(data = test_eval,
-    aes(x = Inf, y = -Inf, label = rmse), size = 3,
-      hjust = 1.08, vjust = -2.5, parse = TRUE) +
+    aes(x = Inf, y = -Inf, label = rmse), size = 2.75,
+      hjust = 1.06, vjust = -5, parse = TRUE) +
+  geom_text(data = test_eval,
+    aes(x = Inf, y = -Inf, label = bias), size = 2.75,
+      hjust = 1.08, vjust = -3.25, parse = TRUE) +
+  geom_text(data = test_eval,
+    aes(x = Inf, y = -Inf, label = rpd), size = 2.75,
+      hjust = 1.08, vjust = -1.0, parse = TRUE) +
+  annotate("text", x = 119, y = 76, label = test_eval_lm_eqn,
+    parse = TRUE, size = 2.75) +
   xlab(expression(paste("Measured starch [mg ", g^{-1}, " DW]"))) +
   ylab(expression(paste("Predicted starch [mg ", g^{-1}, " DW]"))) +
   xlim(xyrange_test[1] - 0.02 * diff(range(xyrange_test)),
@@ -315,7 +334,7 @@ p_test_eval <-
   )
 
 p_test_eval_pdf <- ggsave(filename = "test-eval.pdf", plot = p_test_eval,
-  path = here("out", "figs"), width = 3, height = 3)
+  path = here("out", "figs"), width = 3.34, height = 3.34)
 
 p_test_eval_pdf_pub <- ggsave(
   filename = "Fig8.pdf", plot = p_test_eval,
