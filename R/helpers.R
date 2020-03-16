@@ -52,3 +52,16 @@ xy_range <- function(data, x, y, range_scalar = 0.01) {
 }
 
 minmax <- function(x) {c(min(x), max(x))}
+
+# function to create the text equation
+lm_eqn <- function(lm_object) {
+  eq <-
+    substitute(
+      italic(y) == a + b %.% italic(x),
+      list(
+        a = unname(format(coef(lm_object)[1], digits = 2)),
+        b = unname(format(coef(lm_object)[2], digits = 2))
+      )
+    )
+  as.character(as.expression(eq))
+}

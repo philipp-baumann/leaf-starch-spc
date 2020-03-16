@@ -16,19 +16,27 @@ training_self_eval <- evaluate_model(data = training_self_predobs,
   # Modify columns for plot annotation
   mutate(
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
-      "'", sprintf("%.0f", rmse), "'"))),
+      "'", sprintf("%.1f", rmse), "'"))),
+    bias = as.character(as.expression(paste0("bias == ", "~",
+      "'", sprintf("%.1f", bias), "'"))),
     r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
       "'", sprintf("%.2f", r2), "'"))),
+    rpd = as.character(as.expression(paste0("RPD == ", "~",
+      "'", sprintf("%.1f", rpd), "'"))),
     one_one = "1:1"
   )
 
 training_self_eval_lm <- lm(pls_starch ~ starch, data = training_self_predobs)
 
+# Expression for regresson equation
+training_self_lm_eqn <- lm_eqn(lm_object = training_self_eval_lm)
+
 # Get xy limits for plot
 xyrange_training_self <- xy_range(data = training_self_predobs,
   x = starch, y = pls_starch)
 
-p_training_self_eval <- training_self_predobs %>%
+p_training_self_eval <-
+  training_self_predobs %>%
   inner_join(x = ., y = spc_train_model %>% select(sample_id, leaf_age)) %>%
   ggplot(data = .,
     aes(x = starch, y = pls_starch)) +
@@ -39,11 +47,19 @@ p_training_self_eval <- training_self_predobs %>%
   coord_fixed(ratio = 1) +
   facet_wrap(~ eval_type) +
   geom_text(data = training_self_eval,
-    aes(x = Inf, y = -Inf, label = r2), size = 3,
-      hjust = 1.27, vjust = -3.5, parse = TRUE) +
+    aes(x = Inf, y = -Inf, label = r2), size = 2.75,
+      hjust = 1.1, vjust = -5.5, parse = TRUE) +
   geom_text(data = training_self_eval,
-    aes(x = Inf, y = -Inf, label = rmse), size = 3,
-      hjust = 1.08, vjust = -2.5, parse = TRUE) +
+    aes(x = Inf, y = -Inf, label = rmse), size = 2.75,
+      hjust = 1.06, vjust = -5, parse = TRUE) +
+  geom_text(data = training_self_eval,
+    aes(x = Inf, y = -Inf, label = bias), size = 2.75,
+      hjust = 1.08, vjust = -3.25, parse = TRUE) +
+  geom_text(data = training_self_eval,
+    aes(x = Inf, y = -Inf, label = rpd), size = 2.75,
+      hjust = 1.08, vjust = -1.0, parse = TRUE) +
+  annotate("text", x = 100, y = 45, label = training_self_lm_eqn,
+    parse = TRUE, size = 2.75) +
   # xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
   xlab("") +
   ylab("") +
@@ -65,13 +81,20 @@ p_training_self_eval <- training_self_predobs %>%
 
 training_eval_lm <- lm(pred ~ obs, data = pls_starch$predobs)
 
+# Expression for regresson equation
+training_lm_eqn <- lm_eqn(lm_object = training_eval_lm)
+
 training_eval <- pls_starch$stats %>%
   # Modify columns for plot annotation
   mutate(
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
-      "'", sprintf("%.0f", rmse), "'"))),
+      "'", sprintf("%.1f", rmse), "'"))),
+    bias = as.character(as.expression(paste0("bias == ", "~",
+      "'", sprintf("%.1f", bias), "'"))),
     r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
       "'", sprintf("%.2f", r2), "'"))),
+    rpd = as.character(as.expression(paste0("RPD == ", "~",
+      "'", sprintf("%.1f", rpd), "'"))),
     one_one = "1:1"
   )
 
@@ -79,38 +102,47 @@ training_eval <- pls_starch$stats %>%
 xyrange_training <- xy_range(data = pls_starch$predobs,
   x = obs, y = pred)
 
-p_training_eval <- pls_starch$predobs %>%
+p_training_eval <- 
+  pls_starch$predobs %>%
   inner_join(x = ., y = spc_train_model %>% select(sample_id, leaf_age)) %>%
   mutate(eval_type = paste0("Training cross-validated (n = ", nrow(.), ")")
   ) %>%
   ggplot(data = ., aes(x = obs, y = pred)) +
-    geom_point(aes(colour = leaf_age, shape = leaf_age), alpha = 0.4) +
-    geom_abline(slope = 1) +
-    geom_abline(slope = training_eval_lm$coefficients[2],
-      intercept = training_eval_lm$coefficients[1], linetype = 2) +
-    coord_fixed(ratio = 1) +
-    facet_wrap(~ eval_type) +
-    geom_text(data = training_eval,
-      aes(x = Inf, y = -Inf, label = r2), size = 3,
-      hjust = 1.27, vjust = -3.5, parse = TRUE) +
-    geom_text(data = training_eval,
-      aes(x = Inf, y = -Inf, label = rmse), size = 3,
-      hjust = 1.08, vjust = -2.5, parse = TRUE) +
-    # xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
-    xlab("") +
-    # ylab(expression(paste("Predicted starch [", mg~g^-1, " DM]"))) +
-    ylab("") +
-    xlim(xyrange_training[1] - 0.02 * diff(range(xyrange_training)),
-         xyrange_training[2] + 0.02 * diff(range(xyrange_training))) +
-    ylim(xyrange_training[1] - 0.02 * diff(range(xyrange_training)),
-         xyrange_training[2] + 0.02 * diff(range(xyrange_training))) +
-    labs(colour = "Leaf age", shape = "Leaf age") +
-    theme_bw() +
-    theme(
-      strip.background = element_rect(colour = "black", fill = NA),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank()
-    )
+  geom_point(aes(colour = leaf_age, shape = leaf_age), alpha = 0.4) +
+  geom_abline(slope = 1) +
+  geom_abline(slope = training_eval_lm$coefficients[2],
+    intercept = training_eval_lm$coefficients[1], linetype = 2) +
+  coord_fixed(ratio = 1) +
+  facet_wrap(~ eval_type) +
+  geom_text(data = training_eval,
+    aes(x = Inf, y = -Inf, label = r2), size = 2.75,
+      hjust = 1.1, vjust = -5.5, parse = TRUE) +
+  geom_text(data = training_eval,
+    aes(x = Inf, y = -Inf, label = rmse), size = 2.75,
+      hjust = 1.06, vjust = -5, parse = TRUE) +
+  geom_text(data = training_eval,
+    aes(x = Inf, y = -Inf, label = bias), size = 2.75,
+      hjust = 1.08, vjust = -3.25, parse = TRUE) +
+  geom_text(data = training_eval,
+    aes(x = Inf, y = -Inf, label = rpd), size = 2.75,
+      hjust = 1.08, vjust = -1.0, parse = TRUE) +
+  annotate("text", x = 100, y = 45, label = training_lm_eqn,
+    parse = TRUE, size = 2.75) +
+  # xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
+  xlab("") +
+  # ylab(expression(paste("Predicted starch [", mg~g^-1, " DM]"))) +
+  ylab("") +
+  xlim(xyrange_training[1] - 0.02 * diff(range(xyrange_training)),
+       xyrange_training[2] + 0.02 * diff(range(xyrange_training))) +
+  ylim(xyrange_training[1] - 0.02 * diff(range(xyrange_training)),
+       xyrange_training[2] + 0.02 * diff(range(xyrange_training))) +
+  labs(colour = "Leaf age", shape = "Leaf age") +
+  theme_bw() +
+  theme(
+    strip.background = element_rect(colour = "black", fill = NA),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
 
 
 ## Combine training self-prediction and cross-validated training evaluation ====
