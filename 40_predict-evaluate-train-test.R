@@ -553,15 +553,22 @@ training_eval_harvest_time <- train_predobs_meta %>%
   # Modify columns for plot annotation
   mutate(
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
-      "'", sprintf("%.0f", rmse), "'"))),
+      "'", sprintf("%.1f", rmse), "'"))),
+    bias = as.character(as.expression(paste0("bias == ", "~",
+      "'", sprintf("%.1f", bias), "'"))),
     r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
       "'", sprintf("%.2f", r2), "'"))),
+    rpd = as.character(as.expression(paste0("RPD == ", "~",
+      "'", sprintf("%.1f", rpd), "'"))),
     one_one = "1:1"
   )
 
-regline_train_harvest <- train_predobs_meta %>%
+train_harvest_lm_lst <- train_predobs_meta %>%
   split(.$harvest_time) %>%
-  map(~ lm(pred ~ obs, data = .x)) %>%
+  map(~ lm(pred ~ obs, data = .x))
+
+regline_train_harvest <- 
+  train_harvest_lm_lst %>%
   map(broom::tidy) %>%
   imap(~ add_column(.x, harvest_time = .y, .before = 1)) %>%
   map(~ tidyr::spread(.x, term, estimate) %>%
@@ -574,21 +581,37 @@ regline_train_harvest <- train_predobs_meta %>%
   imap(~ as_tibble(.x) %>% add_column(harvest_time = .y, .before = 1)) %>%
   bind_rows()
 
+# Expression for regresson equation
+training_harvest_lm_eqn <- 
+  train_harvest_lm_lst %>%
+  map(~ lm_eqn(lm_object = .x)) %>%
+  map(~ tibble(label = .x)) %>%
+  imap_dfr(~ add_column(.x, harvest_time = .y))
+
 p_training_predobs_harvest_time <-
   train_predobs_meta %>%
   ggplot(aes(x = obs, y = pred), data = .) +
   geom_abline(slope = 1, colour = "black") +
-  # geom_abline(data = regline_train_harvest, aes(intercept = int, slope = slope),
-  #   colour = "black") +
+  geom_abline(data = regline_train_harvest, aes(intercept = int, slope = slope),
+    colour = "black", linetype = 2) +
   geom_point(aes(colour = leaf_age, shape = leaf_age), alpha = 0.5) +
   # scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
   facet_wrap(~ harvest_time) +
   geom_text(data = training_eval_harvest_time,
-      aes(x = Inf, y = -Inf, label = r2), size = 3,
-      hjust = 1.27, vjust = -2.75, parse = TRUE) +
+    aes(x = Inf, y = -Inf, label = r2), size = 2.75,
+      hjust = 1.1, vjust = -5.5, parse = TRUE) +
   geom_text(data = training_eval_harvest_time,
-      aes(x = Inf, y = -Inf, label = rmse), size = 3,
-      hjust = 1.08, vjust = -1.75, parse = TRUE) +
+    aes(x = Inf, y = -Inf, label = rmse), size = 2.75,
+      hjust = 1.06, vjust = -5, parse = TRUE) +
+  geom_text(data = training_eval_harvest_time,
+    aes(x = Inf, y = -Inf, label = bias), size = 2.75,
+      hjust = 1.08, vjust = -3.25, parse = TRUE) +
+  geom_text(data = training_eval_harvest_time,
+    aes(x = Inf, y = -Inf, label = rpd), size = 2.75,
+      hjust = 1.08, vjust = -1.0, parse = TRUE) +
+  geom_text(data = training_harvest_lm_eqn,
+    aes(x = 105, y = 52.5, label = label), size = 2.75,
+    parse = TRUE) +
   coord_fixed(ratio = 1) +
   xlim(xyrange_training[1] - 0.02 * diff(range(xyrange_training)),
        xyrange_training[2] + 0.02 * diff(range(xyrange_training))) +
@@ -608,12 +631,12 @@ p_training_predobs_harvest_time <-
 p_training_predobs_harvest_time_pdf <- ggsave(
   filename = "predobs-training-harvest-time.pdf",
   plot = p_training_predobs_harvest_time, path = here("out", "figs"),
-  width = 6.69, height = 2.6)
+  width = 6.69, height = 3.4)
 
 p_training_predobs_harvest_time_pdf_pub <- ggsave(
   filename = "S3.pdf",
   plot = p_training_predobs_harvest_time, path = here("pub", "figs"),
-  width = 6.69, height = 2.6)
+  width = 6.69, height = 3.4)
 
 
 ## Test predictions using correlation filtered training model ==================
