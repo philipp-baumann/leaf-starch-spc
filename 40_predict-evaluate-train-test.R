@@ -173,13 +173,20 @@ p_eval_train_self_cv_pdf_pub <- ggsave(
 
 training_raw_eval_lm <- lm(pred ~ obs, data = pls_starch_raw$predobs)
 
+# Expression for regression equation
+training_raw_lm_eqn <- lm_eqn(lm_object = training_raw_eval_lm)
+
 training_raw_eval <- pls_starch_raw$stats %>%
   # Modify columns for plot annotation
   mutate(
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
-      "'", sprintf("%.0f", rmse), "'"))),
+      "'", sprintf("%.1f", rmse), "'"))),
+    bias = as.character(as.expression(paste0("bias == ", "~",
+      "'", sprintf("%.1f", bias), "'"))),
     r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
       "'", sprintf("%.2f", r2), "'"))),
+    rpd = as.character(as.expression(paste0("RPD == ", "~",
+      "'", sprintf("%.1f", rpd), "'"))),
     one_one = "1:1"
   )
 
@@ -187,7 +194,8 @@ training_raw_eval <- pls_starch_raw$stats %>%
 xyrange_training_raw <- xy_range(data = pls_starch_raw$predobs,
   x = obs, y = pred)
 
-p_training_raw_eval <- pls_starch_raw$predobs %>%
+p_training_raw_eval <- 
+  pls_starch_raw$predobs %>%
   inner_join(x = ., y = spc_train_model %>% select(sample_id, leaf_age)) %>%
   mutate(eval_type = paste0("Training CV (n = ", nrow(.), ")")
   ) %>%
@@ -196,32 +204,40 @@ p_training_raw_eval <- pls_starch_raw$predobs %>%
     geom_abline(slope = 1) +
     geom_abline(slope = training_raw_eval_lm$coefficients[2],
       intercept = training_raw_eval_lm$coefficients[1], linetype = 2) +
-    coord_fixed(ratio = 1) +
-    facet_wrap(~ eval_type) +
-    geom_text(data = training_raw_eval,
-      aes(x = Inf, y = -Inf, label = r2), size = 3,
-      hjust = 1.27, vjust = -3.5, parse = TRUE) +
-    geom_text(data = training_raw_eval,
-      aes(x = Inf, y = -Inf, label = rmse), size = 3,
-      hjust = 1.08, vjust = -2.5, parse = TRUE) +
-    xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
-    ylab(expression(paste("Predicted starch [", mg~g^-1, " DM]"))) +
-    xlim(xyrange_training_raw[1] - 0.02 * diff(range(xyrange_training_raw)),
-         xyrange_training_raw[2] + 0.02 * diff(range(xyrange_training_raw))) +
-    ylim(xyrange_training_raw[1] - 0.02 * diff(range(xyrange_training_raw)),
-         xyrange_training_raw[2] + 0.02 * diff(range(xyrange_training_raw))) +
-    labs(colour = "Leaf age", shape = "Leaf age") +
-    theme_bw() +
-    theme(
-      axis.title = element_text(size = 10),
-      axis.text = element_text(size = 10),
-      strip.text = element_text(size = 9),
-      legend.title = element_text(size = 10),
-      strip.background = element_rect(colour = "black", fill = NA),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      legend.position = "right"
-    )
+  coord_fixed(ratio = 1) +
+  facet_wrap(~ eval_type) +
+  geom_text(data = training_raw_eval,
+    aes(x = Inf, y = -Inf, label = r2), size = 2.75,
+      hjust = 1.1, vjust = -5.5, parse = TRUE) +
+  geom_text(data = training_raw_eval,
+    aes(x = Inf, y = -Inf, label = rmse), size = 2.75,
+      hjust = 1.06, vjust = -5, parse = TRUE) +
+  geom_text(data = training_raw_eval,
+    aes(x = Inf, y = -Inf, label = bias), size = 2.75,
+      hjust = 1.08, vjust = -3.25, parse = TRUE) +
+  geom_text(data = training_raw_eval,
+    aes(x = Inf, y = -Inf, label = rpd), size = 2.75,
+      hjust = 1.08, vjust = -1.0, parse = TRUE) +
+  annotate("text", x = 97, y = 62, label = training_raw_lm_eqn,
+    parse = TRUE, size = 2.75) +
+  xlab(expression(paste("Measured starch [", mg~g^-1, " DM]"))) +
+  ylab(expression(paste("Predicted starch [", mg~g^-1, " DM]"))) +
+  xlim(xyrange_training_raw[1] - 0.02 * diff(range(xyrange_training_raw)),
+       xyrange_training_raw[2] + 0.02 * diff(range(xyrange_training_raw))) +
+  ylim(xyrange_training_raw[1] - 0.02 * diff(range(xyrange_training_raw)),
+       xyrange_training_raw[2] + 0.02 * diff(range(xyrange_training_raw))) +
+  labs(colour = "Leaf age", shape = "Leaf age") +
+  theme_bw() +
+  theme(
+    axis.title = element_text(size = 10),
+    axis.text = element_text(size = 10),
+    strip.text = element_text(size = 9),
+    legend.title = element_text(size = 10),
+    strip.background = element_rect(colour = "black", fill = NA),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "right"
+  )
 
 p_eval_train_raw_pdf <- ggsave(filename = "eval-training-raw-cv.pdf",
   plot = p_training_raw_eval,
