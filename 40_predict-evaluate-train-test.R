@@ -572,6 +572,8 @@ training_eval_harvest_time <- train_predobs_meta %>%
   bind_rows() %>%
   # Modify columns for plot annotation
   mutate(
+    ncomp = rep(as.character(as.expression(paste0("ncomp == ", "~",
+      "'", sprintf("%.0f", pls_starch$stats$ncomp), "'"))), 2),
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
       "'", sprintf("%.1f", rmse), "'"))),
     bias = as.character(as.expression(paste0("bias == ", "~",
@@ -617,6 +619,9 @@ p_training_predobs_harvest_time <-
   geom_point(aes(colour = leaf_age, shape = leaf_age), alpha = 0.5) +
   # scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
   facet_wrap(~ harvest_time) +
+  geom_text(data = training_eval_harvest_time,
+    aes(x = Inf, y = -Inf, label = ncomp), size = 2.75,
+      hjust = 1.1, vjust = -7.5, parse = TRUE) +
   geom_text(data = training_eval_harvest_time,
     aes(x = Inf, y = -Inf, label = r2), size = 2.75,
       hjust = 1.1, vjust = -5.5, parse = TRUE) +
