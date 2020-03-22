@@ -189,6 +189,8 @@ training_raw_lm_eqn <- lm_eqn(lm_object = training_raw_eval_lm)
 training_raw_eval <- pls_starch_raw$stats %>%
   # Modify columns for plot annotation
   mutate(
+    ncomp = as.character(as.expression(paste0("ncomp == ", "~",
+      "'", sprintf("%.0f", pls_starch_raw$stats$ncomp), "'"))),
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
       "'", sprintf("%.1f", rmse), "'"))),
     bias = as.character(as.expression(paste0("bias == ", "~",
@@ -216,6 +218,9 @@ p_training_raw_eval <-
       intercept = training_raw_eval_lm$coefficients[1], linetype = 2) +
   coord_fixed(ratio = 1) +
   facet_wrap(~ eval_type) +
+  geom_text(data = training_raw_eval,
+    aes(x = 7.5, y = 57, label = ncomp), size = 2.75,
+      hjust = 0, vjust = 0, parse = TRUE) +
   geom_text(data = training_raw_eval,
     aes(x = Inf, y = -Inf, label = r2), size = 2.75,
       hjust = 1.1, vjust = -5.5, parse = TRUE) +
@@ -271,6 +276,8 @@ test_eval <- evaluate_model(data = test_predobs,
   obs = starch, pred = pls_starch) %>%
   # Modify columns for plot annotation
   mutate(
+    ncomp = as.character(as.expression(paste0("ncomp == ", "~",
+      "'", sprintf("%.0f", pls_starch$stats$ncomp), "'"))),
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
       "'", sprintf("%.1f", rmse), "'"))),
     bias = as.character(as.expression(paste0("bias == ", "~",
@@ -331,6 +338,9 @@ p_test_eval <-
     intercept = test_eval_lm$coefficients[1], linetype = 2) +
   coord_fixed(ratio = 1) +
   facet_wrap(~ eval_type) +
+  geom_text(data = test_eval,
+    aes(x = Inf, y = -Inf, label = ncomp), size = 2.75,
+      hjust = 1.1, vjust = -7.25, parse = TRUE) +
   geom_text(data = test_eval,
     aes(x = Inf, y = -Inf, label = r2), size = 2.75,
       hjust = 1.1, vjust = -5.5, parse = TRUE) +
