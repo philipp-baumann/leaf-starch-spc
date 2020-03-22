@@ -12,9 +12,11 @@ training_self_predobs <- predict_from_spc(
   mutate(eval_type = paste0("Training (n = ", nrow(.), ")"))
 
 training_self_eval <- evaluate_model(data = training_self_predobs, 
-  obs = starch, pred = pls_starch) %>% 
+  obs = starch, pred = pls_starch) %>%
   # Modify columns for plot annotation
   mutate(
+    ncomp = as.character(as.expression(paste0("ncomp == ", "~",
+      "'", sprintf("%.0f", pls_starch$stats$ncomp), "'"))),
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
       "'", sprintf("%.1f", rmse), "'"))),
     bias = as.character(as.expression(paste0("bias == ", "~",
@@ -46,6 +48,9 @@ p_training_self_eval <-
     intercept = training_self_eval_lm$coefficients[1], linetype = 2) +
   coord_fixed(ratio = 1) +
   facet_wrap(~ eval_type) +
+  geom_text(data = training_self_eval,
+    aes(x = Inf, y = -Inf, label = ncomp), size = 2.75,
+      hjust = 1.1, vjust = -7.5, parse = TRUE) +
   geom_text(data = training_self_eval,
     aes(x = Inf, y = -Inf, label = r2), size = 2.75,
       hjust = 1.1, vjust = -5.5, parse = TRUE) +
@@ -87,6 +92,8 @@ training_lm_eqn <- lm_eqn(lm_object = training_eval_lm)
 training_eval <- pls_starch$stats %>%
   # Modify columns for plot annotation
   mutate(
+    ncomp = as.character(as.expression(paste0("ncomp == ", "~",
+      "'", sprintf("%.0f", pls_starch$stats$ncomp), "'"))),
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
       "'", sprintf("%.1f", rmse), "'"))),
     bias = as.character(as.expression(paste0("bias == ", "~",
@@ -114,6 +121,9 @@ p_training_eval <-
     intercept = training_eval_lm$coefficients[1], linetype = 2) +
   coord_fixed(ratio = 1) +
   facet_wrap(~ eval_type) +
+  geom_text(data = training_eval,
+    aes(x = Inf, y = -Inf, label = ncomp), size = 2.75,
+      hjust = 1.1, vjust = -7.5, parse = TRUE) +
   geom_text(data = training_eval,
     aes(x = Inf, y = -Inf, label = r2), size = 2.75,
       hjust = 1.1, vjust = -5.5, parse = TRUE) +
