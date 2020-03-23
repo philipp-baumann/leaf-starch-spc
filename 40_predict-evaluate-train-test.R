@@ -572,6 +572,7 @@ training_eval_harvest_time <- train_predobs_meta %>%
   bind_rows() %>%
   # Modify columns for plot annotation
   mutate(
+    n = as.character(as.expression(paste0("italic(n) == ", "~", n))),
     ncomp = rep(as.character(as.expression(paste0("ncomp == ", "~",
       "'", sprintf("%.0f", pls_starch$stats$ncomp), "'"))), 2),
     rmse = as.character(as.expression(paste0("RMSE == ", "~",
@@ -620,20 +621,23 @@ p_training_predobs_harvest_time <-
   # scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
   facet_wrap(~ harvest_time) +
   geom_text(data = training_eval_harvest_time,
+    aes(x = 116.5, y = 41, label = n), size = 2.75,
+    parse = TRUE) +
+  geom_text(data = training_eval_harvest_time,
     aes(x = Inf, y = -Inf, label = ncomp), size = 2.75,
-      hjust = 1.1, vjust = -7.5, parse = TRUE) +
+    hjust = 1.1, vjust = -7.5, parse = TRUE) +
   geom_text(data = training_eval_harvest_time,
     aes(x = Inf, y = -Inf, label = r2), size = 2.75,
       hjust = 1.1, vjust = -5.5, parse = TRUE) +
   geom_text(data = training_eval_harvest_time,
     aes(x = Inf, y = -Inf, label = rmse), size = 2.75,
-      hjust = 1.06, vjust = -5, parse = TRUE) +
+    hjust = 1.06, vjust = -5, parse = TRUE) +
   geom_text(data = training_eval_harvest_time,
     aes(x = Inf, y = -Inf, label = bias), size = 2.75,
-      hjust = 1.08, vjust = -3.25, parse = TRUE) +
+    hjust = 1.08, vjust = -3.25, parse = TRUE) +
   geom_text(data = training_eval_harvest_time,
     aes(x = Inf, y = -Inf, label = rpd), size = 2.75,
-      hjust = 1.08, vjust = -1.0, parse = TRUE) +
+    hjust = 1.08, vjust = -1.0, parse = TRUE) +
   geom_text(data = training_harvest_lm_eqn,
     aes(x = 105, y = 52.5, label = label), size = 2.75,
     parse = TRUE) +
