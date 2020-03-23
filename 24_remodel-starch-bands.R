@@ -61,11 +61,13 @@ eval_mlr_starch <- mlr_starch_norm$pred %>%
   ) %>%
   pull(metrics) %>%
   bind_rows() %>%
-  select(n, r2, rmse) %>%
+  select(n, r2, b, rmse, bias) %>%
   mutate(
     n = mean(n),
     r2 = mean(r2),
-    rmse = mean(rmse)
+    b = mean(b),
+    rmse = mean(rmse),
+    bias = mean(bias)
   ) %>%
   slice(1L)
 
