@@ -179,6 +179,7 @@ p_eval_train_self_cv_pdf_pub <- ggsave(
   plot = p_eval_training_self_cv,
   path = here("pub", "figs"), width = 6.69, height = 3)
 
+
 ## Model evaluation for PLSR training with raw spectral data ===================
 
 training_raw_eval_lm <- lm(pred ~ obs, data = pls_starch_raw$predobs)
@@ -666,6 +667,11 @@ p_training_predobs_harvest_time_pdf_pub <- ggsave(
   filename = "S3.pdf",
   plot = p_training_predobs_harvest_time, path = here("pub", "figs"),
   width = 6.69, height = 3.4)
+
+
+## Training evaluation grouped by genotype =====================================
+
+
 
 
 ## Test predictions using correlation filtered training model ==================
