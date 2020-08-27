@@ -671,7 +671,61 @@ p_training_predobs_harvest_time_pdf_pub <- ggsave(
 
 ## Training evaluation grouped by genotype =====================================
 
+# Model evaluation by genotype
+train_eval_genotype <- train_predobs_meta %>%
+  split(.$genotype) %>%
+  map(~ evaluate_model(data = ., obs = obs, pred = pred)) %>%
+  imap(~ tibble::add_column(.x, genotype = .y, .before = 1)) %>%
+  bind_rows() %>%
+  # Modify columns for plot annotation
+  mutate(
+    rmse = as.character(as.expression(paste0("RMSE == ", "~",
+      "'", sprintf("%.0f", rmse), "'"))),
+    r2 = as.character(as.expression(paste0("italic(R)^2 == ", "~",
+      "'", sprintf("%.2f", r2), "'"))),
+    one_one = "1:1"
+  )
 
+# Plot predicted vs. observed by genotype
+p_train_predobs_genotype <- 
+  train_predobs_meta %>%
+  ggplot(aes(x = obs, y = pred),
+    data = .) +
+  geom_abline(slope = 1, colour = "grey") +
+  geom_point(aes(colour = harvest_time)) +
+  scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
+  facet_wrap(~ genotype) +
+  geom_text(data = train_eval_genotype,
+      aes(x = -Inf, y = Inf, label = r2), size = 2.75,
+      hjust = -0.07, vjust = 1.5, parse = TRUE) +
+  geom_text(data = train_eval_genotype,
+      aes(x = -Inf, y = Inf, label = rmse), size = 2.75,
+      hjust = -0.07, vjust = 4, parse = TRUE) +
+  coord_fixed(ratio = 1) +
+  xlim(xyrange_training[1] - 0.02 * diff(range(xyrange_training)),
+       xyrange_training[2] + 0.02 * diff(range(xyrange_training))) +
+  ylim(xyrange_training[1] - 0.02 * diff(range(xyrange_training)),
+       xyrange_training[2] + 0.02 * diff(range(xyrange_training))) +
+  xlab(expression(paste("Measured starch [mg ", g^{-1}, " DW]"))) +
+  ylab(expression(paste("Predicted starch [mg ", g^{-1}, " DW]"))) +
+  labs(colour = "Harvest time") +
+  theme_bw() +
+  theme(
+    strip.background = element_rect(colour = "black", fill = NA),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.title.x = element_text(size = 9),
+    axis.text.x = element_text(size = 9),
+    axis.title.y = element_text(size = 9),
+    axis.text.y = element_text(size = 9),
+    strip.text.x = element_text(size = 8),
+    text = element_text(size = 7)
+  )
+
+p_train_predobs_genotype_pdf <- ggsave(
+  filename = "predobs-train-genotype.pdf",
+  plot = p_train_predobs_genotype, path = here("out", "figs"),
+  width = 6.69, height = 6.69)
 
 
 ## Test predictions using correlation filtered training model ==================
