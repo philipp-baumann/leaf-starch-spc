@@ -13,7 +13,7 @@ sourceDirectory("R")
 # Script-based workflow: convert to drake plan; 
 # all assigned R objects in scripts are drake targets
 scripts <- listDirectory("code", fullNames = TRUE)
-plans <- map(rlang::set_names(scripts), drake::code_to_plan)
+plans <- lapply(rlang::set_names(scripts), drake::code_to_plan)
 
 ## Define and make the plan ====================================================
 
