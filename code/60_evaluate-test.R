@@ -1,6 +1,6 @@
 ## Project:     A non-destructive method to quantify starch content
 ##              in red clover (T. pratense)
-## Description: Evaluate 
+## Description: Evaluate modeling done for test sets
 ################################################################################
 
 ## Extract cross-validated predictions for VIP filtered test re-prediction
