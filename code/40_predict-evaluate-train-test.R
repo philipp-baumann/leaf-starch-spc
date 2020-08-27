@@ -692,7 +692,7 @@ p_train_predobs_genotype <-
   ggplot(aes(x = obs, y = pred),
     data = .) +
   geom_abline(slope = 1, colour = "grey") +
-  geom_point(aes(colour = harvest_time)) +
+  geom_point(aes(colour = harvest_time, shape = harvest_time)) +
   scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
   facet_wrap(~ genotype) +
   geom_text(data = train_eval_genotype,
@@ -708,12 +708,15 @@ p_train_predobs_genotype <-
        xyrange_training[2] + 0.02 * diff(range(xyrange_training))) +
   xlab(expression(paste("Measured starch [mg ", g^{-1}, " DW]"))) +
   ylab(expression(paste("Predicted starch [mg ", g^{-1}, " DW]"))) +
-  labs(colour = "Harvest time") +
+  labs(colour = "Harvest time", shape = "Harvest time") +
+  scale_shape_manual(values = c(1, 2)) +
   theme_bw() +
   theme(
     strip.background = element_rect(colour = "black", fill = NA),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
+    legend.title = element_text(size = 9),
+    legend.text = element_text(size = 9),
     axis.title.x = element_text(size = 9),
     axis.text.x = element_text(size = 9),
     axis.title.y = element_text(size = 9),
@@ -725,7 +728,7 @@ p_train_predobs_genotype <-
 p_train_predobs_genotype_pdf <- ggsave(
   filename = "predobs-train-genotype.pdf",
   plot = p_train_predobs_genotype, path = here("out", "figs"),
-  width = 6.69, height = 6.69)
+  width = 6.69)
 
 
 ## Test predictions using correlation filtered training model ==================
