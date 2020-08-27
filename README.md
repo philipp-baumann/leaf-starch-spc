@@ -64,22 +64,7 @@ The files in this project are organized as follows (only 2 folder levels
 are shown):
 
     ## .
-    ## ├── 00_setup-make.R
-    ## ├── 10_read-clean-process-training.R
-    ## ├── 20_build-spc-model-training.R
-    ## ├── 21_interpret-training-vip.R
-    ## ├── 22_remodel-vip-filtering.R
-    ## ├── 23_remodel-cor-filtering.R
-    ## ├── 24_remodel-starch-bands.R
-    ## ├── 25_remodel-mutual-information.R
-    ## ├── 30_read-clean-process-test.R
-    ## ├── 31_visualize-refdata.R
-    ## ├── 40_predict-evaluate-train-test.R
-    ## ├── 50_remodel-test.R
-    ## ├── 51_interpret-test-vip.R
-    ## ├── 52_remodel-test-vip-training.R
-    ## ├── 60_evaluate-remodel-test.R
-    ## ├── 60_evaluate-test.R
+    ## ├── %
     ## ├── Dockerfile
     ## ├── R
     ## │   ├── helpers.R
@@ -89,6 +74,22 @@ are shown):
     ## ├── README.Rmd
     ## ├── README.md
     ## ├── _crop-images.R
+    ## ├── _drake.R
+    ## ├── code
+    ## │   ├── 10_read-clean-process-training.R
+    ## │   ├── 20_build-spc-model-training.R
+    ## │   ├── 21_interpret-training-vip.R
+    ## │   ├── 22_remodel-vip-filtering.R
+    ## │   ├── 23_remodel-cor-filtering.R
+    ## │   ├── 24_remodel-starch-bands.R
+    ## │   ├── 25_remodel-mutual-information.R
+    ## │   ├── 30_read-clean-process-test.R
+    ## │   ├── 31_visualize-refdata.R
+    ## │   ├── 40_predict-evaluate-train-test.R
+    ## │   ├── 50_remodel-test.R
+    ## │   ├── 51_interpret-test-vip.R
+    ## │   ├── 52_remodel-test-vip-training.R
+    ## │   └── 60_evaluate-test.R
     ## ├── data
     ## │   ├── test
     ## │   │   ├── metadata
@@ -121,6 +122,7 @@ are shown):
     ## │       ├── predobs-test-corfilt.pdf
     ## │       ├── predobs-test-genotype-harvest-time.pdf
     ## │       ├── predobs-test-genotype.pdf
+    ## │       ├── predobs-train-genotype.pdf
     ## │       ├── predobs-training-harvest-time.pdf
     ## │       ├── spc-starch-pls-test-vip.pdf
     ## │       ├── spc-starch-pls-vip.pdf
@@ -131,6 +133,7 @@ are shown):
     ## │       ├── test-eval-pls-allvars-vip.pdf
     ## │       ├── test-eval-vip-bigger1.pdf
     ## │       └── test-eval.pdf
+    ## ├── packages.R
     ## ├── pub
     ## │   ├── figs
     ## │   │   ├── Fig2.pdf
@@ -148,10 +151,31 @@ are shown):
     ## │   │   ├── figs-cropped
     ## │   │   └── figs-original
     ## │   ├── figs.zip
+    ## │   ├── review-submission-2
+    ## │   │   └── 569948_Kölliker_Manuscript.PDF
     ## │   ├── submission-01
     ## │   │   ├── figs-pub-numbered.zip
     ## │   │   └── figs.zip
+    ## │   ├── submission-02
+    ## │   │   ├── starch-paper-submission-02
+    ## │   │   ├── starch-paper-submission-02.zip
+    ## │   │   └── starch_edited
     ## │   └── writing
+    ## │       ├── PSC_symposium_2019_lea-comm-pb.docx
+    ## │       ├── PSC_symposium_2019_lea.docx
+    ## │       ├── Supplement3.docx
+    ## │       ├── Supplement3_PB.docx
+    ## │       ├── _notes.txt
+    ## │       ├── paper-plant-methods-clover-starch-spc.pdf
+    ## │       ├── paper_plant_methods_FieldSpec4_LeaFreyKoro3.docx
+    ## │       ├── paper_plant_methods_FieldSpec4_LeaFreyKoro3Baumann.docx
+    ## │       ├── paper_plant_methods_LeaR.docx
+    ## │       ├── paper_plant_methods_LeaR_pb.docx
+    ## │       ├── paper_plant_methods_LeaR_pb.pdf
+    ## │       ├── paper_plant_methods_Lea_Roli2.docx
+    ## │       ├── paper_plant_methods_Lea_Roli2_PB.docx
+    ## │       ├── paper_plant_methods_Lea_Roli2_PB_tab-filt.docx
+    ## │       └── review-01
     ## ├── renv
     ## │   ├── activate.R
     ## │   ├── library
