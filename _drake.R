@@ -28,10 +28,14 @@ plan <- bind_rows(
   plans
 )
 
+# Visualize workflow
+# config <- drake_config(plan)
+# visNetwork::vis_drake_graph(config)
+
 ## Build targets (R objects) listed in plan ====================================
 
 # Within-target parallelism with multicore or local socket cluster
-drake::r_make(plan, cache_log_file = TRUE, lock_envir = FALSE)
+drake::make(plan, cache_log_file = TRUE, lock_envir = FALSE)
 
 # Predict runtime to rebuild the entire drake cache
 predict_runtime(config, from_scratch = TRUE)
