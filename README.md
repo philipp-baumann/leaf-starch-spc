@@ -151,31 +151,6 @@ are shown):
     ## │   │   ├── figs-cropped
     ## │   │   └── figs-original
     ## │   ├── figs.zip
-    ## │   ├── review-submission-2
-    ## │   │   └── 569948_Kölliker_Manuscript.PDF
-    ## │   ├── submission-01
-    ## │   │   ├── figs-pub-numbered.zip
-    ## │   │   └── figs.zip
-    ## │   ├── submission-02
-    ## │   │   ├── starch-paper-submission-02
-    ## │   │   ├── starch-paper-submission-02.zip
-    ## │   │   └── starch_edited
-    ## │   └── writing
-    ## │       ├── PSC_symposium_2019_lea-comm-pb.docx
-    ## │       ├── PSC_symposium_2019_lea.docx
-    ## │       ├── Supplement3.docx
-    ## │       ├── Supplement3_PB.docx
-    ## │       ├── _notes.txt
-    ## │       ├── paper-plant-methods-clover-starch-spc.pdf
-    ## │       ├── paper_plant_methods_FieldSpec4_LeaFreyKoro3.docx
-    ## │       ├── paper_plant_methods_FieldSpec4_LeaFreyKoro3Baumann.docx
-    ## │       ├── paper_plant_methods_LeaR.docx
-    ## │       ├── paper_plant_methods_LeaR_pb.docx
-    ## │       ├── paper_plant_methods_LeaR_pb.pdf
-    ## │       ├── paper_plant_methods_Lea_Roli2.docx
-    ## │       ├── paper_plant_methods_Lea_Roli2_PB.docx
-    ## │       ├── paper_plant_methods_Lea_Roli2_PB_tab-filt.docx
-    ## │       └── review-01
     ## ├── renv
     ## │   ├── activate.R
     ## │   ├── library
