@@ -24,9 +24,7 @@ registerDoFuture()
 ## Finalize into one master drake plan, make configuration, and run workflow ===
 
 # Combine multiple plans into one
-plan <- bind_rows(
-  plans
-)
+plan <- do.call(rbind, plans)
 
 # Visualize workflow
 # config <- drake_config(plan)
