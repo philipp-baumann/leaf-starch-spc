@@ -6,7 +6,7 @@ RUN apt-get update \
   libz-dev \
   libxml2-dev
 
-ENV RENV_VERSION 0.7.0-111
+ENV RENV_VERSION 0.12.0
 RUN R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))"
 RUN R -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')"
 
