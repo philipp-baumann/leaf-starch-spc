@@ -1,2 +1,5 @@
 .drake
 .git
+pub
+renv
+out
