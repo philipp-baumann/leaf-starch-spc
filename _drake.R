@@ -27,8 +27,8 @@ doFuture::registerDoFuture()
 plan <- do.call(rbind, plans) %>% mutate(format = "qs")
 
 # Visualize workflow
-# config <- drake_config(plan)
-# visNetwork::vis_drake_graph(config)
+# drake::vis_drake_graph(plan) # requires visNetwork package
+# drake::drake::ggraph(plan) # requires ggraph package
 
 ## Build targets (R objects) listed in plan ====================================
 
