@@ -13,7 +13,7 @@ R.utils::sourceDirectory("R")
 # Script-based workflow: convert to drake plan; 
 # all assigned R objects in scripts are drake targets
 scripts <- R.utils::listDirectory("code", fullNames = TRUE)
-plans <- lapply(setNames(x = scripts, nm = scripts), drake::code_to_plan)
+plans <- lapply(setNames(object = scripts, nm = scripts), drake::code_to_plan)
 
 ## Define and make the plan ====================================================
 
@@ -23,8 +23,8 @@ doFuture::registerDoFuture()
 
 ## Finalize into one master drake plan, make configuration, and run workflow ===
 
-# Combine multiple plans into one
-plan <- do.call(rbind, plans)
+# Combine multiple plans into one; use fast object serialization with qs package
+plan <- do.call(rbind, plans) %>% mutate(format = "qs")
 
 # Visualize workflow
 # config <- drake_config(plan)
