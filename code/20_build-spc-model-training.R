@@ -17,9 +17,6 @@ pls_starch <- fit_pls(
   pls_ncomp_max = 10
 )
 
-pls_starch_rds <- readr::write_rds(x = pls_starch,
-  path = here("models", "pls_starch.Rds"))
-
 # Fit model on raw spectral data
 pls_starch_raw <- spc_train_model %>%
   mutate(spc_pre = spc_rs) %>%
