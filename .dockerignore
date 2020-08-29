@@ -3,3 +3,6 @@
 pub
 renv
 out
+models
+code-legacy
+*.sh
