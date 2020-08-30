@@ -4,15 +4,16 @@ Lea Frey, Philipp Baumann, Helge Aasen, Bruno Studer, Roland Kölliker
 
 # The science behind
 
-# Technical Description
+# Technical description
 
 This is the code repository that produces the outputs of the manuscript
 with the above title.
 
 The directory is self-contained and is designed to run reproducibly,
-either on your local operating system or in a Docker container. The
-description about how deploy this Docker image and run all analyses
-within this project can be found below.
+either on your host operating system (local or remote) or in a Docker
+container (relying on kernel of the host). The practical instruction to
+deploy this Docker image and run all analyses within this project can be
+found below.
 
 # Rerun all analyses
 
@@ -87,7 +88,7 @@ more detail of how everything works under the hood.
 
 ### Docker recipe
 
-The follwing steps generates the computational environments, runs all
+The follwing steps generates the computational environment, runs all
 computations, and let you grab the results of the entire analysis done
 in R.
 
@@ -118,11 +119,11 @@ docker images
 sudo docker run -d -p 8787:8787 -e PASSWORD=spcclover -v "${pwd}:/home/rstudio" -e USERID=$UID leaf-starch-spc
 ```
 
-4.  2.  Port-forwarding: The RStudio server service running within the
-        docker image on the remote VM can be tunneled into your local
-        browser session using ssh port forwarding. This is extremely
-        convenient because you one can do interactive data analysis with
-        “local feel”.
+4.  2.  **Local port-forwarding via ssh**: The RStudio server service
+        running within the docker image on the remote VM can be tunneled
+        into your local browser session using ssh port forwarding. This
+        is extremely convenient because you one can do interactive data
+        analysis with “local feel”.
 
 <!-- end list -->
 

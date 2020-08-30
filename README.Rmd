@@ -9,11 +9,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # The science behind
 
-# Technical Description
+# Technical description
 
 This is the code repository that produces the outputs of the manuscript with the above title.
 
-The directory is self-contained and is designed to run reproducibly, either on your local operating system or in a Docker container. The description about how deploy this Docker image and run all analyses within this project can be found below.
+The directory is self-contained and is designed to run reproducibly, either on your host operating system (local or remote) or in a Docker container (relying on kernel of the host). The practical instruction to deploy this Docker image and run all analyses within this project can be found below.
 
 # Rerun all analyses
 
@@ -55,7 +55,7 @@ The [drake manual lists two examples](https://ropenscilabs.github.io/drake-manua
 
 ### Docker recipe
 
-The follwing steps generates the computational environments, runs all computations, and let you grab the results of the entire analysis done in R.
+The follwing steps generates the computational environment, runs all computations, and let you grab the results of the entire analysis done in R.
 
 1. Build the docker container with instructions from the [`Dockerfile`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/Dockerfile).
 
@@ -77,7 +77,7 @@ sudo docker run -d -p 8787:8787 -e PASSWORD=spcclover -v "${pwd}:/home/rstudio" 
 ```
 
 4.
-  b. Port-forwarding: The RStudio server service running within the docker image on the remote VM can be tunneled into your local browser session using ssh port forwarding. This is extremely convenient because you one can do interactive data analysis with "local feel".
+  b. **Local port-forwarding via ssh**: The RStudio server service running within the docker image on the remote VM can be tunneled into your local browser session using ssh port forwarding. This is extremely convenient because you one can do interactive data analysis with "local feel".
 
 ```{bash, eval=FALSE}
 ssh -f -N -L 8787:localhost:8787 <your_user>@<host_ip_addres>
