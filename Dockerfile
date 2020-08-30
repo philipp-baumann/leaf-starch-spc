@@ -17,3 +17,5 @@ RUN R -e 'renv::restore()'
 
 # Copy working directory, use .dockerignore for excluding directories
 COPY . /home/rstudio/leaf-starch-spc
+
+RUN Rscript _make.R
