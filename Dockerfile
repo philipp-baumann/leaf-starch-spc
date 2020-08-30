@@ -16,4 +16,4 @@ COPY renv.lock ./
 RUN R -e 'renv::restore()'
 
 # Copy working directory, use .dockerignore for excluding directories
-COPY . /home/rstudio/swr-spc/
+COPY . /home/rstudio/leaf-starch-spc
