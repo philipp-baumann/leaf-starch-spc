@@ -15,6 +15,3 @@ pls_starch_test <- fit_pls(
   resampling_seed = 142L,
   pls_ncomp_max = 10
 )
-
-pls_starch_test_rds <- readr::write_rds(x = pls_starch_test,
-  path = here("models", "pls_starch_test.Rds"))
