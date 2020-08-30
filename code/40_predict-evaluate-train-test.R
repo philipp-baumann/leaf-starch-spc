@@ -454,8 +454,8 @@ p_test_predobs_genotype <-
   test_predobs_genotype %>%
   ggplot(aes(x = starch, y = pls_starch),
     data = .) +
-  geom_abline(slope = 1, colour = "black") +
-  geom_point(aes(colour = harvest_time)) +
+  geom_abline(slope = 1, colour = "grey") +
+  geom_point(aes(colour = harvest_time, shape = harvest_time)) +
   scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
   facet_wrap(~ genotype) +
   geom_text(data = test_eval_genotype,
@@ -472,6 +472,8 @@ p_test_predobs_genotype <-
   xlab(expression(paste("Measured starch [mg ", g^{-1}, " DW]"))) +
   ylab(expression(paste("Predicted starch [mg ", g^{-1}, " DW]"))) +
   labs(colour = "Harvest time") +
+  labs(shape = "Harvest time") +
+  scale_shape_manual(values = c(1, 2)) +
   theme_bw() +
   theme(
     strip.background = element_rect(colour = "black", fill = NA),
