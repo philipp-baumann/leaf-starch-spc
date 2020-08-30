@@ -671,11 +671,23 @@ p_training_predobs_harvest_time_pdf_pub <- ggsave(
 
 ## Training evaluation grouped by genotype =====================================
 
+# Remove dot and number in genotype
+train_predobs_meta_genotype <-  
+  train_predobs_meta %>%
+  mutate(
+    genotype_nodot = stringr::str_split(string = genotype,
+      pattern = "[.]")
+  ) %>%
+  mutate(
+    genotype_nodot = unlist(purrr::map(genotype_nodot, 1))
+  )
+
 # Model evaluation by genotype
-train_eval_genotype <- train_predobs_meta %>%
-  split(.$genotype) %>%
+train_eval_genotype <-
+  train_predobs_meta_genotype %>%
+  split(.$genotype_nodot) %>%
   map(~ evaluate_model(data = ., obs = obs, pred = pred)) %>%
-  imap(~ tibble::add_column(.x, genotype = .y, .before = 1)) %>%
+  imap(~ tibble::add_column(.x, genotype_nodot = .y, .before = 1)) %>%
   bind_rows() %>%
   # Modify columns for plot annotation
   mutate(
@@ -688,13 +700,13 @@ train_eval_genotype <- train_predobs_meta %>%
 
 # Plot predicted vs. observed by genotype
 p_train_predobs_genotype <- 
-  train_predobs_meta %>%
+  train_predobs_meta_genotype %>%
   ggplot(aes(x = obs, y = pred),
     data = .) +
   geom_abline(slope = 1, colour = "grey") +
   geom_point(aes(colour = harvest_time, shape = harvest_time)) +
   scale_colour_manual(values = c("#d7191c", "#2b83ba")) +
-  facet_wrap(~ genotype) +
+  facet_wrap(~ genotype_nodot) +
   geom_text(data = train_eval_genotype,
       aes(x = -Inf, y = Inf, label = r2), size = 2.75,
       hjust = -0.07, vjust = 1.5, parse = TRUE) +
@@ -728,7 +740,7 @@ p_train_predobs_genotype <-
 p_train_predobs_genotype_pdf <- ggsave(
   filename = "predobs-train-genotype.pdf",
   plot = p_train_predobs_genotype, path = here("out", "figs"),
-  width = 6.69)
+  width = 6.69, height = 5.5)
 
 
 ## Test predictions using correlation filtered training model ==================
