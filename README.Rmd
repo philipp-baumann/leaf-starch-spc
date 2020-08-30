@@ -7,40 +7,82 @@ output: rmarkdown::github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+# The science behind
 
-# Description
+# Technical Description
 
 This is the code repository that produces the outputs of the manuscript with the above title.
 
 The directory is self-contained and is designed to run reproducibly, either on your local operating system or in a Docker container. The description about how deploy this Docker image and run all analyses within this project can be found below.
 
-# Reproduce the analysis locally
+# Rerun all analyses
 
-## Restore packages
+## Reproduce the analysis on your local machine (host operating system)
 
-To restore all required packages at versions defined in the file [`renv.lock`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/renv.lock) based on the  [renv](https://github.com/rstudio/renv) R package, execute the following in the project directory:
+First, download this repository or clone it with git.
+
+```{bash, eval=FALSE}
+git clone https://github.com/philipp-baumann/leaf-starch-spc
+```
+
+To restore all required packages at versions defined in the file [`renv.lock`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/renv.lock) based on the  [renv](https://github.com/rstudio/renv) R package, execute the following in the project directory.
 
 ```{r, eval=FALSE}
 install.packages("remotes")
-remotes::install_github("rstudio/renv@0.7.0-111")
+remotes::install_github("rstudio/renv@0.12.0")
 # Automatically installs packages from CRAN and github 
 # as specified in `renv.lock`
 renv::restore()
 ```
 
-## Rerun all analyses
-
-You can either manually run the scripts in sequential order, or deploy the entire workflow reproducibly and automatedly using the [drake](https://books.ropensci.org/drake/) R package:
+You can manually run the scripts in sequential order, but we recommend to deploy the entire workflow in automated manner using [drake](https://books.ropensci.org/drake/) R package. This gives you tangible evidence of reproducibility.
 
 ```{r, eval=FALSE}
-source("00_setup-make.R")
+# Make drake plan (targets and expressions in scripts: see ./code/:
+# Starts a separate R process from R for safe interactivity
+source("_make.R")
 ```
 
-## Reproduce the analysis in Docker container
+## Reproduce the analysis in Docker container (remote server or local machine)
 
-A Docker image can be built as described in the file [`Dockerfile`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/Dockerfile). It bases upon the [`rocker/rstudio:3.6.1`](https://hub.docker.com/r/rocker/rstudio) image (R 3.6.1 plus RStudio), on top of which it installs system libraries for the [tidyverse](https://www.tidyverse.org/) and the [renv](https://github.com/rstudio/renv) package. Further, it automatically restores all deployed package versions, and then runs the drake plan specified in [`00_setup-make.R`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/00_setup-make.R). Henceforth, the entire analysis is reproduced in a running instance of the image (also called container).
+Docker provides an open-source solution to create an isolated software environment that captures the entire computational environment. This makes the data analysis scalable and reproducible, independent of the host operating system. To get started with Docker, there is an [rOpenSci R Docker tutorial](https://ropenscilabs.github.io/r-docker-tutorial/) that explains the motivation and basics of using Docker for reproducible research. However, you can also just follow the steps outlined below.
 
-Kindly note that the Dockerfile is not yet complete upon manuscript submission. Further instructions how to build the image, run a container instance, and retrieve the results will follow soon.
+A `Dockerfile` is a text file that contains a recipe to build an image with a layered approach. A docker image is a running instance of a container. [This `Dockerfile`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/Dockerfile) is based on the [`rocker/rstudio:3.6.0`](https://hub.docker.com/r/rocker/rstudio/) image, which bases itself on [`rocker/r-ver`](https://hub.docker.com/r/rocker/r-ver/) with debian 9 (stretch) including version stable base R (v3.6.0) and the source build tools. The RStudio image provides RStudio server within a Docker image, that you can access via your browser. Basic instructions are given here, but for getting started you can additionally consider [this resource](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image). The image is version-stable and uses the MRAN snapshot of the last day that the R version 3.6.0 was the most recent release.
+
+The workflow deployed here is fueled by the [`{renv}`](https://rstudio.github.io/renv/articles/renv.html) package, which manages the installation of specific package versions and sources, and the [`{drake}`](https://docs.ropensci.org/drake/) package to keep track of R code and data that produce the results.
+
+The [drake manual lists two examples](https://ropenscilabs.github.io/drake-manual/index.html#with-docker) that combine `{drake}` workflows with Docker. This can  give you some more detail of how everything works under the hood.
+
+### Docker recipe
+
+The follwing steps generates the computational environments, runs all computations, and let you grab the results of the entire analysis done in R.
+
+1. Build the docker container with instructions from the [`Dockerfile`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/Dockerfile).
+
+```{bash, eval=FALSE}
+docker build -t leaf-starch-spc .
+```
+
+2. Check wether the image is built.
+
+```{bash, eval=FALSE}
+docker images
+```
+
+3. Launch the container and share the local volume (host) with the container
+
+```{bash, eval=FALSE}
+# https://www.rocker-project.org/use/managing_users/
+sudo docker run -d -p 8787:8787 -e PASSWORD=spcclover -v "${pwd}:/home/rstudio" -e USERID=$UID leaf-starch-spc
+```
+
+4.
+  b. Port-forwarding: The RStudio server service running within the docker image on the remote VM can be tunneled into your local browser session using ssh port forwarding. This is extremely convenient because you one can do interactive data analysis with "local feel".
+
+```{bash, eval=FALSE}
+ssh -f -N -L 8787:localhost:8787 <your_user>@<host_ip_addres>
+```
+
 
 # File overview
 
