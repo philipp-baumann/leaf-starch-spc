@@ -38,9 +38,5 @@ drake::make(plan, cache_log_file = TRUE, lock_envir = FALSE)
 # Predict runtime to rebuild the entire drake cache
 drake::predict_runtime(config, from_scratch = TRUE)
 
-cat("build_time_seconds ", round(sum(build_times()$elapsed), 2),
-  file = here::here("_build-time.txt"))
-
-
 # make(plan, parallelism = "future", jobs = 48, lazy_load = TRUE,
 #   keep_going = TRUE, lock_envir = FALSE, memory_strategy = "speed")
