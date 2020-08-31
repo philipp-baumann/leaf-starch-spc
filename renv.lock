@@ -121,6 +121,13 @@
       "Repository": "CRAN",
       "Hash": "292b54f8f4b94669b08f94e5acce6be2"
     },
+    "RApiSerialize": {
+      "Package": "RApiSerialize",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c5a68b4db79cfe8502878b3ed2b59853"
+    },
     "RColorBrewer": {
       "Package": "RColorBrewer",
       "Version": "1.1-2",
@@ -148,6 +155,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "c6faf038ba4346b1de19ad7c99b8f94a"
+    },
+    "RcppParallel": {
+      "Package": "RcppParallel",
+      "Version": "5.0.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "551d50addb18c7b99637aa377a25afc8"
     },
     "SQUAREM": {
       "Package": "SQUAREM",
@@ -344,6 +358,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "82bae0172ae9d4c4f88a440ad01f73bb"
+    },
+    "cpp11": {
+      "Package": "cpp11",
+      "Version": "0.2.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c4c83167f43ca762a9fa998d4fead3ae"
     },
     "crayon": {
       "Package": "crayon",
@@ -1123,6 +1144,13 @@
       "Repository": "CRAN",
       "Hash": "22aca7d1181718e927d403a8c2d69d62"
     },
+    "qs": {
+      "Package": "qs",
+      "Version": "0.23.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "a0491accccb1c156a58668e01e8f4f66"
+    },
     "qtl": {
       "Package": "qtl",
       "Version": "1.44-9",
@@ -1380,6 +1408,13 @@
       "Repository": "CRAN",
       "Hash": "0a3635220b58f2c2faccd78e97b0cafd"
     },
+    "stringfish": {
+      "Package": "stringfish",
+      "Version": "0.14.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4b29afcedd5117c95eacdf034eb00245"
+    },
     "stringi": {
       "Package": "stringi",
       "Version": "1.4.3",
@@ -1424,16 +1459,10 @@
     },
     "tidyr": {
       "Package": "tidyr",
-      "Version": "1.0.0.9000",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "Remotes": "r-lib/vctrs",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "tidyr",
-      "RemoteUsername": "hadley",
-      "RemoteRef": "master",
-      "RemoteSha": "885d1af17fd398f21a827c32383f8cb838fab8b4",
-      "Hash": "69895a32b9212cfc34eb5c7948ba860e"
+      "Version": "1.1.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c40b2d5824d829190f4b825f4496dfae"
     },
     "tidyselect": {
       "Package": "tidyselect",

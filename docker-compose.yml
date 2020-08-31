@@ -1,0 +1,18 @@
+version: "3.5"
+services:
+  docker-rsserver:
+    privileged: true
+    build:
+      context: .
+      args:
+        - HTTP_PROXY="http://proxy.ethz.ch:3128"
+        - HTTPS_PROXY="http://proxy.ethz.ch:3128"
+    image: leaf-starch-spc
+    volumes:
+      - .:/user/rstudio
+    environment:
+      - USERID=61002
+      - GROUPID=17350
+      - PASSWORD=spcclover
+    ports:
+      - "8787:8787"
