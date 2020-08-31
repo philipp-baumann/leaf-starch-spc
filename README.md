@@ -11,13 +11,13 @@ with the above title.
 
 The directory is self-contained and is designed to run reproducibly,
 either on your host operating system (local or remote) or in a Docker
-container (relying on kernel of the host). The practical instruction to
+container (relying on kernel of the host). The practical instructions to
 deploy this Docker image and run all analyses within this project can be
 found below.
 
-# Rerun all analyses
+# Rerun all analyses (1. or 2.)
 
-## Reproduce the analysis on your local machine (host operating system)
+## 1\. Reproduce the analysis within the host operating system
 
 First, download this repository or clone it with git.
 
@@ -49,7 +49,7 @@ tangible evidence of reproducibility.
 source("_make.R")
 ```
 
-## Reproduce the analysis in Docker container (remote server or local machine)
+## 2\. Reproduce the analysis within Docker container (remote server or local machine)
 
 Docker provides an open-source solution to create an isolated software
 environment that captures the entire computational environment. This
@@ -60,8 +60,8 @@ that explains the motivation and basics of using Docker for reproducible
 research. However, you can also just follow the steps outlined below.
 
 A `Dockerfile` is a text file that contains a recipe to build an image
-with a layered approach. A docker image is a running instance of a
-container. [This
+with a layered approach. A docker container is a running instance of an
+image. [This
 `Dockerfile`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/Dockerfile)
 is based on the
 [`rocker/rstudio:3.6.0`](https://hub.docker.com/r/rocker/rstudio/)
@@ -88,20 +88,22 @@ more detail of how everything works under the hood.
 
 ### Docker recipe
 
-The follwing steps generates the computational environment, runs all
-computations, and let you grab the results of the entire analysis done
-in R.
+The following docker bash commands generates the computational
+environment, runs all computations, and let you grab the results of the
+entire analysis done in R.
 
-1.  Build the docker container with instructions from the
+1.  Build the docker image with instructions from the
     [`Dockerfile`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/Dockerfile).
 
 <!-- end list -->
 
 ``` bash
+# Cache configuration: https://github.com/rstudio/renv/issues/362
+# https://github.com/rstudio/renv/issues/400
 docker build -t leaf-starch-spc .
 ```
 
-2.  Check wether the image is built.
+2.  Check whether the image is built.
 
 <!-- end list -->
 
@@ -109,27 +111,61 @@ docker build -t leaf-starch-spc .
 docker images
 ```
 
-3.  Launch the container and share the local volume (host) with the
-    container
+3.  Launch the container from the built image. Share two local paths as
+    volumes (host) with the container. The analysis worflow orchestrated
+    by {drake} will write output files (Figures) explained in the
+    accompanying manuscript.
 
 <!-- end list -->
 
 ``` bash
 # https://www.rocker-project.org/use/managing_users/
-sudo docker run -d -p 8787:8787 -e PASSWORD=spcclover -v "${pwd}:/home/rstudio" -e USERID=$UID leaf-starch-spc
+# https://github.com/rocker-org/rocker/wiki/Sharing-files-with-host-machine
+docker run -d -p 8787:8787 \
+    -e PASSWORD=spcclover \
+    -v "$(pwd)/out:/home/rstudio/out" \
+    -v "$(pwd)/pub:/home/rstudio/pub" \
+    -e USERID=$UID -e GROUPID=$GID leaf-starch-spc
 ```
 
-4.  2.  **Local port-forwarding via ssh**: The RStudio server service
-        running within the docker image on the remote VM can be tunneled
-        into your local browser session using ssh port forwarding. This
-        is extremely convenient because you one can do interactive data
-        analysis with “local feel”.
+4.  Open RStudio server and kick-off the workflow. There are two
+    suggestions deployment, one via docker running on your computer, and
+    the other via docker on a virtual machine (4. i.) tunnelled via ssh
+    (4. ii.)
 
 <!-- end list -->
 
 ``` bash
-ssh -f -N -L 8787:localhost:8787 <your_user>@<host_ip_addres>
+cat _make.R
 ```
+
+    ## #!/usr/bin/env Rscript
+    ## 
+    ## renv::restore()
+    ## 
+    ## library("drake")
+    ## r_make()
+    ## 
+    ## cat("build_time_seconds ", round(sum(build_times()$elapsed), 2),
+    ##   file = here::here("_build-time.txt"))
+
+``` r
+# Run in the R console in RStudio Server
+source("_make.R")
+```
+
+4.i. **Local port-forwarding via ssh**: The RStudio server service
+running within the docker image on the remote VM can be tunneled into
+your local browser session using ssh port forwarding. This is extremely
+convenient because you one can do interactive data analysis with “local
+feel”.
+
+``` bash
+ssh -f -N -L 8787:localhost:8787 <your_user>@<host_ip_address>
+```
+
+Simply open RStudio Server in your browser on <localhost:8787>. Then,
+login with user `rstudio` and password `spcclover`
 
 # File overview
 
@@ -138,6 +174,7 @@ are shown):
 
     ## .
     ## ├── Dockerfile
+    ## ├── Makefile
     ## ├── R
     ## │   ├── helpers.R
     ## │   ├── modeling.R
@@ -174,6 +211,12 @@ are shown):
     ## │       ├── metadata
     ## │       ├── reference
     ## │       └── spectra
+    ## ├── docker-base
+    ## │   ├── Dockerfile_base
+    ## │   ├── disable_auth_rserver.conf
+    ## │   ├── pam-helper.sh
+    ## │   └── userconf.sh
+    ## ├── docker-compose.yml
     ## ├── leaf-starch-spc.Rproj
     ## ├── out
     ## │   ├── data
