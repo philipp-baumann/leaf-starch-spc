@@ -1,0 +1,3 @@
+http_proxy=http://proxy.ethz.ch:3128
+https_proxy=http://proxy.ethz.ch:3128
+RENV_PATHS_CACHE=/home/rstudio/.local/share/renv/cache/v5/R-3.6/x86_64-pc-linux-gnu
