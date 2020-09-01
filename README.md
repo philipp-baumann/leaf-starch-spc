@@ -11,9 +11,9 @@ with the above title.
 
 The directory is self-contained and is designed to run reproducibly,
 either on your host operating system (local or remote) or in a Docker
-container (relying on kernel of the host). The practical instructions to
-deploy this Docker image and run all analyses within this project can be
-found below.
+container (local or remote; relying on kernel of the host). The
+practical instructions to deploy this Docker image and run all analyses
+within this project can be found below.
 
 # Rerun all analyses (1. or 2.)
 
@@ -83,8 +83,8 @@ track of R code and data that produce the results.
 
 The [drake manual lists two
 examples](https://ropenscilabs.github.io/drake-manual/index.html#with-docker)
-that combine `{drake}` workflows with Docker. This can give you some
-more detail of how everything works under the hood.
+in section 1.5 that combine `{drake}` workflows with Docker. This can
+give you some more detail of how everything works under the hood.
 
 ### Docker recipe
 
@@ -129,8 +129,8 @@ docker run -d -p 8787:8787 \
 ```
 
 4.  Open RStudio server and kick-off the workflow. There are two
-    suggestions deployment, one via docker running on your computer, and
-    the other via docker on a virtual machine (4. i.) tunnelled via ssh
+    suggestions deployment, one via docker running on your computer (4.
+    i.), and the other via docker on a virtual machine tunnelled via ssh
     (4. ii.)
 
 <!-- end list -->
