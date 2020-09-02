@@ -111,7 +111,10 @@ p_spc <- ggplot(dts_long[["spc"]],
   theme_bw() +
   theme(
     plot.margin = unit(c(1, 5, -20, 6),
-    units = "points"), axis.text.x = element_blank())
+    units = "points"), 
+    axis.text.x = element_blank(),
+    axis.title.y = element_text(size = 10, vjust = 0.25)
+  )
 
 p_spc_pre <- ggplot(dts_long[["spc_pre"]],
     aes(wavelength, value)) +
@@ -126,13 +129,14 @@ p_spc_pre <- ggplot(dts_long[["spc_pre"]],
   labs(x = xlab, y = ylab2) +
   theme_bw() +
   theme(
-    plot.margin = unit(c(0, 5, 1, 1),
+    plot.margin = unit(c(0, 5, 0, 1),
     units = "points")) +
   scale_x_continuous(limits = x_lim, breaks = brk) +
-  ylim(c(-0.009, 0.013)) +
+  ylim(c(-0.012, 0.013)) +
   theme(
     plot.margin = unit(c(1, 5, -25, 6), units = "points"),
-    axis.title.y = element_text(vjust = 0.25),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10, vjust = 0.25),
     axis.text.x = element_blank())
 
 # Plot VIP ---------------------------------------------------------------------
@@ -150,9 +154,9 @@ p_vip <- ggplot(data = df_vip_pls,
   scale_x_continuous(limits = x_lim, breaks = brk) +
   theme_bw() +
   theme(
-    plot.margin = unit(c(1, 5, -23, 6), units = "points"),
-    axis.title.y = element_text(vjust = 0.25),
+    plot.margin = unit(c(0, 5, -23, 6), units = "points"),
     axis.text.x = element_blank(),
+    axis.title.y = element_text(size = 10, vjust = 0.25),
     legend.position = "none"
   )
 
@@ -171,7 +175,9 @@ p_coef <- ggplot(data = df_vip_pls,
   scale_x_continuous(limits = x_lim, breaks = brk) +
   theme_bw() +
   theme(plot.margin = unit(c(0, 5, 1, 1),
-    units = "points"), axis.title.y = element_text(vjust = 0.25),
+    units = "points"), 
+    axis.title.x = element_text(size = 10, vjust = 0.25),
+    axis.title.y = element_text(size = 10, vjust = 0.25),
     legend.position = "none") # +
   # guides(colour = guide_legend(title = "Model/outcome"))
 
@@ -187,4 +193,4 @@ p_vip_comb_pdf <- ggsave(filename = "spc-starch-pls-vip.pdf", plot = p_vip_comb,
 
 p_vip_comb_pdf_pub <- ggsave(filename = "S5.pdf",
   plot = p_vip_comb, 
-  path = here("pub", "figs"), width = 6.69, height = 5.25)
+  path = here("pub", "figs"), width = 6.69, height = 5.75)
