@@ -78,7 +78,11 @@ p_training_self_eval <-
   theme(
     strip.background = element_rect(colour = "black", fill = NA),
     panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
+    panel.grid.minor = element_blank(),
+    legend.margin = margin(0, 1, 0, 0),
+    legend.box.margin = margin(0, 1, 0, 0),
+    legend.title = element_text(size = 9),
+    legend.text = element_text(size = 9)
   )
 
 
@@ -160,11 +164,7 @@ p_training_eval <-
 p_eval_training_self_cv <- cowplot::plot_grid(
   p_training_self_eval + theme(legend.position = "none"),
   p_training_eval + theme(legend.position = "none"),
-  p_training_self_eval %>% get_legend() +
-    theme(
-      legend.margin = margin(0, -10, 0, 0),
-      legend.margin = margin(0, -10, 0, 0),
-      legend.title = theme_text(size = 8)),
+  p_training_self_eval %>% get_legend(),
   nrow = 1,
   rel_widths = c(1, 1, 0.2),
   labels = c("A", "B")
@@ -180,7 +180,7 @@ p_eval_train_self_cv_pdf <- ggsave(filename = "eval-training-self-cv.pdf",
 
 p_eval_train_self_cv_pdf_pub <- ggsave(
   filename = "Fig7.pdf",
-  plot = p_eval_training_self_cv,
+    plot = p_eval_training_self_cv,
   path = here("pub", "figs"), width = 6.69, height = 3)
 
 
@@ -379,8 +379,9 @@ p_test_eval_pdf <- ggsave(filename = "test-eval.pdf", plot = p_test_eval,
   path = here("out", "figs"), width = 3.34, height = 3.34)
 
 p_test_eval_pdf_pub <- ggsave(
-  filename = "Fig8.pdf", plot = p_test_eval,
-  path = here("pub", "figs"), width = 3.34, height = 3.34)
+  filename = "Fig8.pdf", plot = p_test_eval, # device = cairo_ps,
+  path = here("pub", "figs"), width = 3.34, height = 3.34,
+  ) # fallback_resolution = 1200)
 
 
 ## Combine cross-validated training and test set evaluation ====================
