@@ -160,7 +160,11 @@ p_training_eval <-
 p_eval_training_self_cv <- cowplot::plot_grid(
   p_training_self_eval + theme(legend.position = "none"),
   p_training_eval + theme(legend.position = "none"),
-  p_training_self_eval %>% get_legend(),
+  p_training_self_eval %>% get_legend() +
+    theme(
+      legend.margin = margin(0, -10, 0, 0),
+      legend.margin = margin(0, -10, 0, 0),
+      legend.title = theme_text(size = 8)),
   nrow = 1,
   rel_widths = c(1, 1, 0.2),
   labels = c("A", "B")
@@ -367,7 +371,8 @@ p_test_eval <-
   theme(
     strip.background = element_rect(colour = "black", fill = NA),
     panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
+    panel.grid.minor = element_blank(),
+    legend.position = "none"
   )
 
 p_test_eval_pdf <- ggsave(filename = "test-eval.pdf", plot = p_test_eval,
