@@ -64,7 +64,7 @@ annotation_const <- paste0(round(wl_peaks, 0), constituents, sep = "")
 # General graph settings
 alpha <- 0.15
 xlab <- expression(paste("Wavelength [nm]"))
-ylab1 <-  "Reflectance (Refl.)"; ylab2 <- "Preproc. Refl."
+ylab1 <-  "Reflectance (raw)"; ylab2 <- "Reflectance (filtered)"
 group_id <- "sample_id"
 
 # Pretty Axis breaks

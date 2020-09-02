@@ -58,7 +58,7 @@ annotation_const_test <- paste0(
 # General graph settings
 alpha_vip_test <- 0.15
 xlab_vip_test <- expression(paste("Wavelength [nm]"))
-ylab1_vip_test <-  "Reflectance (Refl.)"; ylab2_test <- "Preproc. Refl."
+ylab1_vip_test <-  "Reflectance (raw)"; ylab2_test <- "Reflectance (filtered)"
 group_id_vip_test <- "sample_id"
 
 # Pretty Axis breaks
