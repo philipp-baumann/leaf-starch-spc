@@ -181,6 +181,6 @@ p_vip_test_comb_pdf <- ggsave(filename = "spc-starch-pls-test-vip.pdf",
   plot = p_vip_test_comb, 
   path = here("out", "figs"), width = 6.69, height = 5.25)
 
-p_vip_test_comb_pdf_pub <- ggsave(filename = "S5.pdf",
+p_vip_test_comb_pdf_pub <- ggsave(filename = "S6.pdf",
   plot = p_vip_test_comb, 
   path = here("pub", "figs"), width = 6.69, height = 5.25)
