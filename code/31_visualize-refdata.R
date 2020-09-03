@@ -1,4 +1,4 @@
-################################################################################
+  ################################################################################
 ## Project:
 ## Description:
 ################################################################################
@@ -21,19 +21,19 @@ wilcox_starch_harvest <- pairwise.wilcox.test(
 
 # leaf age ---------------------------------------------------------------------
 
-wilcox_starch_age <- pairwise.wilcox.test(
-  x = starch_train$starch,
-  g = starch_train$leaf_age,
-  paired = FALSE,
-  p.adjust.method = "bonferroni")
+kruskal_starch_age <- kruskal.test(starch ~ age, data = ED )
+comp_starch_age <- dunnTest(starch ~ genotype, data = ED, method = "bh")
+
 
 # genotypes --------------------------------------------------------------------
 
-wilcox_starch_genotype <- pairwise.wilcox.test(
-  x = starch_train$starch,
-  g = starch_train$genotype,
-  paired = FALSE,
-  p.adjust.method = "bonferroni")
+kruskal_starch_genotype <- kruskal.test(starch ~ genotype, data = ED)
+comp_starch_genotype <-dunnTest(starch ~ genotype, data = ED, method = "bh")
+
+PT <- comp_starch_genotype$res
+
+Letter_starch_genotype <- cldList(P.adj ~ Comparison, data = PT,
+  threshold = 0.05)
 
 ## Boxplot separated for sets and harvest times ================================
 
@@ -148,18 +148,18 @@ p_bp_starch_leafage_ed_pub_pdf <- ggsave(
 
 genotype_label <- tribble(
   ~genotype, ~y_offset, ~text,
-  "GH129",   84,        "a",
-  "LE1408",  67,        "ab",
-  "LE1421",  67,        "ab",
-  "LE1436",  75,        "ab",
-  "LE1619",  120,       "ab",
-  "LE2622",  87,        "a",
-  "LE2692",  73,        "ab",
-  "LE2768",  77,        "a",
-  "MR20",    100,       "ab",
-  "MR28",    62,        "b",
-  "MR3",     90,        "ab",
-  "TP0345",  98,        "a"
+  "GH129",   84,        "ab",
+  "LE1408",  67,        "acd",
+  "LE1421",  67,        "c",
+  "LE1436",  75,        "cd",
+  "LE1619",  120,       "b",
+  "LE2622",  87,        "ab",
+  "LE2692",  73,        "abd",
+  "LE2768",  77,        "ab",
+  "MR20",    100,       "abcd",
+  "MR28",    62,        "c",
+  "MR3",     90,        "abcd",
+  "TP0345",  98,        "ab"
   ) %>%
   mutate(
     genotype = as.factor(genotype)
@@ -190,12 +190,12 @@ p_bp_ed_genotype <-
     aes(x = genotype, y = y_offset, label = text), inherit.aes = FALSE)
   
 
-p_bp_ed_genotype_pdf <- ggsave(
+p_bp_starch_leafage_ed_pdf <- ggsave(
   filename = "boxplot-starch-genotype-ed.pdf",
   plot = p_bp_ed_genotype, path = here("out", "figs"),
   width = 6.69, height = 3.5)
 
-p_bp_ed_genotype_pub_pdf <- ggsave(
+p_bp_starch_leafage_ed_pub_pdf <- ggsave(
   filename = "Fig5.pdf",
   plot = p_bp_ed_genotype, path = here("pub", "figs"),
   width = 6.69, height = 3.5)
