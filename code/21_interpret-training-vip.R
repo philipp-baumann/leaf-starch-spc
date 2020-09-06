@@ -178,8 +178,7 @@ p_coef <- ggplot(data = df_vip_pls,
     units = "points"), 
     axis.title.x = element_text(size = 10, vjust = 0.25),
     axis.title.y = element_text(size = 10, vjust = 0.25),
-    legend.position = "none") # +
-  # guides(colour = guide_legend(title = "Model/outcome"))
+    legend.position = "none")
 
 # Arrange plots in panels without margins --------------------------------------
 # No margins in between
