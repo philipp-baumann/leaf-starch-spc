@@ -103,7 +103,10 @@ p_spc_test <- ggplot(dts_test_long[["spc"]],
   theme_bw() +
   theme(
     plot.margin = unit(c(1, 5, -30, 6),
-    units = "points"), axis.text.x = element_blank())
+    units = "points"),
+    axis.text.x = element_blank(),
+    axis.title.y = element_text(size = 10, vjust = 0.25)  
+  )
 
 p_spc_pre_test <- ggplot(dts_test_long[["spc_pre"]],
     aes(wavelength, value)) +
@@ -125,8 +128,10 @@ p_spc_pre_test <- ggplot(dts_test_long[["spc_pre"]],
   theme(
     plot.margin = unit(c(1, 5, -25, 6),
     units = "points"),
-    axis.title.y = element_text(vjust = 0.25),
-    axis.text.x = element_blank())
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10, vjust = 0.25),
+    axis.text.x = element_blank()
+)
 
 # Plot VIP ---------------------------------------------------------------------
 
@@ -145,8 +150,8 @@ p_vip_test <- ggplot(data = df_vip_pls_test,
   theme_bw() +
   theme(
     plot.margin = unit(c(1, 5, -23, 6), units = "points"), # unit(c(0, 5, 1, 1)
-    axis.title.y = element_text(vjust = 0.25),
     axis.text.x = element_blank(),
+    axis.title.y = element_text(size = 10, vjust = 0.25),
     legend.position = "none"
   )
 
@@ -166,7 +171,8 @@ p_coef_test <- ggplot(data = df_vip_pls_test,
   theme_bw() +
   theme(
     plot.margin = unit(c(0, 5, 1, 1), units = "points"), 
-    axis.title.y = element_text(vjust = 0.25),
+    axis.title.x = element_text(size = 10, vjust = 0.25),
+    axis.title.y = element_text(size = 10, vjust = 0.25),
     legend.position = "none"
   )
 
