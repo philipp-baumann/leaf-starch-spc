@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
 
+renv::restore()
+
 library("drake")
 r_make()
 
