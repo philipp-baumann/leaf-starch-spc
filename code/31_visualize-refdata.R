@@ -189,12 +189,12 @@ p_bp_ed_genotype <-
     aes(x = genotype, y = y_offset, label = text), inherit.aes = FALSE)
   
 
-p_bp_starch_leafage_ed_pdf <- ggsave(
+p_bp_starch_genotype_ed_pdf <- ggsave(
   filename = "boxplot-starch-genotype-ed.pdf",
   plot = p_bp_ed_genotype, path = here("out", "figs"),
   width = 6.69, height = 3.5)
 
-p_bp_starch_leafage_ed_pub_pdf <- ggsave(
+p_bp_starch_genotype_ed_pub_pdf <- ggsave(
   filename = "Fig5.pdf",
   plot = p_bp_ed_genotype, path = here("pub", "figs"),
   width = 6.69, height = 3.5)
