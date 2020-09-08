@@ -76,7 +76,7 @@ docker images
 ```{bash, eval=FALSE}
 # https://www.rocker-project.org/use/managing_users/
 # https://github.com/rocker-org/rocker/wiki/Sharing-files-with-host-machine
-docker run -d -p 8787:8787 \
+docker run --rm -d -p 8787:8787 \
     -e PASSWORD=spcclover \
     -v "$(pwd)/out:/home/rstudio/out" \
     -v "$(pwd)/pub:/home/rstudio/pub" \
@@ -106,6 +106,6 @@ ssh -f -N -L 8787:localhost:8787 <your_user>@<host_ip_address>
 The files in this project are organized as follows (only 2 folder levels are shown):
 
 ```{r, echo=FALSE}
-fs::dir_tree(recurse = 2)
+fs::dir_tree(recurse = 1)
 ```
 

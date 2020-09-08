@@ -121,7 +121,7 @@ docker images
 ``` bash
 # https://www.rocker-project.org/use/managing_users/
 # https://github.com/rocker-org/rocker/wiki/Sharing-files-with-host-machine
-docker run -d -p 8787:8787 \
+docker run --rm -d -p 8787:8787 \
     -e PASSWORD=spcclover \
     -v "$(pwd)/out:/home/rstudio/out" \
     -v "$(pwd)/pub:/home/rstudio/pub" \
@@ -174,6 +174,7 @@ are shown):
 
     ## .
     ## ├── Dockerfile
+    ## ├── Dockerfile_long
     ## ├── Makefile
     ## ├── R
     ## │   ├── helpers.R
@@ -182,6 +183,7 @@ are shown):
     ## │   └── vip-wrappers.R
     ## ├── README.Rmd
     ## ├── README.md
+    ## ├── _convert-images.R
     ## ├── _crop-images.R
     ## ├── _drake.R
     ## ├── _make.R
@@ -201,16 +203,11 @@ are shown):
     ## │   └── 60_evaluate-test.R
     ## ├── code-legacy
     ## │   └── 25_remodel-mutual-information.R
+    ## ├── cp-images.sh
     ## ├── cp-renv-lock.sh
     ## ├── data
     ## │   ├── test
-    ## │   │   ├── metadata
-    ## │   │   ├── reference
-    ## │   │   └── spectra
     ## │   └── training
-    ## │       ├── metadata
-    ## │       ├── reference
-    ## │       └── spectra
     ## ├── docker-base
     ## │   ├── Dockerfile_base
     ## │   ├── disable_auth_rserver.conf
@@ -220,56 +217,18 @@ are shown):
     ## ├── leaf-starch-spc.Rproj
     ## ├── out
     ## │   ├── data
-    ## │   │   ├── wavelength-vip-training-highlight.csv
-    ## │   │   ├── wavelength-vip-training-highlight.xlsx
-    ## │   │   └── wavelength-vip-training.csv
     ## │   └── figs
-    ## │       ├── boxplot-starch-genotype-ed.pdf
-    ## │       ├── boxplot-starch-leaf-age.pdf
-    ## │       ├── boxplot-starch-sets.pdf
-    ## │       ├── eval-training-mlr-cv.pdf
-    ## │       ├── eval-training-raw-cv.pdf
-    ## │       ├── eval-training-self-cv.pdf
-    ## │       ├── eval-vip-bigger1.pdf
-    ## │       ├── eval-vip-filtering.pdf
-    ## │       ├── eval-vip-top50.pdf
-    ## │       ├── eval.pdf
-    ## │       ├── predobs-test-corfilt.pdf
-    ## │       ├── predobs-test-genotype-harvest-time.pdf
-    ## │       ├── predobs-test-genotype.pdf
-    ## │       ├── predobs-train-genotype.pdf
-    ## │       ├── predobs-training-harvest-time.pdf
-    ## │       ├── spc-starch-pls-test-vip.pdf
-    ## │       ├── spc-starch-pls-vip.pdf
-    ## │       ├── spc-train-check.pdf
-    ## │       ├── spc-train-raw.pdf
-    ## │       ├── spc-train.pdf
-    ## │       ├── test-eval-allvars-vip-bigger1.pdf
-    ## │       ├── test-eval-pls-allvars-vip.pdf
-    ## │       ├── test-eval-vip-bigger1.pdf
-    ## │       └── test-eval.pdf
     ## ├── packages.R
     ## ├── pub
     ## │   ├── figs
-    ## │   │   ├── Fig2.pdf
-    ## │   │   ├── Fig4.pdf
-    ## │   │   ├── Fig5.pdf
-    ## │   │   ├── Fig6.pdf
-    ## │   │   ├── Fig6.png
-    ## │   │   ├── Fig7.pdf
-    ## │   │   ├── Fig8.pdf
-    ## │   │   ├── S2.pdf
-    ## │   │   ├── S3.pdf
-    ## │   │   ├── S4.pdf
-    ## │   │   ├── S5.pdf
-    ## │   │   ├── eval.pdf
-    ## │   │   ├── figs-cropped
-    ## │   │   └── figs-original
     ## │   ├── figs.zip
+    ## │   ├── review-submission-2
+    ## │   ├── submission-01
+    ## │   ├── submission-02
+    ## │   └── writing
     ## ├── renv
     ## │   ├── activate.R
     ## │   ├── library
-    ## │   │   └── R-3.6
     ## │   └── settings.dcf
     ## ├── renv.lock
     ## ├── ssd-to-vm.sh
