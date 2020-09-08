@@ -35,8 +35,7 @@ plan <- do.call(rbind, plans) %>% mutate(format = "qs")
 # Within-target parallelism with multicore or local socket cluster
 drake::make(plan, cache_log_file = TRUE, lock_envir = FALSE)
 
-# Predict runtime to rebuild the entire drake cache
-drake::predict_runtime(config, from_scratch = TRUE)
+drake::drake_config(plan)
 
 # make(plan, parallelism = "future", jobs = 48, lazy_load = TRUE,
 #   keep_going = TRUE, lock_envir = FALSE, memory_strategy = "speed")
