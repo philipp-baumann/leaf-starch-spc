@@ -28,7 +28,7 @@ plan <- do.call(rbind, plans) %>% mutate(format = "qs")
 
 # Visualize workflow
 # drake::vis_drake_graph(plan) # requires visNetwork package
-# drake::drake::ggraph(plan) # requires ggraph package
+# drake::drake_ggraph(plan) # requires ggraph package
 
 ## Build targets (R objects) listed in plan ====================================
 
