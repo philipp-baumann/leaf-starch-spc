@@ -21,18 +21,25 @@ wilcox_starch_harvest <- pairwise.wilcox.test(
 
 # leaf age ---------------------------------------------------------------------
 
-kruskal_starch_age <- kruskal.test(starch ~ age, data = ED)
-comp_starch_age <- dunnTest(starch ~ genotype, data = ED, method = "bh")
+kruskal_starch_age <- kruskal.test(starch ~ leaf_age, 
+  data = starch_train %>% filter(harvest_time == "ED"))
+
+comp_starch_age <- FSA::dunnTest(starch ~ as.factor(genotype), 
+  data = starch_train %>% filter(harvest_time == "ED"),
+  method = "bh")
 
 # genotypes --------------------------------------------------------------------
 
-kruskal_starch_genotype <- kruskal.test(starch ~ genotype, data = ED)
-comp_starch_genotype <- FSA::dunnTest(starch ~ genotype, data = ED, method = "bh")
+kruskal_starch_genotype <- kruskal.test(starch ~ genotype,
+  data = starch_train %>% filter(harvest_time == "ED"))
 
-PT <- comp_starch_genotype$res
+comp_starch_genotype <- FSA::dunnTest(starch ~ as.factor(genotype),
+  data = starch_train %>% filter(harvest_time == "ED"), method = "bh")
 
-Letter_starch_genotype <- rcompanion::cldList(P.adj ~ Comparison, data = PT,
-  threshold = 0.05)
+comp_starch_genotype_table <- comp_starch_genotype$res
+
+# letters_starch_genotype <- try(rcompanion::cldList(P.adj ~ Comparison,
+#   data = comp_starch_genotype_table, threshold = 0.05))
 
 ## Boxplot separated for sets and harvest times ================================
 
