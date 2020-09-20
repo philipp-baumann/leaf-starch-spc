@@ -19,7 +19,7 @@ The directory is self-contained and is designed to run reproducibly, either on y
 
 ## 1. Reproduce the analysis within the host operating system
 
-First, download this repository or clone it with git. ([Git](https://git-scm.com/) is a popular free and open source version control software. Simmpy download to get into the spiral.)
+First, download this repository or clone it with git. ([Git](https://git-scm.com/) is a popular free and open source version control software. Simply download to feel it.)
 
 ```{bash, eval=FALSE}
 git clone https://github.com/philipp-baumann/leaf-starch-spc

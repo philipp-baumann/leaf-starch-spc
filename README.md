@@ -21,7 +21,7 @@ within this project can be found below.
 
 First, download this repository or clone it with git.
 ([Git](https://git-scm.com/) is a popular free and open source version
-control software. Simmpy download to get into the spiral.)
+control software. Simply download to feel it.)
 
 ``` bash
 git clone https://github.com/philipp-baumann/leaf-starch-spc
