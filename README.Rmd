@@ -19,13 +19,13 @@ The directory is self-contained and is designed to run reproducibly, either on y
 
 ## 1. Reproduce the analysis within the host operating system
 
-First, download this repository or clone it with git.
+First, download this repository or clone it with git. ([Git](https://git-scm.com/) is a popular free and open source version control software. Simmpy download to get into the spiral.)
 
 ```{bash, eval=FALSE}
 git clone https://github.com/philipp-baumann/leaf-starch-spc
 ```
 
-To restore all required packages at versions defined in the file [`renv.lock`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/renv.lock) based on the  [renv](https://github.com/rstudio/renv) R package, execute the following in the project directory.
+To restore all required packages at versions defined in the file [`renv.lock`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/renv.lock) based on the  [renv](https://github.com/rstudio/renv) R package, execute the following in the project directory. You might first want to set up the project directory in RStudio (see [here](https://r4ds.had.co.nz/workflow-projects.html)) unless you work in a terminal.
 
 ```{r, eval=FALSE}
 install.packages("remotes")

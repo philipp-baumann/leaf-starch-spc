@@ -20,6 +20,8 @@ within this project can be found below.
 ## 1\. Reproduce the analysis within the host operating system
 
 First, download this repository or clone it with git.
+([Git](https://git-scm.com/) is a popular free and open source version
+control software. Simmpy download to get into the spiral.)
 
 ``` bash
 git clone https://github.com/philipp-baumann/leaf-starch-spc
@@ -28,7 +30,10 @@ git clone https://github.com/philipp-baumann/leaf-starch-spc
 To restore all required packages at versions defined in the file
 [`renv.lock`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/renv.lock)
 based on the [renv](https://github.com/rstudio/renv) R package, execute
-the following in the project directory.
+the following in the project directory. You might first want to set up
+the project directory in RStudio (see
+[here](https://r4ds.had.co.nz/workflow-projects.html)) unless you work
+in a terminal.
 
 ``` r
 install.packages("remotes")
@@ -174,7 +179,7 @@ are shown):
 
     ## .
     ## ├── Dockerfile
-    ## ├── Dockerfile_long
+    ## ├── Dockerfile_legacy
     ## ├── Makefile
     ## ├── R
     ## │   ├── helpers.R
@@ -220,6 +225,7 @@ are shown):
     ## │   └── figs
     ## ├── packages.R
     ## ├── pub
+    ## │   ├── approval
     ## │   ├── figs
     ## │   ├── figs.zip
     ## │   ├── review-submission-2
