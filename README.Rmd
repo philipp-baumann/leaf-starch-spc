@@ -89,6 +89,8 @@ docker run --rm -d -p 8787:8787 \
 cat _make.R
 ```
 
+`drake::r_make()` invokes `_drake.R`, calling `drake::make()` in a separate processs in the operating system to sanitize the make process.
+
 ```{r, eval=FALSE}
 # Run in the R console in RStudio Server
 source("_make.R")

@@ -154,6 +154,9 @@ cat _make.R
     ## cat("build_time_seconds ", round(sum(build_times()$elapsed), 2),
     ##   file = here::here("_build-time.txt"))
 
+`drake::r_make()` invokes `_drake.R`, calling `drake::make()` in a
+separate processs in the operating system to sanitize the make process.
+
 ``` r
 # Run in the R console in RStudio Server
 source("_make.R")
