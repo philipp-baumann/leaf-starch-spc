@@ -14,7 +14,7 @@ either on your host operating system (local or remote) or in a Docker
 container (local or remote; relying on kernel of the host). The
 practical instructions to deploy this Docker image and run all analyses
 within this project can be found below. Attribution is given to Thomas
-Knecht aka Mr. Propper, who gave me the courage and critical ideas about
+Knecht aka Mr. Propper, who encouraged me do dockerize and proceed with
 the orchestration.
 
 # Rerun all analyses (1. or 2.)
