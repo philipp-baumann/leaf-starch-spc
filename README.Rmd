@@ -17,7 +17,7 @@ The directory is self-contained and is designed to run reproducibly, either on y
 
 # Project structure
 
-:notebook_with_decorative_cover: `Dockerfile`: Docker recipe that will build the operating system, pull system dependencies, install R v3.6.0, and install all required R packages.
+:notebook_with_decorative_cover: `Dockerfile`: Docker recipe that will pull the operating system, pull system dependencies, install R v3.6.0, and install all required R packages.
 
 :notebook_with_decorative_cover: `R/`: Custom R functions required for the analysis.
 

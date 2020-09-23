@@ -20,7 +20,7 @@ the orchestration.
 # Project structure
 
 :notebook\_with\_decorative\_cover: `Dockerfile`: Docker recipe that
-will build the operating system, pull system dependencies, install R
+will pull the operating system, pull system dependencies, install R
 v3.6.0, and install all required R packages.
 
 :notebook\_with\_decorative\_cover: `R/`: Custom R functions required
