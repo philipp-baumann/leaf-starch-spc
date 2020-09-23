@@ -30,10 +30,11 @@ for the analysis.
 outputs for the manuscript submission.
 
 :notebook\_with\_decorative\_cover: `_drake.R`: Load packages, load
-functions, define the {drake} plan. Finally initates {drake} make.
+functions, define the {drake} plan. The script runs {drake} make via
+`_make.R`.
 
 :notebook\_with\_decorative\_cover: `_make.R`: Invoke {drake} make via
-callr for sanity.
+callr for sanity using `drake::r_make()`.
 
 :notebook\_with\_decorative\_cover: `code/`: R scripts for the analyis.
 They will be run in sequential order. `drake::code_to_plan()` in
