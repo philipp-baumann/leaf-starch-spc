@@ -15,6 +15,22 @@ This is the code repository that produces the outputs of the manuscript with the
 
 The directory is self-contained and is designed to run reproducibly, either on your host operating system (local or remote) or in a Docker container (local or remote; relying on kernel of the host). The practical instructions to deploy this Docker image and run all analyses within this project can be found below. Attribution is given to Thomas Knecht aka Mr. Propper, who encouraged me do dockerize and proceed with the orchestration.
 
+# Project structure
+
+:notebook_with_decorative_cover: `Dockerfile`: Docker recipe that will build the operating system, pull system dependencies, install R v3.6.0, and install all required R packages.
+
+:notebook_with_decorative_cover: `R/`: Custom R functions required for the analysis.
+
+:notebook_with_decorative_cover: `_convert-images.R`: Produce `.eps` outputs for the manuscript submission.
+
+:notebook_with_decorative_cover: `_drake.R`: Load packages, load functions, define the {drake} plan. Finally initates {drake} make.
+
+:notebook_with_decorative_cover: `_make.R`: Invoke {drake} make via callr for sanity.
+
+:notebook_with_decorative_cover: `code/`: R scripts for the analyis. They will be run in sequential order. `drake::code_to_plan()` in `_drake.R` will invoke them.
+
+
+
 # Rerun all analyses (1. or 2.)
 
 ## 1. Reproduce the analysis within the host operating system

@@ -17,6 +17,28 @@ within this project can be found below. Attribution is given to Thomas
 Knecht aka Mr. Propper, who encouraged me do dockerize and proceed with
 the orchestration.
 
+# Project structure
+
+:notebook\_with\_decorative\_cover: `Dockerfile`: Docker recipe that
+will build the operating system, pull system dependencies, install R
+v3.6.0, and install all required R packages.
+
+:notebook\_with\_decorative\_cover: `R/`: Custom R functions required
+for the analysis.
+
+:notebook\_with\_decorative\_cover: `_convert-images.R`: Produce `.eps`
+outputs for the manuscript submission.
+
+:notebook\_with\_decorative\_cover: `_drake.R`: Load packages, load
+functions, define the {drake} plan. Finally initates {drake} make.
+
+:notebook\_with\_decorative\_cover: `_make.R`: Invoke {drake} make via
+callr for sanity.
+
+:notebook\_with\_decorative\_cover: `code/`: R scripts for the analyis.
+They will be run in sequential order. `drake::code_to_plan()` in
+`_drake.R` will invoke them.
+
 # Rerun all analyses (1. or 2.)
 
 ## 1\. Reproduce the analysis within the host operating system
