@@ -69,6 +69,9 @@ host operating system. To get started with Docker, there is an [rOpenSci
 R Docker tutorial](https://ropenscilabs.github.io/r-docker-tutorial/)
 that explains the motivation and basics of using Docker for reproducible
 research. However, you can also just follow the steps outlined below.
+The only caveat at the moment is that the Docker image is a bit large
+(make sure you maybe have 150GB of disk space). I currently don’t know
+the reason for this.
 
 A `Dockerfile` is a text file that contains a recipe to build an image
 with a layered approach. A docker container is a running instance of an
