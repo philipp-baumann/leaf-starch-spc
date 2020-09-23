@@ -29,6 +29,10 @@ control software. Simply download to feel it.)
 git clone https://github.com/philipp-baumann/leaf-starch-spc
 ```
 
+Windows users probably want to download the R 3.6.3 or older version of
+[rtools](https://cran.r-project.org/bin/windows/Rtools/history.html) to
+build packages from source. MacOS users will require
+[XCode](https://developer.apple.com/xcode/) for the compiler toolchain.
 To restore all required packages at versions defined in the file
 [`renv.lock`](https://github.com/philipp-baumann/leaf-starch-spc/blob/master/renv.lock)
 based on the [renv](https://github.com/rstudio/renv) R package, execute
