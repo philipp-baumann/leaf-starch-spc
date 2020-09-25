@@ -16,7 +16,7 @@ names_new <- tools::file_path_sans_ext(files_to_convert)
 fs::dir_create(path = "pub/figs/figs-submission-eps")
 dir_out <- here::here("pub", "figs", "figs-submission-eps")
 
-files_out_pdf <- paste0(
+files_out_eps <- paste0(
   dir_out,
   "/",
   paste0(
@@ -28,6 +28,6 @@ files_out_pdf <- paste0(
 # wrtie out
 walk2(
   .x = imgs,
-  .y = files_out_pdf,
+  .y = files_out_eps,
   .f = ~ image_write(image = .x, path = .y, density = 1200)
 )
